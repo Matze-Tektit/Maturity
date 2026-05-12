@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tektit Maturity Check</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,Segoe UI,Helvetica,Arial,sans-serif;background:#f5f7fa;color:#1a202c;line-height:1.5;min-height:100vh}
+
+/* ── Tektit Branding Colors ── */
+:root {
+  --tk-dark: #071727;      
+  --tk-teal: #45a2b5;      
+  --tk-mint: #58f5a6;      
+  --tk-blue: #4d5dab;      
+  --tk-light: #edf2f7;     
+}
+
+/* ── Header ── */
+.top-bar{background:var(--tk-dark);color:#fff;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;box-shadow:0 2px 10px rgba(0,0,0,0.1)}
+.top-bar-left {display: flex; align-items: center; gap: 16px;}
+.top-bar-left img {height: 45px;} 
+.top-bar h1{font-size:1.2rem;font-weight:700;letter-spacing:-.01em;}
+.progress-pill{background:rgba(255,255,255,.1);border-radius:100px;padding:6px 14px;font-size:.8rem;border:1px solid rgba(255,255,255,0.2)}
+.progress-pill span{font-weight:700;color:var(--tk-mint)}
+
+/* ── Page Layout ── */
+.page{max-width:980px;margin:0 auto;padding:32px 20px 64px}
+.intro{background:#fff;border-radius:12px;padding:24px 28px;margin-bottom:28px;border-left:5px solid var(--tk-teal);box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.intro h2{font-size:1.1rem;color:var(--tk-dark);margin-bottom:8px}
+
+.prog-wrap{margin-bottom:24px}
+.prog-label{font-size:.8rem;color:#718096;text-align:right;margin-bottom:6px}
+.prog-track{background:#e2e8f0;border-radius:4px;height:6px;overflow:hidden}
+.prog-fill{background:var(--tk-teal);height:6px;border-radius:4px;width:0%;transition:width .4s ease}
+
+/* ── Dimension Cards ── */
+.dims{display:flex;flex-direction:column;gap:20px}
+.dim-card{background:#fff;border-radius:12px;box-shadow:0 1px 6px rgba(0,0,0,0.04);overflow:hidden;border:1px solid #e2e8f0}
+.dim-head{padding:16px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #edf2f7}
+.dim-title{display:flex;align-items:center;gap:10px}
+.dim-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;background:var(--tk-light)}
+.dim-name{font-weight:600;font-size:1rem;color:var(--tk-dark)}
+.dim-badge{font-size:.75rem;font-weight:600;padding:4px 12px;border-radius:100px;background:#edf2f7;color:#718096}
+.dim-badge.active{background:var(--tk-light);color:var(--tk-teal);border:1px solid var(--tk-teal)}
+.elements{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;padding:16px 20px}
+
+/* ── Checkbox Styles ── */
+.el-label{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:8px;border:1.5px solid #e2e8f0;background:#fafbfc;cursor:pointer;transition:all .18s;position:relative}
+.el-label:hover{border-color:var(--tk-teal);background:#f0f9fa}
+.el-label input[type=checkbox]{display:none}
+.el-box{width:20px;height:20px;border-radius:4px;border:2px solid #cbd5e0;background:#fff;flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center}
+.el-label input:checked ~ .el-box{background:var(--tk-teal);border-color:var(--tk-teal)}
+.el-label input:checked ~ .el-box::after{content:'';display:block;width:5px;height:10px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translateY(-1px)}
+.el-label input:checked{border-color:var(--tk-teal);background:#f0f9fa}
+.el-text{font-size:.85rem;line-height:1.4;color:#4a5568;flex-grow:1}
+
+/* ── Tooltips ── */
+.tt-wrap {position: relative; display: inline-block; margin-left: 4px; color: var(--tk-blue); cursor: help;}
+.tt-icon {display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; border-radius: 50%; background: #edf2f7; font-size: 0.65rem; font-weight: bold;}
+.tt-text {visibility: hidden; width: 220px; background-color: var(--tk-dark); color: #fff; text-align: center; border-radius: 6px; padding: 8px 12px; position: absolute; z-index: 10; bottom: 130%; left: 50%; margin-left: -110px; opacity: 0; transition: opacity 0.2s; font-size: 0.75rem;}
+.tt-text::after {content: ""; position: absolute; top: 100%; left: 50%; margin-left: -5px; border-width: 5px; border-style: solid; border-color: var(--tk-dark) transparent transparent transparent;}
+.tt-wrap:hover .tt-text {visibility: visible; opacity: 1;}
+
+/* ── Lead Gate ── */
+#leadGate {
+    display: none; background: #fff; border-radius: 12px; padding: 40px; margin-top: 30px; text-align: center; border: 2px solid var(--tk-teal); box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+#leadGate h2 { color: var(--tk-dark); margin-bottom: 10px; }
+.lead-form { max-width: 400px; margin: 20px auto; display: flex; flex-direction: column; gap: 15px; }
+.lead-form input { padding: 12px; border-radius: 8px; border: 1px solid #cbd5e0; font-size: 1rem; }
+
+/* ── Results Area ── */
+#results{display:none;margin-top:36px}
+.res-hero{background:linear-gradient(135deg,var(--tk-dark),var(--tk-blue));border-radius:16px;padding:36px;color:#fff;display:flex;align-items:center;gap:32px;margin-bottom:24px}
+.score-ring{width:110px;height:110px;border-radius:50%;border:4px solid rgba(255,255,255,.2);display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(255,255,255,.05);flex-shrink:0;}
+.score-num{font-size:2.4rem;font-weight:800;}
+.res-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:24px}
+.res-card{background:#fff;border-radius:10px;padding:14px 16px;border:1px solid #e2e8f0; box-shadow: 0 1px 4px rgba(0,0,0,0.05);}
+.rc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.rc-name{font-size:.8rem;font-weight:600;color:var(--tk-dark)}
+.rc-badge{font-size:.75rem;font-weight:700;padding:2px 10px;border-radius:100px;color:#fff;background:var(--tk-teal)}
+.rc-bar-wrap{height:6px;background:#edf2f7;border-radius:3px;margin:8px 0;overflow:hidden}
+.rc-bar{height:6px;background:var(--tk-teal);transition:width .6s ease}
+.rc-detail{font-size:.75rem;color:#718096}
+
+.prio-row{background:#fff;border-radius:8px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:flex-start;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.prio-rank{width:30px;height:30px;border-radius:50%;background:var(--tk-dark);color:var(--tk-mint);font-weight:700;font-size:.85rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.prio-name{font-weight:600;font-size:.875rem;margin-bottom:4px;color:var(--tk-dark)}
+.prio-missing{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.miss-tag{font-size:.75rem;background:#edf2f7;color:#4a5568;padding:4px 10px;border-radius:100px;}
+
+/* ── Buttons ── */
+.btn{padding:12px 28px;border-radius:8px;font-size:.9rem;font-weight:600;border:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition: all 0.2s;}
+.btn-primary{background:var(--tk-dark);color:#fff}
+.btn-primary:hover:not(:disabled){background:var(--tk-teal); transform: translateY(-1px);}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
+.btn-teal{background:var(--tk-teal);color:#fff}
+.btn-ghost{background:transparent;color:#4a5568;border:1.5px solid #cbd5e0}
+
+@media(max-width:600px){.elements{grid-template-columns:1fr}.res-hero{flex-direction:column}}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="top-bar-left">
+    <img src="TEKTIT_Cons-Logo_color-blue (3).png" alt="Tektit Consulting Logo" style="height:45px;width:auto;object-fit:contain;display:block;">
+    <h1>Tektit Maturity Check</h1>
+  </div>
+  <div class="progress-pill">Selected: <span id="headerCount">0</span></div>
+</div>
+
+<div class="page">
+  <div class="intro">
+    <h2>Assess your organization's maturity</h2>
+    <p>Wähle alle Elemente aus, die in deiner Organisation <strong>etabliert</strong> sind.</p>
+  </div>
+  
+  <div class="prog-wrap">
+    <div class="prog-label"><span id="progText">0 of 12 dimensions assessed</span></div>
+    <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+  </div>
+
+  <div class="dims" id="dimsContainer"></div>
+
+  <div style="margin-top:28px; display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+    <button type="button" class="btn btn-primary" id="showLeadBtn" disabled>📊 Generate analysis</button>
+    <button type="button" class="btn btn-ghost" id="resetBtn">Reset</button>
+  </div>
+
+  <div id="leadGate">
+    <img src="Tektit Consulting quadratisch (4).png" alt="Tektit" style="height:60px;width:auto;object-fit:contain;display:block;margin-bottom:15px;">
+    <h2>Almost there!</h2>
+    <p>Wohin dürfen wir den detaillierten Report senden? (Optional für diesen Test)</p>
+    <div class="lead-form">
+      <input type="text" id="leadName" placeholder="Your name">
+      <input type="email" id="leadEmail" placeholder="Your email address">
+      <button type="button" class="btn btn-teal" id="unlockResultsBtn">View results now</button>
+      <button type="button" class="btn btn-ghost" id="skipLeadBtn" style="margin-top: 8px;">Skip and view directly in the browser</button>
+    </div>
+  </div>
+
+  <div id="results">
+    <div id="pdfContent">
+        <div class="res-hero">
+            <div class="score-ring"><span class="score-num" id="totalScoreEl">—</span><span class="score-sub">/ 5.0</span></div>
+            <div>
+                <h2 id="userGreeting">Your results</h2>
+                <p id="scoreSubtitle"></p>
+            </div>
+            <img src="Tektit Consulting quadratisch (4).png" alt="Tektit" style="height:80px;width:auto;object-fit:contain;display:block;margin-left:auto;opacity:0.8;">
+        </div>
+        <div class="res-cards" id="resCards"></div>
+        <div style="background:#fff; padding:24px; border-radius:12px; border:1px solid #e2e8f0; margin-bottom:24px;">
+            <h3 style="margin-bottom:16px;">Maturity radar</h3>
+            <svg id="radarSvg" viewBox="0 0 540 520"></svg>
+        </div>
+        <div style="background:#f0f9fa; border:1px solid var(--tk-teal); border-radius:12px; padding:24px;">
+            <h3>🚀 Your top 3 focus areas</h3>
+            <p style="font-size: 0.85rem; color: #4a5568; margin-bottom: 15px;">These are the areas with the greatest optimization leverage.</p>
+            <div id="prioList"></div>
+        </div>
+    </div>
+    
+    <div style="margin-top:24px; display:flex; gap:12px; flex-wrap:wrap;">
+      <button type="button" class="btn btn-primary" id="downloadPdfBtn">⬇️ Download PDF report</button>
+      <button type="button" class="btn btn-ghost" id="backBtn">⬆️ Edit selections</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var DIMS = [
+  {id:"leadership", name:"Leadership", icon:"🧭", elements:[
+    {t:"Vision clearly defined and communicated", desc:"A clear, forward-looking direction that is understood by everyone in the organization."},
+    {t:"Strategy – clear niche focus in place", desc:"A clear definition of which target groups and market segments the company focuses on."},
+    {t:"Company culture actively shaped", desc:"Deliberate promotion of values, behaviors, and team cohesion throughout the organization."},
+    {t:"Growth mindset anchored across the team", desc:"A culture of learning is lived – continuous development and embracing failure as feedback are the norm."},
+    {t:"OKR system introduced and lived", desc:"Objectives and Key Results: an agile framework for goal-oriented company management."},
+    {t:"Transparent performance management in place", desc:"Performance measurement and feedback processes are transparent and comprehensible to everyone."}
+  ]},
+  {id:"sales", name:"Sales & Marketing", icon:"📣", elements:[
+    {t:"Brand & positioning clearly defined", desc:"A distinctive brand presence and clear value propositions in the market."},
+    {t:"Consistent communication processes", desc:"Standardized messaging across all channels (corporate identity / wording)."},
+    {t:"CRM system actively in use", desc:"Customer Relationship Management: central software managing all customer interactions and leads."},
+    {t:"Automated sales pipeline in place", desc:"System-driven processes that automatically guide leads through the various sales stages."},
+    {t:"Predictive lead scoring implemented", desc:"Algorithms/AI automatically rate how likely a lead is to convert to a close."},
+    {t:"Ecosystem & community built", desc:"A network of customers, partners, and advocates that indirectly supports sales."}
+  ]},
+  {id:"ops", name:"Operations", icon:"⚙️", elements:[
+    {t:"Efficient decision-making processes established", desc:"Clear responsibilities and fast, data-driven decision-making."},
+    {t:"Standardized workflows documented", desc:"Recurring processes are recorded digitally or in writing and continuously optimized."},
+    {t:"Digital documentation & information processes", desc:"Knowledge and documents are stored centrally, digitally, and are easy to find."},
+    {t:"Customer & service excellence defined", desc:"High standards for customer satisfaction and support are set and measurable."},
+    {t:"Talent acquisition systematized", desc:"A structured, ongoing process for recruiting new employees is established."},
+    {t:"Scaling model for operations in place", desc:"Processes are designed so they don't break down under strong growth."}
+  ]},
+  {id:"devorg", name:"Dev Org", icon:"💻", elements:[
+    {t:"Product vision clearly defined", desc:"A long-term, motivating target picture for the product being developed."},
+    {t:"Product roadmap in place", desc:"A strategic plan showing when features and goals are to be reached."},
+    {t:"Agile best practices introduced", desc:"E.g. Scrum or Kanban principles are actively applied within the team."},
+    {t:"Tech vision defined", desc:"Long-term direction for technological architecture and tooling."},
+    {t:"Tech guidelines documented", desc:"Fixed rules and standards for software development (e.g. coding standards)."},
+    {t:"OKR-driven product organization", desc:"Product development goals are based on measurable Key Results."}
+  ]},
+  {id:"itlandscape", name:"IT Landscape (ERP/CRM)", icon:"🗄️", elements:[
+    {t:"Core systems (ERP/CRM) introduced", desc:"Enterprise Resource Planning / Customer Relationship Management as central data hubs."},
+    {t:"First point-to-point integrations", desc:"Initial direct connections between systems for data exchange have been set up."},
+    {t:"Process integration & workflow automation", desc:"Cross-system automation of business processes (e.g. via Zapier/Make or natively)."},
+    {t:"Real-time data foundation in place", desc:"Data is synchronized across systems without significant delay."},
+    {t:"Single source of truth established", desc:"One central, reliable, and redundancy-free data set that everyone accesses."},
+    {t:"AI-powered process optimization active", desc:"Artificial intelligence continuously analyzes and improves workflows."}
+  ]},
+  {id:"devops", name:"DevOps / Platform", icon:"🚀", elements:[
+    {t:"Script-based automation in place", desc:"Manual IT tasks are automated through simple scripts."},
+    {t:"Infrastructure as Code (IaC) introduced", desc:"Infrastructure (servers, networks) is managed via machine-readable code rather than manual processes."},
+    {t:"Configuration management established", desc:"Systematic management and tracking of system configurations."},
+    {t:"CI/CD pipelines active", desc:"Continuous Integration / Continuous Deployment: automated testing and delivery of software."},
+    {t:"Workflow orchestration introduced", desc:"Complex, cross-system IT processes are centrally controlled (e.g. Kubernetes)."},
+    {t:"AI-driven autonomous IT processes", desc:"AI independently handles tasks such as scaling, error resolution, or security monitoring (AIOps)."}
+  ]},
+  {id:"innovation", name:"Innovation", icon:"💡", elements:[
+    {t:"USP clearly defined", desc:"Unique Selling Proposition: the differentiating factor that sets you apart from competitors."},
+    {t:"Differentiation strategy in place", desc:"Active planning for how the company will sustainably stand out from the competition."},
+    {t:"Development time reserved for USP", desc:"Fixed time allocations within the team to work on core innovations."},
+    {t:"Structured customer feedback process established", desc:"Systematic collection and evaluation of customer opinions for new ideas."},
+    {t:"Continuous improvement process in place", desc:"A lived process (Kaizen) to continuously optimize products and workflows in small steps."},
+    {t:"Innovation culture actively lived", desc:"New ideas from the team are encouraged and systematically evaluated; failures are seen as learning opportunities."},
+    {t:"Dedicated experimentation budget available", desc:"Fixed budgets available for testing new ideas without extensive approval processes."}
+  ]},
+  {id:"data", name:"Data & Analytics", icon:"📊", elements:[
+    {t:"Data strategy defined", desc:"A clear plan for which data is collected, how it is used, and how it is protected."},
+    {t:"Central BI tool / dashboards in place", desc:"Business Intelligence tools (e.g. Power BI, Tableau) for visually presented data."},
+    {t:"KPIs defined and regularly measured", desc:"Key Performance Indicators are established and actively monitored."},
+    {t:"Real-time analytics available", desc:"Evaluations are based on live data, not only on historical exports."},
+    {t:"Data quality processes established", desc:"Systematic checking and cleansing of data to prevent errors."},
+    {t:"Predictive analytics / AI models in use", desc:"Algorithms use historical data to predict future developments."}
+  ]},
+  {id:"finance", name:"Finance & Business Model", icon:"💰", elements:[
+    {t:"Basic budgeting & P&L in place", desc:"Basic financial planning and Profit & Loss accounting are set up."},
+    {t:"Unit economics known & understood", desc:"Revenue and costs broken down to a single business unit (e.g. per individual customer)."},
+    {t:"Pricing strategy defined", desc:"Systematic pricing based on value creation, market, and target group."},
+    {t:"Scaling model developed", desc:"Financial plan showing how the business model grows profitably as user numbers increase."},
+    {t:"Capital-efficient growth model", desc:"Growth is achieved with the lowest possible resource spend (cash burn)."},
+    {t:"Investor / funding strategy established", desc:"A clear plan for capital raising (bootstrapping, VC, bank loans) is in place."}
+  ]},
+  {id:"ecosystem", name:"Ecosystem & Partners", icon:"🤝", elements:[
+    {t:"First strategic partnerships", desc:"Targeted collaboration with other companies for mutual benefit."},
+    {t:"Partner program defined", desc:"Structured offerings and terms for resellers, affiliates, or implementation partners."},
+    {t:"Technical integrations & APIs available", desc:"Interfaces through which third-party providers or partners can connect to your systems."},
+    {t:"Strategic alliances established", desc:"Deep, long-term cooperations with market leaders or complementary platforms."},
+    {t:"Platform ecosystem built", desc:"Your own product serves as a foundation on which other providers can build (e.g. app store model)."},
+    {t:"Active community in place", desc:"A vibrant group of users, developers, or partners who exchange ideas and support each other."}
+  ]},
+  {id:"ai", name:"Artificial Intelligence", icon:"🤖", elements:[
+    {t:"AI strategy defined", desc:"A clear target picture exists for where AI should be used in the organization."},
+    {t:"Relevant use cases prioritized", desc:"Concrete use cases with measurable value have been identified and assessed by effort and impact."},
+    {t:"Data foundation prepared for AI", desc:"The data needed for AI is structured, sufficiently high quality, and generally available."},
+    {t:"AI governance established", desc:"Rules for privacy, approval, responsibility, and risk management are defined."},
+    {t:"Employees trained in AI usage", desc:"The team understands useful applications, limitations, and safe use of AI tools."},
+    {t:"AI used productively in daily work", desc:"AI already supports concrete processes, analysis, or knowledge work on a regular basis."}
+  ]},
+  {id:"sovereignty", name:"Data Sovereignty", icon:"🔒", elements:[
+    {t:"Data hosted with EU-compliant providers", desc:"Hosting and data processing take place on servers that meet European standards."},
+    {t:"Auto-backups configured", desc:"Regular, automated data backups protect against data loss."},
+    {t:"Disaster recovery plan in place", desc:"A contingency plan to restore operations quickly after a system failure or cyberattack."},
+    {t:"Business continuity under 24h guaranteed", desc:"Guaranteed restoration of business operations within less than one day after an outage."},
+    {t:"GDPR compliance fully demonstrated", desc:"All processes demonstrably comply with the General Data Protection Regulation (Privacy by Design)."},
+    {t:"Certifications in place (e.g. ISO 27001)", desc:"Official third-party confirmations of high standards in information security."}
+  ]}
+
+];
+
+// ── Funktionalität ────────────────────────────────────────────────
+
+function buildUI() {
+  const container = document.getElementById("dimsContainer");
+  DIMS.forEach(dim => {
+    let card = document.createElement("div");
+    card.className = "dim-card";
+    card.id = "dc-" + dim.id;
+    let elsHtml = dim.elements.map((el, idx) => {
+      let tt = el.desc ? `<span class="tt-wrap"><span class="tt-icon">?</span><span class="tt-text">${el.desc}</span></span>` : "";
+      return `<label class="el-label" for="cb-${dim.id}-${idx}">
+                <input type="checkbox" id="cb-${dim.id}-${idx}" class="dim-cb" data-dim="${dim.id}" data-idx="${idx}">
+                <div class="el-box"></div>
+                <span class="el-text">${el.t}${tt}</span>
+              </label>`;
+    }).join("");
+    card.innerHTML = `<div class="dim-head"><div class="dim-title"><div class="dim-icon">${dim.icon}</div><span class="dim-name">${dim.name}</span></div><div class="dim-badge" id="db-${dim.id}">0 / ${dim.elements.length}</div></div><div class="elements">${elsHtml}</div>`;
+    container.appendChild(card);
+  });
+
+  // Event Listener für Checkboxen
+  container.addEventListener("change", (e) => {
+    if(e.target.classList.contains("dim-cb")) {
+      updateDimCard(e.target.dataset.dim);
+      updateGlobalProgress();
+    }
+  });
+
+  document.getElementById("resetBtn").addEventListener("click", resetAll);
+  document.getElementById("backBtn").addEventListener("click", function() {
+    document.getElementById("results").style.display = "none";
+    window.scrollTo({top: 0, behavior: "smooth"});
+  });
+}
+
+function updateDimCard(dimId) {
+  let checked = document.querySelectorAll(`#dc-${dimId} .dim-cb:checked`).length;
+  let total = DIMS.find(d => d.id === dimId).elements.length;
+  let badge = document.getElementById(`db-${dimId}`);
+  badge.textContent = `${checked} / ${total}`;
+  badge.className = "dim-badge" + (checked > 0 ? " active" : "");
+}
+
+function updateGlobalProgress() {
+  let totalChecked = document.querySelectorAll(".dim-cb:checked").length;
+  let assessed = DIMS.filter(d => document.querySelectorAll(`#dc-${d.id} .dim-cb:checked`).length > 0).length;
+  
+  document.getElementById("progFill").style.width = (assessed / DIMS.length * 100) + "%";
+  document.getElementById("progText").textContent = assessed + " of " + DIMS.length + " Dimensionen bewertet";
+  document.getElementById("headerCount").textContent = totalChecked;
+  document.getElementById("showLeadBtn").disabled = totalChecked === 0;
+}
+
+function resetAll() {
+  if (!confirm("Clear all selections and start over?")) return;
+  document.querySelectorAll(".dim-cb").forEach(cb => cb.checked = false);
+  DIMS.forEach(d => updateDimCard(d.id));
+  updateGlobalProgress();
+  document.getElementById("results").style.display = "none";
+  document.getElementById("leadGate").style.display = "none";
+  window.scrollTo({top: 0, behavior: "smooth"});
+}
+
+// Lead Gate
+document.getElementById("showLeadBtn").onclick = () => {
+    document.getElementById("leadGate").style.display = "block";
+    document.getElementById("leadGate").scrollIntoView({behavior:"smooth"});
+};
+
+// Auswertung mit Formular-Daten
+document.getElementById("unlockResultsBtn").onclick = () => {
+    let name = document.getElementById("leadName").value;
+    if(name) {
+        document.getElementById("userGreeting").textContent = `Hello ${name.split(' ')[0]}, here are your results:`;
+    } else {
+        document.getElementById("userGreeting").textContent = "Your results:";
+    }
+    document.getElementById("leadGate").style.display = "none";
+    evaluate();
+};
+
+// Auswertung Überspringen
+document.getElementById("skipLeadBtn").onclick = () => {
+    document.getElementById("userGreeting").textContent = "Your results:";
+    document.getElementById("leadGate").style.display = "none";
+    evaluate();
+};
+
+function getCheckedCount(dimId) {
+  return document.querySelectorAll(`#dc-${dimId} .dim-cb:checked`).length;
+}
+
+function calcScore(dimId) {
+  let total = DIMS.find(d => d.id === dimId).elements.length;
+  let checked = getCheckedCount(dimId);
+  return checked === 0 ? 0 : parseFloat((checked / total * 5).toFixed(2));
+}
+
+function evaluate() {
+  var scores = DIMS.map(function(d) {
+    return {id: d.id, name: d.name, icon: d.icon, score: calcScore(d.id), checked: getCheckedCount(d.id), total: d.elements.length};
+  });
+  
+  var avg = scores.reduce(function(s, r) { return s + r.score; }, 0) / scores.length;
+
+  document.getElementById("totalScoreEl").textContent = avg.toFixed(1);
+  document.getElementById("scoreSubtitle").textContent =
+    avg < 1.5 ? "Frühphase — viele Potenziale noch ungenutzt." :
+    avg < 2.5 ? "Grundlage vorhanden — gezielte Weiterentwicklung zahlt sich aus." :
+    avg < 3.5 ? "Solide Organisation — auf gutem Weg zur Spitze." :
+    avg < 4.5 ? "Starke Organisation — weiter ausbauen und verteidigen." :
+    "Marktführerniveau — kontinuierlich optimieren!";
+
+  var cards = document.getElementById("resCards");
+  cards.innerHTML = "";
+  scores.forEach(function(r) {
+    var pct = r.score / 5 * 100;
+    var opacity = r.score === 0 ? "0.4" : "1";
+    cards.innerHTML += `<div class="res-card" style="opacity:${opacity}">
+      <div class="rc-head"><span class="rc-name">${r.icon} ${r.name}</span><span class="rc-badge">${r.score.toFixed(1)}</span></div>
+      <div class="rc-bar-wrap"><div class="rc-bar" style="width:${pct}%"></div></div>
+      <div class="rc-detail">${r.checked} of ${r.total} elements established</div>
+      </div>`;
+  });
+
+  drawRadar(scores);
+
+  var sorted = scores.slice().sort(function(a, b) { return a.score - b.score; });
+  var top3 = sorted.slice(0, 3);
+  var pList = document.getElementById("prioList");
+  pList.innerHTML = "";
+  top3.forEach(function(r, i) {
+    var dim = DIMS.find(d => d.id === r.id);
+    var missing = dim.elements.filter((_, idx) => !document.querySelector(`#cb-${r.id}-${idx}`).checked);
+    
+    var tagsHtml = missing.slice(0, 4).map(el => `<span class="miss-tag">✗ ${el.t}</span>`).join("");
+    if(missing.length > 4) tagsHtml += `<span class="miss-tag">+${missing.length - 4} more</span>`;
+    
+    pList.innerHTML += `<div class="prio-row">
+      <div class="prio-rank">${i + 1}</div>
+      <div style="flex-grow:1"><div class="prio-name">${r.icon} ${r.name} (Score: ${r.score.toFixed(1)})</div>
+      <div class="prio-missing">${tagsHtml}</div></div>
+      </div>`;
+  });
+
+  document.getElementById("results").style.display = "block";
+  setTimeout(() => document.getElementById("results").scrollIntoView({behavior: "smooth", block: "start"}), 80);
+}
+
+// Radar Chart Funktion
+function drawRadar(scores) {
+  var svg = document.getElementById("radarSvg");
+  var N = scores.length;
+  var cx = 270, cy = 255, maxR = 155, labelR = 195;
+  var html = "";
+
+  for (var g = 1; g <= 5; g++) {
+    var r = g / 5 * maxR;
+    html += `<circle cx="${cx}" cy="${cy}" r="${r.toFixed(1)}" fill="none" stroke="#e2e8f0" stroke-width="1"/>`;
+    html += `<text x="${cx + 3}" y="${(cy - r + 10).toFixed(1)}" font-size="9" fill="#a0aec0">${g}</text>`;
+  }
+
+  var shortNames = ['Leadership','Sales','Operations','Dev Org','IT Landscape','DevOps','Innovation','Data','Finance','Ecosystem','AI','Sovereignty'];
+  var polyPoints = [];
+  
+  for (var i = 0; i < N; i++) {
+    var angle = (i / N) * 2 * Math.PI - Math.PI / 2;
+    var xa = cx + maxR * Math.cos(angle);
+    var ya = cy + maxR * Math.sin(angle);
+    html += `<line x1="${cx}" y1="${cy}" x2="${xa.toFixed(1)}" y2="${ya.toFixed(1)}" stroke="#e2e8f0" stroke-width="1"/>`;
+
+    var lx = cx + labelR * Math.cos(angle);
+    var ly = cy + labelR * Math.sin(angle);
+    var anchor = Math.cos(angle) > 0.15 ? "start" : Math.cos(angle) < -0.15 ? "end" : "middle";
+    var dy = Math.sin(angle) > 0.5 ? "1em" : Math.sin(angle) < -0.5 ? "0" : ".35em";
+    html += `<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" dy="${dy}" text-anchor="${anchor}" font-size="10" font-family="system-ui,sans-serif" fill="#4a5568">${scores[i].icon || ""} ${shortNames[i]}</text>`;
+
+    var sr = scores[i].score / 5 * maxR;
+    var px = cx + sr * Math.cos(angle);
+    var py = cy + sr * Math.sin(angle);
+    polyPoints.push(`${px.toFixed(1)},${py.toFixed(1)}`);
+  }
+
+  html += `<polygon points="${polyPoints.join(" ")}" fill="rgba(69,162,181,0.2)" stroke="#45a2b5" stroke-width="2" stroke-linejoin="round"/>`;
+
+  for (var i = 0; i < N; i++) {
+    var angle2 = (i / N) * 2 * Math.PI - Math.PI / 2;
+    var sr2 = scores[i].score / 5 * maxR;
+    var dpx = cx + sr2 * Math.cos(angle2);
+    var dpy = cy + sr2 * Math.sin(angle2);
+    html += `<circle cx="${dpx.toFixed(1)}" cy="${dpy.toFixed(1)}" r="4" fill="#071727" stroke="#58f5a6" stroke-width="1.5"/>`;
+  }
+
+  svg.innerHTML = html;
+}
+
+// PDF Export
+document.getElementById("downloadPdfBtn").onclick = () => {
+    const element = document.getElementById('pdfContent');
+    const opt = {
+        margin: 10,
+        filename: 'Tektit_Maturity_Report.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(element).save();
+};
+
+buildUI();
+</script>
+</body>
+</html>
