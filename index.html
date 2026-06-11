@@ -552,6 +552,10 @@
       flex-wrap: wrap;
     }
 
+    #resetBtn {
+      margin-left: auto;
+    }
+
     /* ── Lead Gate ── */
     .lead-gate {
       display: none;
@@ -837,6 +841,10 @@
         flex-direction: column;
         width: 100%;
       }
+      #resetBtn {
+        margin-left: 0;
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -974,91 +982,91 @@
   </main>
 
   <script>
-    // Master Matrix holding 53 high-signal items total with cleaned, direct rewrites
+    // Master Matrix holding 53 high-signal items total with clear contextual tooltips
     const DIMS_TEMPLATE = [
       /* Cluster 1: Strategy & Leadership */
       {id:"leadership", name:{digital:"Leadership", services:"Leadership & Talent", mittelstand:"Leadership & Governance", logistics:"Leadership & Control"}, icon:"🧭", cluster:"Strategy & Leadership", strategicWeight: 1.5, elements:[
-        {t:"Everyone in our company knows our direction and who we're building for.", w: 2.0, desc:"Clear internal alignment around company targets and corporate direction."},
-        {t:"We actively invest in our culture — through rituals, leadership behavior, and how we handle failure.", w: 1.0, desc:"Active promotion of healthy environments, values, and collaboration frameworks."},
-        {t:"We use a structured goal system (e.g. OKRs, MBO) so every team knows what they're working toward.", w: 1.5, desc:"Corporate roadmap strategies translated directly into clear tactical milestones."},
-        {t:"Our people can make decisions in their area without needing constant sign-off from above.", w: 1.0, desc:"Empowerment of team slots to resolve issues independently inside their scope."},
-        {t:"We have regular processes for internal feedback and resolving disagreements constructively.", w: 1.0, desc:"Operational evaluation channels to surface feedback loops and resolve conflicts."}
+        {t:"Everyone in our company knows our direction and who we're building for.", w: 2.0, desc:"Making sure everyone works toward the same big-picture goals, not separate agendas."},
+        {t:"We actively invest in our culture — through rituals, leadership behavior, and how we handle failure.", w: 1.0, desc:"Liking your culture on paper isn't enough; it needs to guide daily habits and how mistakes are handled."},
+        {t:"We use a structured goal system (e.g. OKRs, MBO) so every team knows what they're working toward.", w: 1.5, desc:"Breaking your high-level vision down into quarterly objectives or monthly targets that teams can actually execute."},
+        {t:"Our people can make decisions in their area without needing constant sign-off from above.", w: 1.0, desc:"Trusting your team to run their own domains so founders don't become micro-management bottlenecks."},
+        {t:"We have regular processes for internal feedback and resolving disagreements constructively.", w: 1.0, desc:"Having safe, established spaces to speak up, give honest feedback, and fix friction early."}
       ]},
       {id:"innovation", name:"Innovation", icon:"💡", cluster:"Strategy & Leadership", strategicWeight: 1.2, elements:[
-        {t:"We have a clear strategy for how we stay distinctly different from our competitors.", w: 1.5, desc:"Defensible marketplace parameters that isolate the brand value from rivals."},
-        {t:"We protect time and budget for testing new ideas — separate from day-to-day delivery.", w: 1.0, desc:"Budgeted space or time allocations to test workflow setups or prototype ideas."},
-        {t:"We systematically collect customer feedback and use it to improve our products or services.", w: 1.5, desc:"Client insights collected systematically to upgrade dynamic service portfolios."}
+        {t:"We have a clear strategy for how we stay distinctly different from our competitors.", w: 1.5, desc:"Knowing exactly why a customer picks you over a cheaper or bigger competitor."},
+        {t:"We protect time and budget for testing new ideas — separate from day-to-day delivery.", w: 1.0, desc:"Giving people actual room to build things or experiment without dropping current client deadlines."},
+        {t:"We systematically collect customer feedback and use it to improve our products or services.", w: 1.5, desc:"Taking what customers complain about or praise and using it to fix your roadmap."}
       ]},
       {id:"finance", name:"Finance & Business Model", icon:"💰", cluster:"Strategy & Leadership", strategicWeight: 1.3, elements:[
-        {t:"We maintain a live P&L and track cash flow to guide our decisions.", w: 1.0, desc:"Financial tracking records used routinely to guide high-level management choices."},
-        {t:"We know what it costs to acquire a customer and how much value they generate over time.", w: 1.5, desc:"Clear unit metrics linking client generation expenses to long-term income margins."},
-        {t:"Our pricing reflects the value we deliver — not just our costs or what competitors charge.", w: 1.5, desc:"Pricing parameters mapped against target market utility values and distinct differentiators."},
-        {t:"We know how we plan to grow profitably and how we'll fund it.", w: 1.0, desc:"A resource-efficient framework designed to fund scalability paths smoothly."}
+        {t:"We maintain a live P&L and track cash flow to guide our decisions.", w: 1.0, desc:"Using real, updated cash metrics to run the business instead of banking on 'good feelings'."},
+        {t:"We know what it costs to acquire a customer and how much value they generate over time.", w: 1.5, desc:"Knowing your true customer lifetime value and client acquisition costs down to the cent."},
+        {t:"Our pricing reflects the value we deliver — not just our costs or what competitors charge.", w: 1.5, desc:"Charging based on the massive headache you solve, not just an hourly rate."},
+        {t:"We know how we plan to grow profitably and how we'll fund it.", w: 1.0, desc:"Ensuring cash flow covers hiring and infrastructure jumps before you step on the gas."}
       ]},
 
       /* Cluster 2: Go-To-Market */
       {id:"sales", name:"Sales & Marketing", icon:"📣", cluster:"Go-To-Market", strategicWeight: 1.4, elements:[
-        {t:"Our value proposition is clear and consistent — across website, sales calls, and proposals.", w: 2.0, desc:"The unique core value framework is defined and well-communicated across all touchpoints."},
-        {t:"We use a CRM to track all leads and customer interactions in one place.", w: 1.0, desc:"Unified software pipelines used by teams to log historical contacts and opportunities."},
-        {t:"Our sales team has a clear pipeline process and the materials/training to execute it.", w: 1.5, desc:"Pipeline pathways backed by standardized enablement assets and playbooks."},
-        {t:"Marketing generates a predictable flow of leads that get passed to sales with clear handover criteria.", w: 1.5, desc:"Predictable funnel mechanisms delivering qualified leads based on clear benchmarks."},
-        {t:"We actively monitor our competitors and market trends to inform our go-to-market decisions.", w: 1.0, desc:"Active observation of competitor strategies and adjustments to steer strategy entries."}
+        {t:"Our value proposition is clear and consistent — across website, sales calls, and proposals.", w: 2.0, desc:"Eliminating mixed messages so a pitch deck, website copy, and sales call all say the exact same thing."},
+        {t:"We use a CRM to track all leads and customer interactions in one place.", w: 1.0, desc:"Keeping interaction histories and deals out of notebooks and personal spreadsheets."},
+        {t:"Our sales team has a clear pipeline process and the materials/training to execute it.", w: 1.5, desc:"Arming salespeople with scripts, decks, and answers to hard objections instead of winging it."},
+        {t:"Marketing generates a predictable flow of leads that get passed to sales with clear handover criteria.", w: 1.5, desc:"A steady lead engine that filters out bad fits before they waste your sales team's time."},
+        {t:"We actively monitor our competitors and market trends to inform our go-to-market decisions.", w: 1.0, desc:"Tracking rival moves and industry shifts so you aren't blindsided by market changes."}
       ]},
       {id:"ecosystem", name:"Ecosystem & Partners", icon:"🤝", cluster:"Go-To-Market", strategicWeight: 1.1, elements:[
-        {t:"We have strategic partnerships that help us reach new customers or markets.", w: 1.0, desc:"Programmatic alliances or distribution loops that extend audience reach safely."},
-        {t:"Third parties (tools, vendors, partners) can connect to our systems via defined interfaces.", w: 1.0, desc:"Interfaces or data ports accessible to outside systems to streamline tasks."},
-        {t:"We actively onboard, enable, and review our partners — not just sign contracts with them.", w: 1.0, desc:"Structured integration paths, enablement steps, and regular partner checks."},
-        {t:"We have an active community of users, partners, or developers who engage beyond transactions.", w: 1.0, desc:"A reliable network circle that expands brand advocacy and loop systems natively."}
+        {t:"We have strategic partnerships that help us reach new customers or markets.", w: 1.0, desc:"Building networks or channel partners that pull in new deals automatically."},
+        {t:"Third parties (tools, vendors, partners) can connect to our systems via defined interfaces.", w: 1.0, desc:"Letting external partners or tools securely plug into your software without manual file sharing."},
+        {t:"We actively onboard, enable, and review our partners — not just sign contracts with them.", w: 1.0, desc:"Setting expectations and tracking partner performance instead of letting contracts gather dust."},
+        {t:"We have an active community of users, partners, or developers who engage beyond transactions.", w: 1.0, desc:"Cultivating a fan base of users or builders who actively talk about you and solve each other's problems."}
       ]},
 
       /* Cluster 3: Delivery & Operations */
       {id:"ops", name:"Operations", icon:"⚙️", cluster:"Delivery & Operations", strategicWeight: 1.2, elements:[
-        {t:"Our key recurring processes are documented digitally and regularly reviewed for improvement.", w: 1.5, desc:"Repetitive task frameworks recorded in central spaces to secure uniform standard delivery."},
-        {t:"We make decisions based on data and clear responsibilities — not via endless escalation.", w: 1.0, desc:"Action models that allow quick decisions based on metrics instead of leadership bottlenecks."},
-        {t:"We track team workload and proactively manage capacity to prevent overload.", w: 1.0, desc:"Capacity scheduling guidelines used to preserve team well-being and protect bench speed metrics."},
-        {t:"We measure customer satisfaction (e.g. NPS, SLA compliance) and act on the results.", w: 1.5, desc:"Objective execution score trackers monitored continuously to protect service quality results."}
+        {t:"Our key recurring processes are documented digitally and regularly reviewed for improvement.", w: 1.5, desc:"Building a company playbook so anyone can run core tasks perfectly if someone goes on vacation."},
+        {t:"We make decisions based on data and clear responsibilities — not via endless escalation.", w: 1.0, desc:"Letting teams act on dashboards and rules instead of pausing work for executive sign-offs."},
+        {t:"We track team workload and proactively manage capacity to prevent overload.", w: 1.0, desc:"Keeping an eye on resource utilization so you don't burn out top performers during a rush."},
+        {t:"We measure customer satisfaction (e.g. NPS, SLA compliance) and act on the results.", w: 1.5, desc:"Using concrete customer ratings to catch operational drops before clients cancel."}
       ]},
 
       /* Cluster 4: Technology & Data */
       {id:"devorg", name:{digital:"Product & Engineering", services:"Service Delivery Org", mittelstand:"Engineering & R&D Org", logistics:"Fleet & Network Architecture"}, icon:"💻", cluster:"Technology & Data", strategicWeight: 1.1, elements:[
-        {t:"We have a product roadmap that connects our long-term vision to what the team is building now.", w: 1.5, desc:"A definitive planning layout linking active execution directly to future goals."},
-        {t:"Our development teams work in structured, iterative cycles (e.g. Scrum or Kanban).", w: 1.0, desc:"Development tracking models that focus on transparent progress steps and regular delivery milestones."},
-        {t:"Our engineering team follows documented standards for code quality and technical architecture.", w: 1.0, desc:"Enforced formatting or production guidelines that shield asset configurations from error styles."},
-        {t:"Roadmap priorities are tied to company goals (e.g. revenue, retention) — not just feature requests.", w: 1.0, desc:"Engineering focus matrices connected directly to core team metrics and company objectives."}
+        {t:"We have a product roadmap that connects our long-term vision to what the team is building now.", w: 1.5, desc:"Ensuring the development team knows exactly why they are coding a specific feature this week."},
+        {t:"Our development teams work in structured, iterative cycles (e.g. Scrum or Kanban).", w: 1.0, desc:"Working in short, predictable sprints to ship functional updates instead of massive, multi-month drops."},
+        {t:"Our engineering team follows documented standards for code quality and technical architecture.", w: 1.0, desc:"Having clear rules on code style and logic architecture so the codebase doesn't turn into spaghetti."},
+        {t:"Roadmap priorities are tied to company goals (e.g. revenue, retention) — not just feature requests.", w: 1.0, desc:"Choosing what to build next based on business metrics like churn or revenue, not just cool ideas."}
       ]},
       {id:"devops", name:{digital:"Tech Infrastructure & Automation", services:"Workspace Automation", mittelstand:"Industrial IT / OT Infrastructure", logistics:"Fulfillment & Fleet Tech"}, icon:"🚀", cluster:"Technology & Data", strategicWeight: 1.0, elements:[
-        {t:"Routine setup tasks (servers, environments) run via automated scripts — not manual steps.", w: 1.0, desc:"Baseline setups triggered by code templates to lower administrative setup delay patterns."},
-        {t:"We manage our infrastructure through code (IaC) rather than manual configuration.", w: 1.0, desc:"Cloud or environment configurations driven dynamically by versioned asset configurations."},
-        {t:"We have CI/CD pipelines that automatically test and deploy code changes.", w: 1.5, desc:"System pipelines that verify code updates and deploy changes without error shifts."},
-        {t:"Our system configurations are version-controlled so changes are tracked and reversible.", w: 1.0, desc:"Key variables and settings tracked through systems to erase configuration splits."},
-        {t:"We have monitoring in place that alerts us to infrastructure issues before they cause outages.", w: 1.0, desc:"Automated tracing engines surfacing notifications before errors impact downstream operations."}
+        {t:"Routine setup tasks (servers, environments) run via automated scripts — not manual steps.", w: 1.0, desc:"Spinning up new servers or team environments with a single click instead of hours of manual tweaking."},
+        {t:"We manage our infrastructure through code (IaC) rather than manual configuration.", w: 1.0, desc:"Writing infrastructure rules in code files so your setups can be duplicated or recovered instantly."},
+        {t:"We have CI/CD pipelines that automatically test and deploy code changes.", w: 1.5, desc:"Automatically checking code for bugs and deploying it to live environments instantly upon approval."},
+        {t:"Our system configurations are version-controlled so changes are tracked and reversible.", w: 1.0, desc:"Tracking environment configurations via Git so you can roll back a bad setting in seconds."},
+        {t:"We have monitoring in place that alerts us to infrastructure issues before they cause outages.", w: 1.0, desc:"System monitors that ping the tech team on Slack or PagerDuty before users notice the site is down."}
       ]},
       {id:"itlandscape", name:"Core Systems & Integration", icon:"🗄️", cluster:"Technology & Data", strategicWeight: 1.1, elements:[
-        {t:"Our core systems (ERP, CRM) are the central source of record for business operations.", w: 1.5, desc:"Primary cloud platform databases serving as reliable anchors for business operations."},
-        {t:"Our key systems exchange data automatically — no manual exports or copy-paste between tools.", w: 1.5, desc:"Integrations or data layers that link apps without asking for manual human typing steps."},
-        {t:"Workflows that span multiple systems run automatically without manual handoffs.", w: 1.0, desc:"Event-driven steps executing operations across multiple systems without manual gaps."}
+        {t:"Our core systems (ERP, CRM) are the central source of record for business operations.", w: 1.5, desc:"Making sure every tool treats your main ERP or CRM as the absolute authority on business facts."},
+        {t:"Our key systems exchange data automatically — no manual exports or copy-paste between tools.", w: 1.5, desc:"If a client changes their billing address in your CRM, it should update in your accounting software instantly without human intervention."},
+        {t:"Workflows that span multiple systems run automatically without manual handoffs.", w: 1.0, desc:"Triggering background actions automatically—like sending an invoice the moment a CRM deal closes."}
       ]},
       {id:"data", name:"Data & Analytics", icon:"📊", cluster:"Technology & Data", strategicWeight: 1.2, elements:[
-        {t:"We have a clear data strategy defining what we collect, how we use it, and how we protect it.", w: 1.5, desc:"Governance strategies outlining explicit rules for storage paths and data compliance limits."},
-        {t:"We use dashboards to make business decisions based on data — not gut feel or spreadsheets.", w: 1.5, desc:"Centralized BI dashboards that synthesize tracking facts to steer tactical management developments."},
-        {t:"Every team uses the same KPI definitions — Finance, Sales, and Ops all report the same numbers.", w: 2.0, desc:"Uniform definitions used cross-departmentally to block metric tracking contradictions."},
-        {t:"We have automated checks to catch and clean bad data before it corrupts our reports.", w: 1.0, desc:"Automated validation filters that isolate broken file values before they pollute reports."},
-        {t:"Our key reports and dashboards reflect live data — not yesterday's export.", w: 1.0, desc:"Live pipeline layers serving metrics instantly to bypass file synchronization lags."},
-        {t:"All our business systems pull from a single source of truth — no contradictory numbers.", w: 1.5, desc:"A single absolute truth setup grouping database fields cleanly across enterprise ecosystems."}
+        {t:"We have a clear data strategy defining what we collect, how we use it, and how we protect it.", w: 1.5, desc:"A set playbook on who owns data, where it is stored safely, and how it gets deleted securely."},
+        {t:"We use dashboards to make business decisions based on data — not gut feel or spreadsheets.", w: 1.5, desc:"Pulling your performance data into clean charts so leadership doesn't argue over broken Excel macros."},
+        {t:"Every team uses the same KPI definitions — Finance, Sales, and Ops all report the same numbers.", w: 2.0, desc:"Ensuring Marketing, Sales, and Finance define 'revenue' or 'active customer' exactly the same way."},
+        {t:"We have automated checks to catch and clean bad data before it corrupts our reports.", w: 1.0, desc:"Setting up automatic traps to kill duplicate records or typos before they mess up your monthly dashboards."},
+        {t:"Our key reports and dashboards reflect live data — not yesterday's export.", w: 1.0, desc:"If sales close at 9 AM, leadership can see those exact revenue spikes on the main dashboard by 10 AM, not next Monday."},
+        {t:"All our business systems pull from a single source of truth — no contradictory numbers.", w: 1.5, desc:"Linking all software to one central data pool so you never get conflicting operational totals."}
       ]},
       {id:"ai", name:"Artificial Intelligence", icon:"🤖", cluster:"Technology & Data", strategicWeight: 0.9, elements:[
-        {t:"We have a clear AI strategy that identifies where AI creates the most value for us — and in what order we tackle it.", w: 1.0, desc:"An actionable AI plan ranking complexity limits versus absolute execution values."},
-        {t:"Our data is structured and clean enough to actually power AI models and tools.", w: 1.5, desc:"Data architectures optimized and cleanly cataloged to power AI engines safely."},
-        {t:"We have clear rules for how AI tools are used — including data privacy, approvals, and risk.", w: 1.0, desc:"Governance parameters managing exposure risk, permissions, and tool safety limits."},
-        {t:"Our team is trained to use AI tools effectively and safely in their day-to-day work.", w: 1.5, desc:"Staff systematically trained to use models natively to solve daily task requirements safely."},
-        {t:"AI actively handles parts of our workflow — automating decisions, predictions, or repetitive analysis.", w: 1.0, desc:"Advanced automation units running predictive processes or executing tasks independently."}
+        {t:"We have a clear AI strategy that identifies where AI creates the most value for us — and in what order we tackle it.", w: 1.0, desc:"Picking low-hanging AI use cases that save immediate hours rather than chasing expensive sci-fi pipe dreams."},
+        {t:"Our data is structured and clean enough to actually power AI models and tools.", w: 1.5, desc:"Formatting internal files and databases so an LLM or script can read them without throwing errors."},
+        {t:"We have clear rules for how AI tools are used — including data privacy, approvals, and risk.", w: 1.0, desc:"Creating explicit policies so employees don't paste sensitive client data or source code into public AI tools."},
+        {t:"Our team is trained to use AI tools effectively and safely in their day-to-day work.", w: 1.5, desc:"Giving teams actual prompt-engineering or workflow training so AI moves past a toy to a real productivity booster."},
+        {t:"AI actively handles parts of our workflow — automating decisions, predictions, or repetitive analysis.", w: 1.0, desc:"Think automated triage: AI reads incoming customer emails, drafts the correct technical response, and queues it for your team to review."}
       ]},
       {id:"sovereignty", name:"Security & Compliance", icon:"🔒", cluster:"Technology & Data", strategicWeight: 1.0, elements:[
-        {t:"Our data storage and processing comply with applicable privacy regulations (e.g. GDPR).", w: 1.0, desc:"Hosting frameworks and handling policies built to fulfill global privacy standard guidelines."},
-        {t:"We have automated backups and a tested plan to recover from data loss or a system failure.", w: 1.5, desc:"Redundant automated schedules coupled with verified restoration paths to block loss loops."},
-        {t:"We can restore full business operations within 24 hours of a major outage.", w: 1.5, desc:"Actionable continuity blueprints designed to reboot network states under 24 hours."},
-        {t:"Access to sensitive data is restricted by role — and these permissions are regularly reviewed.", w: 1.0, desc:"Granular protocols ensuring only verified roles can look at or change sensitive database entries."},
-        {t:"We hold recognized security certifications (e.g. ISO 27001, SOC 2) or are actively working toward them.", w: 1.0, desc:"Auditable validation pathways proving absolute data security compliance to external stakeholders."}
+        {t:"Our data storage and processing comply with applicable privacy regulations (e.g. GDPR).", w: 1.0, desc:"Protecting user data properly so you don't face massive regulatory fines or compliance audits."},
+        {t:"We have automated backups and a tested plan to recover from data loss or a system failure.", w: 1.5, desc:"Running regular backups and—crucially—testing that you can actually restore files from them."},
+        {t:"We can restore full business operations within 24 hours of a major outage.", w: 1.5, desc:"A step-by-step crisis drill to keep the business alive and trading if a primary server crashes."},
+        {t:"Access to sensitive data is restricted by role — and these permissions are regularly reviewed.", w: 1.0, desc:"Locking down permissions so an intern can't access employee salaries or client master keys."},
+        {t:"We hold recognized security certifications (e.g. ISO 27001, SOC 2) or are actively working toward them.", w: 1.0, desc:"Passing formal security checks to unlock enterprise contracts and clear vendor assessments."}
       ]}
     ];
 
