@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -973,241 +974,91 @@
   </main>
 
   <script>
-    // Master Matrix holding 53 high-signal items total adapted dynamically to tracks
+    // Master Matrix holding 53 high-signal items total with cleaned, direct rewrites
     const DIMS_TEMPLATE = [
       /* Cluster 1: Strategy & Leadership */
       {id:"leadership", name:{digital:"Leadership", services:"Leadership & Talent", mittelstand:"Leadership & Governance", logistics:"Leadership & Control"}, icon:"🧭", cluster:"Strategy & Leadership", strategicWeight: 1.5, elements:[
-        {t:{
-          digital:"Vision and strategic focus are clearly defined and communicated org-wide.",
-          services:"Vision and service specialization values are clearly communicated company-wide.",
-          mittelstand:"Corporate vision and long-term positioning strategy are clear and shared across the workforce.",
-          logistics:"Strategic growth vision and key regional hub focus objectives are fully communicated."
-         }, w: 2.0, desc:{
-          digital:"A distinct corporate direction and targeted market positions are understood by all team members.",
-          services:"Clear market positioning and domain specialization targets are understood by all delivery units.",
-          mittelstand:"Definitive industrial directions and target sector segments are explicitly communicated.",
-          logistics:"Defined operational vectors and regional coverage parameters are transparently understood."
-         }},
-        {t:"Company culture, core operational values, and continuous growth mindsets are actively nurtured.", w: 1.0, desc:"Deliberate promotion of team values, learning from failure, internal collaboration structures, and healthy work environments."},
-        {t:{
-          digital:"Systematic goal-setting framework (e.g., OKRs) and transparent performance trackers transform vision into metrics.",
-          services:"Systematic goal-tracking frameworks align consultant targets directly to billable utilization goals.",
-          mittelstand:"Structured performance frameworks translate top-down productivity targets down to line groups.",
-          logistics:"Systematic metrics align terminal delivery throughput with corporate performance metrics."
-         }, w: 1.5, desc:"Corporate strategy is actively translated into trackable, fully aligned tactical performance goals."},
-        {t:{
-          digital:"Employees are explicitly empowered to make autonomous role-based decisions.",
-          services:"Delivery teams have explicit autonomy to manage client communications and project choices.",
-          mittelstand:"Clear operational delegation matrices (e.g., RACI) define organizational boundaries and delegation standards.",
-          logistics:"Standardized delegation protocols allow dispatcher groups to solve transit events autonomously."
-         }, w: 1.0, desc:"Staff can independently solve problems and act within their role scope without running into upper-management constraints."},
-        {t:"Structured loops for internal feedback, organizational dialogue, and conflict resolution are operational.", w: 1.0, desc:"Regular transparent mechanisms evaluate individual outputs, career tracking, and resolve internal disagreements productively."}
+        {t:"Everyone in our company knows our direction and who we're building for.", w: 2.0, desc:"Clear internal alignment around company targets and corporate direction."},
+        {t:"We actively invest in our culture — through rituals, leadership behavior, and how we handle failure.", w: 1.0, desc:"Active promotion of healthy environments, values, and collaboration frameworks."},
+        {t:"We use a structured goal system (e.g. OKRs, MBO) so every team knows what they're working toward.", w: 1.5, desc:"Corporate roadmap strategies translated directly into clear tactical milestones."},
+        {t:"Our people can make decisions in their area without needing constant sign-off from above.", w: 1.0, desc:"Empowerment of team slots to resolve issues independently inside their scope."},
+        {t:"We have regular processes for internal feedback and resolving disagreements constructively.", w: 1.0, desc:"Operational evaluation channels to surface feedback loops and resolve conflicts."}
       ]},
       {id:"innovation", name:"Innovation", icon:"💡", cluster:"Strategy & Leadership", strategicWeight: 1.2, elements:[
-        {t:"Sustainable differentiation strategy clearly isolates the brand from rivals.", w: 1.5, desc:"Active planning ensures products or services maintain distinct, defensible advantages in the marketplace."},
-        {t:{
-          digital:"Dedicated development time or budget is reserved for experimentation.",
-          services:"Dedicated non-billable time is allocated for internal intellectual property/asset creation.",
-          mittelstand:"Structured capital or engineering time is explicitly set aside for physical R&D experiments.",
-          logistics:"Dedicated optimization time is budgeted to run workflow and transit route experiments."
-         }, w: 1.0, desc:"Teams have structured resources to test improvements or explore ideas outside core client deliverables."},
-        {t:{
-          digital:"Structured customer feedback processes across active portfolios drive continuous optimization.",
-          services:"Regular post-project client debriefs systematically refine delivery methodologies.",
-          mittelstand:"Structured market loops drive data-driven physical product adjustments and feature changes.",
-          logistics:"Client fulfillment reviews systematically drive pipeline handling adjustments."
-         }, w: 1.5, desc:"Client insights are regularly collected across workflows to systematically refine active service portfolios portfolios."}
+        {t:"We have a clear strategy for how we stay distinctly different from our competitors.", w: 1.5, desc:"Defensible marketplace parameters that isolate the brand value from rivals."},
+        {t:"We protect time and budget for testing new ideas — separate from day-to-day delivery.", w: 1.0, desc:"Budgeted space or time allocations to test workflow setups or prototype ideas."},
+        {t:"We systematically collect customer feedback and use it to improve our products or services.", w: 1.5, desc:"Client insights collected systematically to upgrade dynamic service portfolios."}
       ]},
       {id:"finance", name:"Finance & Business Model", icon:"💰", cluster:"Strategy & Leadership", strategicWeight: 1.3, elements:[
-        {t:"Basic budgeting, cash-flow monitoring, and P&L tracking are operational.", w: 1.0, desc:"Financial tracking is consistently maintained and actively leveraged to guide general business choices."},
-        {t:{
-          digital:"Unit economics (CAC, LTV, and precise delivery margins) are transparent.",
-          services:"Project margins, billable utilization targets, and real hourly costs are transparent.",
-          mittelstand:"Asset depreciation parameters, factory scrap metrics, and raw margin splits are transparent.",
-          logistics:"Fulfillment processing costs, fuel margins, and payload densities are fully transparent."
-         }, w: 1.5, desc:"The leadership clearly understands precise earnings and delivery expense metrics mapped to single operational points."},
-        {t:{
-          digital:"Pricing strategy is actively optimized based on value metrics.",
-          services:"Pricing structures are standardized (retainers, value pricing) instead of pure loose time-and-materials billing.",
-          mittelstand:"Pricing maps variables like volume breakdowns, raw component exposure, and machinery amortization rates.",
-          logistics:"Tariff profiles dynamically adapt to freight volume changes, warehouse load spikes, and regional variables."
-         }, w: 1.5, desc:"Pricing models are systematically constructed around real target market valuations and unique dffifferentiators."},
-        {t:{
-          digital:"A clear, resource-efficient growth or capital funding model is functional.",
-          services:"Hiring paths scale cleanly alongside contract pipeline backlogs to preserve working capital margins.",
-          mittelstand:"Capital Expenditure (Capex) investments scale systematically in line with plant capacity utilization demands.",
-          logistics:"Fleet expansions and facility leases coordinate directly with long-term anchor volume guarantees."
-         }, w: 1.0, desc:"Financial structures cleanly support customer acquisition operations without prompting high risk burn rates."}
+        {t:"We maintain a live P&L and track cash flow to guide our decisions.", w: 1.0, desc:"Financial tracking records used routinely to guide high-level management choices."},
+        {t:"We know what it costs to acquire a customer and how much value they generate over time.", w: 1.5, desc:"Clear unit metrics linking client generation expenses to long-term income margins."},
+        {t:"Our pricing reflects the value we deliver — not just our costs or what competitors charge.", w: 1.5, desc:"Pricing parameters mapped against target market utility values and distinct differentiators."},
+        {t:"We know how we plan to grow profitably and how we'll fund it.", w: 1.0, desc:"A resource-efficient framework designed to fund scalability paths smoothly."}
       ]},
 
       /* Cluster 2: Go-To-Market */
       {id:"sales", name:"Sales & Marketing", icon:"📣", cluster:"Go-To-Market", strategicWeight: 1.4, elements:[
-        {t:"Brand positioning and core Unique Value Proposition (UVP/USP) are explicitly defined and communicated across channels.", w: 2.0, desc:"The primary differentiating factors are defined and clearly understood across consumer market audiences."},
-        {t:{
-          digital:"A centralized CRM platform manages lead tracking in real time.",
-          services:"A central pipeline matrix tracks consulting proposals and pipeline stages transparently.",
-          mittelstand:"A structural pipeline manages multi-stage distributor relationships and large commercial opportunities.",
-          logistics:"A centralized pricing/quoting framework logs incoming customer tender applications."
-         }, w: 1.0, desc:"Unified client software manages historical contact paths and current customer tracking pipelines cleanly."},
-        {t:{
-          digital:"System-driven sales pipelines are backed by robust enablement resources.",
-          services:"Standardized key account pitch decks and presentation frameworks support team execution.",
-          mittelstand:"Structured distributor enablement programs and specification catalog configurations support field networks.",
-          logistics:"Unified contract logistics templates and automated routing scenarios support account executives."
-         }, w: 1.5, desc:"Clear steps guide pipelines alongside standardized collateral and training to support team execution."},
-        {t:{
-          digital:"Marketing channels systematically generate, nurture, and hand over qualified leads based on performance metrics.",
-          services:"Thought leadership assets generate predictable commercial client demand and project inquiries.",
-          mittelstand:"Industrial trade footprints and product certifications generate verified wholesale opportunities.",
-          logistics:"Inbound digital platforms systematically register high-volume shipping account profiles."
-         }, w: 1.5, desc:"Predictable demand pipelines track clear criteria definitions guiding direct hands to the active sales team."},
-        {t:"Competitive spaces and industry market trends are monitored systematically to drive GTM intelligence.", w: 1.0, desc:"The organization systematically tracks competitor adjustments, market trends, and industry moves to inform strategic positioning choices."}
+        {t:"Our value proposition is clear and consistent — across website, sales calls, and proposals.", w: 2.0, desc:"The unique core value framework is defined and well-communicated across all touchpoints."},
+        {t:"We use a CRM to track all leads and customer interactions in one place.", w: 1.0, desc:"Unified software pipelines used by teams to log historical contacts and opportunities."},
+        {t:"Our sales team has a clear pipeline process and the materials/training to execute it.", w: 1.5, desc:"Pipeline pathways backed by standardized enablement assets and playbooks."},
+        {t:"Marketing generates a predictable flow of leads that get passed to sales with clear handover criteria.", w: 1.5, desc:"Predictable funnel mechanisms delivering qualified leads based on clear benchmarks."},
+        {t:"We actively monitor our competitors and market trends to inform our go-to-market decisions.", w: 1.0, desc:"Active observation of competitor strategies and adjustments to steer strategy entries."}
       ]},
       {id:"ecosystem", name:"Ecosystem & Partners", icon:"🤝", cluster:"Go-To-Market", strategicWeight: 1.1, elements:[
-        {t:{
-          digital:"Programmatic distribution channels or strategic partner loops actively scale market reach.",
-          services:"A reliable pool of vetted sub-contractors or freelance partners supports team scale spikes.",
-          mittelstand:"Vetted long-term component suppliers and production logistics vendors are operational.",
-          logistics:"Integrated network partners handle non-standard transit branches or last-mile extensions cleanly."
-         }, w: 1.0, desc:"Targeted alliances open reliable paths to expanded audiences or combined marketplace values."},
-        {t:{
-          digital:"Technical API availability or operational interfaces connect third parties.",
-          services:"Unified data file templates and sharing spaces connect client working points.",
-          mittelstand:"Electronic Data Interchange (EDI) systems hook raw supply partners to production lines.",
-          logistics:"Standard API connectors plug external e-commerce shops into core dispatch interfaces."
-         }, w: 1.0, desc:"Structured systems are open for outside vendors or networks to seamlessly connect into baseline workflows."},
-        {t:{
-          digital:"Partner onboarding, training, and performance reviews are systemized.",
-          services:"External resource sourcing, background compliance reviews, and technical vetting are operational.",
-          mittelstand:"Supplier quality performance review guidelines and procurement matrices are enforced.",
-          logistics:"Sub-carrier safety verification paths and performance standards are continuously monitored."
-         }, w: 1.0, desc:"Clear procedures activate external channels rather than relying on loose signed agreements."},
-        {t:{
-          digital:"An active provider, user, or developer community supports the brand.",
-          services:"An active alumni network or industrial expert circle continuously expands talent and deal referrals.",
-          mittelstand:"An active authorized maintenance and service partner network maintains equipment in regions.",
-          logistics:"A broad, reliable broker network regularly balances line-haul load imbalances."
-         }, w: 1.0, desc:"A reliable external network actively communicates, answers problems, and scales brand value loops."}
+        {t:"We have strategic partnerships that help us reach new customers or markets.", w: 1.0, desc:"Programmatic alliances or distribution loops that extend audience reach safely."},
+        {t:"Third parties (tools, vendors, partners) can connect to our systems via defined interfaces.", w: 1.0, desc:"Interfaces or data ports accessible to outside systems to streamline tasks."},
+        {t:"We actively onboard, enable, and review our partners — not just sign contracts with them.", w: 1.0, desc:"Structured integration paths, enablement steps, and regular partner checks."},
+        {t:"We have an active community of users, partners, or developers who engage beyond transactions.", w: 1.0, desc:"A reliable network circle that expands brand advocacy and loop systems natively."}
       ]},
 
       /* Cluster 3: Delivery & Operations */
       {id:"ops", name:"Operations", icon:"⚙️", cluster:"Delivery & Operations", strategicWeight: 1.2, elements:[
-        {t:"Standardized operational workflows are digitally documented, updated, and continuously optimized.", w: 1.5, desc:"Core repetitive operations are clearly saved to a central base to ensure unified delivery standards."},
-        {t:"Data-driven operational choices actively circumvent management bottlenecks.", w: 1.0, desc:"Responsibility models allow quick actions based on visible facts instead of continuous internal delays."},
-        {t:{
-          digital:"Employee capacity and resource tracking prevent systemic burnout.",
-          services:"Consultant scheduling projections match project requirements to balance bench metrics.",
-          mittelstand:"Shift layout parameters and machine load configurations maximize shop capacity speeds.",
-          logistics:"Driver hours-of-service track parameters coordinate with layout metrics to guide scheduling."
-         }, w: 1.0, desc:"Workloads are monitored and managed systematically to match production demands safely."},
-        {t:{
-          digital:"Customer support and service excellence metrics are defined and tracked.",
-          services:"Project delivery health indexes and client Net Promoter Scores are consistently measured.",
-          mittelstand:"Production yield ratios and quality assurance metrics are checked systematically on output lines.",
-          logistics:"On-Time In-Full (OTIF) fulfillment rates and freight claim frequencies are managed closely."
-         }, w: 1.5, desc:"High performance delivery baselines are monitored continuously using objective evaluation indicators."}
+        {t:"Our key recurring processes are documented digitally and regularly reviewed for improvement.", w: 1.5, desc:"Repetitive task frameworks recorded in central spaces to secure uniform standard delivery."},
+        {t:"We make decisions based on data and clear responsibilities — not via endless escalation.", w: 1.0, desc:"Action models that allow quick decisions based on metrics instead of leadership bottlenecks."},
+        {t:"We track team workload and proactively manage capacity to prevent overload.", w: 1.0, desc:"Capacity scheduling guidelines used to preserve team well-being and protect bench speed metrics."},
+        {t:"We measure customer satisfaction (e.g. NPS, SLA compliance) and act on the results.", w: 1.5, desc:"Objective execution score trackers monitored continuously to protect service quality results."}
       ]},
 
       /* Cluster 4: Technology & Data */
       {id:"devorg", name:{digital:"Product & Engineering", services:"Service Delivery Org", mittelstand:"Engineering & R&D Org", logistics:"Fleet & Network Architecture"}, icon:"💻", cluster:"Technology & Data", strategicWeight: 1.1, elements:[
-        {t:{
-          digital:"A clear product vision and long-term strategic roadmap guide execution.",
-          services:"A clear service portfolio strategy and standardized delivery frameworks guide team execution.",
-          mittelstand:"Clear design life-cycles and structural physical product engineering blueprints guide execution.",
-          logistics:"Network parameters, fulfillment strategies, or asset capacity designs rely directly on corporate metrics."
-         }, w: 1.5, desc:"A definitive deployment plan coordinates engineering and task execution with real target delivery objectives safely."},
-        {t:{
-          digital:"Agile methodologies (Scrum/Kanban) are lived natively across engineering.",
-          services:"Agile phase tracking rules manage project milestone phases smoothly.",
-          mittelstand:"Structured stage-gate development lifecycles control physical parts transformations.",
-          logistics:"Dynamic asset assignment rules handle load fluctuations seamlessly."
-         }, w: 1.0, desc:"Development tracking cycles focus on transparent iterative progress paths and regular delivery milestones."},
-        {t:{
-          digital:"Documented coding and technology design guidelines are fully established.",
-          services:"Standard templates, asset folders, and deliverable quality rubrics are fully established.",
-          mittelstand:"Rigorous engineering design file guidelines and part specification baselines are fully established.",
-          logistics:"Unified terminal processing rules and shipment package standards are fully established."
-         }, w: 1.0, desc:"Set development rules protect deployment quality, asset cleanliness, and architectural designs."},
-        {t:{
-          digital:"Product roadmap feature choices rely directly on high-level corporate metrics.",
-          services:"Service portfolio modifications connect explicitly to profitability and revenue parameters.",
-          mittelstand:"R&D engineering initiatives link directly to production margin targets.",
-          logistics:"Network layout expansions map directly to asset utilization efficiency targets."
-         }, w: 1.0, desc:"Engineering priorities link transparently to primary company OKRs or revenue targets."}
+        {t:"We have a product roadmap that connects our long-term vision to what the team is building now.", w: 1.5, desc:"A definitive planning layout linking active execution directly to future goals."},
+        {t:"Our development teams work in structured, iterative cycles (e.g. Scrum or Kanban).", w: 1.0, desc:"Development tracking models that focus on transparent progress steps and regular delivery milestones."},
+        {t:"Our engineering team follows documented standards for code quality and technical architecture.", w: 1.0, desc:"Enforced formatting or production guidelines that shield asset configurations from error styles."},
+        {t:"Roadmap priorities are tied to company goals (e.g. revenue, retention) — not just feature requests.", w: 1.0, desc:"Engineering focus matrices connected directly to core team metrics and company objectives."}
       ]},
       {id:"devops", name:{digital:"Tech Infrastructure & Automation", services:"Workspace Automation", mittelstand:"Industrial IT / OT Infrastructure", logistics:"Fulfillment & Fleet Tech"}, icon:"🚀", cluster:"Technology & Data", strategicWeight: 1.0, elements:[
-        {t:{
-          digital:"Baseline setup procedures and environment deployment utilization are driven via automated scripts.",
-          services:"Workspace profile generation and onboarding environment directories are automated.",
-          mittelstand:"Industrial network routing lines utilize secure automated scripts to push updates.",
-          logistics:"Fulfillment hardware scripts and automated scanning routing rules are configured."
-         }, w: 1.0, desc:"Manual technical tasks are system-driven through scripts to lower internal configuration friction."},
-        {t:{
-          digital:"Modern cloud environment provisioning setups or Infrastructure as Code (IaC) models are introduced.",
-          services:"Cloud storage structures utilize automated templates to handle new account setups.",
-          mittelstand:"Operational Technology (OT) networks deploy code configurations instead of hands-on physical wiring.",
-          logistics:"Terminal systems deploy data layers via code structures instead of individual device overhauls."
-         }, w: 1.0, desc:"Environments are managed dynamically through centralized configurations instead of hands-on manual modifications."},
-        {t:{
-          digital:"Automated CI/CD pipelines safely manage code testing and software delivery workflows.",
-          services:"Automated project trackers configure internal platform fields upon client signature milestones.",
-          mittelstand:"Secure industrial firewalls isolate operational plants away from corporate IT pipelines.",
-          logistics:"Automated dispatch systems push freight trajectory updates directly to clients."
-         }, w: 1.5, desc:"Platform configurations handle verification and distribution adjustments systematically to block runtime data bugs."},
-        {t:{
-          digital:"Core system configurations, workspace structures, or param folders are version-tracked to stop shifts.",
-          services:"Centralized operational frameworks, asset libraries, and project templates are uniformly enforced.",
-          mittelstand:"Machinery automation scripts are version-controlled to secure precision manufacturing shapes.",
-          logistics:"Fleet device profile parameters are managed centrally through automated version configurations."
-         }, w: 1.0, desc:"Variables match reliably across active production tiers to remove hidden configuration variations entirely."},
-        {t:"Centralized platform orchestration suites monitor internal infrastructure metrics and system health.", w: 1.0, desc:"Real-time monitoring infrastructure networks surface early notifications before technical operational errors hit downstream tasks."}
+        {t:"Routine setup tasks (servers, environments) run via automated scripts — not manual steps.", w: 1.0, desc:"Baseline setups triggered by code templates to lower administrative setup delay patterns."},
+        {t:"We manage our infrastructure through code (IaC) rather than manual configuration.", w: 1.0, desc:"Cloud or environment configurations driven dynamically by versioned asset configurations."},
+        {t:"We have CI/CD pipelines that automatically test and deploy code changes.", w: 1.5, desc:"System pipelines that verify code updates and deploy changes without error shifts."},
+        {t:"Our system configurations are version-controlled so changes are tracked and reversible.", w: 1.0, desc:"Key variables and settings tracked through systems to erase configuration splits."},
+        {t:"We have monitoring in place that alerts us to infrastructure issues before they cause outages.", w: 1.0, desc:"Automated tracing engines surfacing notifications before errors impact downstream operations."}
       ]},
       {id:"itlandscape", name:"Core Systems & Integration", icon:"🗄️", cluster:"Technology & Data", strategicWeight: 1.1, elements:[
-        {t:{
-          digital:"Core infrastructure platforms (ERP/CRM) act as operational data anchors.",
-          services:"Unified Professional Services Automation (PSA) engines act as operational data anchors.",
-          mittelstand:"Core enterprise platforms (ERP or specialized industry systems) act as operational data anchors.",
-          logistics:"Advanced Transportation/Warehouse Management Systems (TMS/WMS) act as operational data anchors."
-         }, w: 1.5, desc:"Primary enterprise databases cleanly mirror accurate structural components of active business areas."},
-        {t:"Cross-system integrations or point-to-point data pipelines remove manual duplicate data logging tasks entirely.", w: 1.5, desc:"Different applications exchange operational values directly without demanding manual human bridge steps."},
-        {t:"Automated cross-platform workflows seamlessly connect distinct functional operations.", w: 1.0, desc:"Event-driven scripts automatically execute systemic dependencies across distinct platform segments."}
+        {t:"Our core systems (ERP, CRM) are the central source of record for business operations.", w: 1.5, desc:"Primary cloud platform databases serving as reliable anchors for business operations."},
+        {t:"Our key systems exchange data automatically — no manual exports or copy-paste between tools.", w: 1.5, desc:"Integrations or data layers that link apps without asking for manual human typing steps."},
+        {t:"Workflows that span multiple systems run automatically without manual handoffs.", w: 1.0, desc:"Event-driven steps executing operations across multiple systems without manual gaps."}
       ]},
       {id:"data", name:"Data & Analytics", icon:"📊", cluster:"Technology & Data", strategicWeight: 1.2, elements:[
-        {t:"A comprehensive corporate data strategy dictates governance, lifecycle, and privacy guidelines.", w: 1.5, desc:"Strategic rules outline collection targets, storage criteria, and functional privacy rules across teams."},
-        {t:"Centralized BI dashboard tools are deployed to aggregate datasets and inform tactical decisions.", w: 1.5, desc:"Management reports pull directly from visual data sets to guide immediate business developments."},
-        {t:"Core corporate KPIs are uniformly defined and queried across all internal departments.", w: 2.0, desc:"Every division queries unified definitions to calculate matching metrics (e.g., margins, revenues, retention)."},
-        {t:"Systemic data quality validation and cleansing patterns prevent database decay reporting errors.", w: 1.0, desc:"Automated checks filter inputs to identify logic bugs before they corrupt reporting engines."},
-        {t:"A reliable real-time data foundation syncs entries across infrastructure pipelines without structural delays.", w: 1.0, desc:"Operational adjustments reflect across data states rapidly to avoid lag when generating strategic audits."},
-        {t:"A strict Single Source of Truth ensures firm structural database alignment across queried enterprise applications.", w: 1.5, desc:"Corporate tools query definitive core data fields to remove internal tracking contradictions entirely."}
+        {t:"We have a clear data strategy defining what we collect, how we use it, and how we protect it.", w: 1.5, desc:"Governance strategies outlining explicit rules for storage paths and data compliance limits."},
+        {t:"We use dashboards to make business decisions based on data — not gut feel or spreadsheets.", w: 1.5, desc:"Centralized BI dashboards that synthesize tracking facts to steer tactical management developments."},
+        {t:"Every team uses the same KPI definitions — Finance, Sales, and Ops all report the same numbers.", w: 2.0, desc:"Uniform definitions used cross-departmentally to block metric tracking contradictions."},
+        {t:"We have automated checks to catch and clean bad data before it corrupts our reports.", w: 1.0, desc:"Automated validation filters that isolate broken file values before they pollute reports."},
+        {t:"Our key reports and dashboards reflect live data — not yesterday's export.", w: 1.0, desc:"Live pipeline layers serving metrics instantly to bypass file synchronization lags."},
+        {t:"All our business systems pull from a single source of truth — no contradictory numbers.", w: 1.5, desc:"A single absolute truth setup grouping database fields cleanly across enterprise ecosystems."}
       ]},
       {id:"ai", name:"Artificial Intelligence", icon:"🤖", cluster:"Technology & Data", strategicWeight: 0.9, elements:[
-        {t:"An actionable corporate AI roadmap explicitly prioritizes high-value use cases by complexity versus execution value.", w: 1.0, desc:"Specific artificial intelligence targets are evaluated accurately by setup complexity versus real execution value."},
-        {t:{
-          digital:"Internal data structures or architecture layers are optimized to securely fuel AI capabilities.",
-          services:"Internal case studies, templates, and text assets are indexed for model queries.",
-          mittelstand:"Historical manufacturing execution metrics and sensor files are cleaned for engine patterns.",
-          logistics:"Fulfillment route logs and terminal volume archives are structured for machine ingestion."
-         }, w: 1.5, desc:"Enterprise text assets and data tables follow layout rules to fuel clean model integrations safely."},
-        {t:"Clear AI governance frameworks manage processing security, permission rights, and risk boundaries safely.", w: 1.0, desc:"Policies dictate safe, allowed model interactions alongside thorough data exposure blocks."},
-        {t:{
-          digital:"Team groups are systematically trained to utilize generative or analytical models natively within daily tasks.",
-          services:"Consultants leverage generative tools safely to build reports, analysis grids, and briefs.",
-          mittelstand:"Engineering groups use machine patterns to model stress thresholds or optimize floor plans.",
-          logistics:"Dispatcher teams use predictive models to balance payload margins and optimize routing lines."
-         }, w: 1.5, desc:"Staff safely maximize generative capabilities to handle data summaries, drafts, or analysis daily."},
-        {t:"Advanced AI-driven automation or predictive engines productively optimize daily workloads, system operations, or analysis loops.", w: 1.0, desc:"Cutting-edge intelligence modules independently run live workflows, predict disruptions, or automate technical routines."}
+        {t:"We have a clear AI strategy that identifies where AI creates the most value for us — and in what order we tackle it.", w: 1.0, desc:"An actionable AI plan ranking complexity limits versus absolute execution values."},
+        {t:"Our data is structured and clean enough to actually power AI models and tools.", w: 1.5, desc:"Data architectures optimized and cleanly cataloged to power AI engines safely."},
+        {t:"We have clear rules for how AI tools are used — including data privacy, approvals, and risk.", w: 1.0, desc:"Governance parameters managing exposure risk, permissions, and tool safety limits."},
+        {t:"Our team is trained to use AI tools effectively and safely in their day-to-day work.", w: 1.5, desc:"Staff systematically trained to use models natively to solve daily task requirements safely."},
+        {t:"AI actively handles parts of our workflow — automating decisions, predictions, or repetitive analysis.", w: 1.0, desc:"Advanced automation units running predictive processes or executing tasks independently."}
       ]},
       {id:"sovereignty", name:"Security & Compliance", icon:"🔒", cluster:"Technology & Data", strategicWeight: 1.0, elements:[
-        {t:"Data processing and cloud hosting architectures comply cleanly with strict local and international standard privacy regulations (e.g., GDPR baselines).", w: 1.0, desc:"Cloud storage operations align with global standards to fulfill secure user regulations."},
-        {t:"Automated backup scheduling systems and verified point-in-time disaster recovery plans are active.", w: 1.5, desc:"Redundant assets are captured routinely to prevent file loss from external runtime incidents."},
-        {t:"Comprehensive business continuity playbooks guarantee complete technical recovery and restoration under 24 hours.", w: 1.5, desc:"Technical run-guides map recovery logic to counter structural emergencies without long delivery delays."},
-        {t:"Vetted administrative data permission structures and role-based access management criteria govern queried corporate assets.", w: 1.0, desc:"Granular protocol parameters govern precisely which team slots can open or alter sensitive database fields."},
-        {t:{
-          digital:"Official operational security certifications (e.g., ISO 27001, SOC2, or specific security baselines) are fully demonstrated.",
-          services:"Official technical security audits and client data isolation control baselines are fully maintained.",
-          mittelstand:"Defensive intellectual property protection rules and TISAX/ISO quality standards are active.",
-          logistics:"Global customs regulatory profiles and facility data security baselines are active."
-         }, w: 1.0, desc:"Auditable control pathways prove absolute configuration security compliance to corporate stakeholders."}
+        {t:"Our data storage and processing comply with applicable privacy regulations (e.g. GDPR).", w: 1.0, desc:"Hosting frameworks and handling policies built to fulfill global privacy standard guidelines."},
+        {t:"We have automated backups and a tested plan to recover from data loss or a system failure.", w: 1.5, desc:"Redundant automated schedules coupled with verified restoration paths to block loss loops."},
+        {t:"We can restore full business operations within 24 hours of a major outage.", w: 1.5, desc:"Actionable continuity blueprints designed to reboot network states under 24 hours."},
+        {t:"Access to sensitive data is restricted by role — and these permissions are regularly reviewed.", w: 1.0, desc:"Granular protocols ensuring only verified roles can look at or change sensitive database entries."},
+        {t:"We hold recognized security certifications (e.g. ISO 27001, SOC 2) or are actively working toward them.", w: 1.0, desc:"Auditable validation pathways proving absolute data security compliance to external stakeholders."}
       ]}
     ];
 
@@ -1378,7 +1229,7 @@
         document.getElementById("showLeadBtn").style.display = "inline-flex";
       } else {
         document.getElementById("nextStepBtn").style.display = "inline-flex";
-        document.getElementById("showLeadBtn").style.none;
+        document.getElementById("showLeadBtn").style.display = "none";
       }
 
       CLUSTERS.forEach((_, idx) => {
@@ -1623,7 +1474,6 @@
       setTimeout(() => document.getElementById("results").scrollIntoView({behavior: "smooth", block: "start"}), 80);
     }
 
-    // Reinstated structural multi-point tracking mesh mapping calculations to link canvas coordinate matrices
     function drawRadar(scores) {
       const svg = document.getElementById("radarSvg");
       const N = scores.length;
@@ -1664,7 +1514,6 @@
         polyPoints.push(`${(cx + sr * Math.cos(angle)).toFixed(1)},${(cy + sr * Math.sin(angle)).toFixed(1)}`);
       }
 
-      // High-Fidelity Fix: Rebuilt mathematical canvas overlay connecting the data nodes perfectly
       html += `<polygon points="${polyPoints.join(" ")}" fill="url(#radarGrad)" stroke="var(--tk-teal)" stroke-width="2.5" stroke-linejoin="round" filter="url(#radarShadow)"/>`;
 
       for (let i = 0; i < N; i++) {
