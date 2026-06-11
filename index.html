@@ -982,67 +982,197 @@
   </main>
 
   <script>
-    // Master Matrix holding 53 high-signal items total with clear contextual tooltips
+    // Master matrix containing track-specific tailoring and high-value tooltips
     const DIMS_TEMPLATE = [
       /* Cluster 1: Strategy & Leadership */
       {id:"leadership", name:{digital:"Leadership", services:"Leadership & Talent", mittelstand:"Leadership & Governance", logistics:"Leadership & Control"}, icon:"🧭", cluster:"Strategy & Leadership", strategicWeight: 1.5, elements:[
-        {t:"Everyone in our company knows our direction and who we're building for.", w: 2.0, desc:"Making sure everyone works toward the same big-picture goals, not separate agendas."},
+        {t:{
+          digital:"Everyone in our company knows our direction and who we're building for.",
+          services:"Everyone in our company knows our core service focus and what kind of clients we specialize in serving.",
+          mittelstand:"Everyone across our workforce knows our long-term market position and where the company is heading.",
+          logistics:"Everyone in our company knows our network growth plans and our key operational priorities."
+         }, w: 2.0, desc:"Making sure everyone works toward the same big-picture goals, not separate agendas."},
         {t:"We actively invest in our culture — through rituals, leadership behavior, and how we handle failure.", w: 1.0, desc:"Liking your culture on paper isn't enough; it needs to guide daily habits and how mistakes are handled."},
-        {t:"We use a structured goal system (e.g. OKRs, MBO) so every team knows what they're working toward.", w: 1.5, desc:"Breaking your high-level vision down into quarterly objectives or monthly targets that teams can actually execute."},
-        {t:"Our people can make decisions in their area without needing constant sign-off from above.", w: 1.0, desc:"Trusting your team to run their own domains so founders don't become micro-management bottlenecks."},
+        {t:{
+          digital:"We use a structured goal system (e.g. OKRs) so every team knows what they're working toward.",
+          services:"We use a structured tracking system to balance project goals with team utilization requirements.",
+          mittelstand:"We have clear targets that translate top-down business goals down to the production floor layers.",
+          logistics:"We use clear performance metrics to align daily terminal delivery targets with corporate goals."
+         }, w: 1.5, desc:"Breaking your high-level vision down into quarterly objectives or operational milestones that teams can execute."},
+        {t:{
+          digital:"Our people can make decisions in their area without needing constant sign-off from above.",
+          services:"Our delivery teams can manage client accounts and project choices independently.",
+          mittelstand:"We have clear, documented guidelines that spell out who can make which operational choices.",
+          logistics:"Our operational teams can resolve routing and transit issues on the fly without waiting for approval."
+         }, w: 1.0, desc:"Trusting your team to run their own domains so leadership doesn't become a micro-management bottleneck."},
         {t:"We have regular processes for internal feedback and resolving disagreements constructively.", w: 1.0, desc:"Having safe, established spaces to speak up, give honest feedback, and fix friction early."}
       ]},
       {id:"innovation", name:"Innovation", icon:"💡", cluster:"Strategy & Leadership", strategicWeight: 1.2, elements:[
         {t:"We have a clear strategy for how we stay distinctly different from our competitors.", w: 1.5, desc:"Knowing exactly why a customer picks you over a cheaper or bigger competitor."},
-        {t:"We protect time and budget for testing new ideas — separate from day-to-day delivery.", w: 1.0, desc:"Giving people actual room to build things or experiment without dropping current client deadlines."},
-        {t:"We systematically collect customer feedback and use it to improve our products or services.", w: 1.5, desc:"Taking what customers complain about or praise and using it to fix your roadmap."}
+        {t:{
+          digital:"We protect time and budget for testing new product ideas — separate from day-to-day delivery.",
+          services:"We protect unbillable time for building internal templates, assets, or methodologies.",
+          mittelstand:"We set aside explicit capital and engineering time for research and physical product experiments.",
+          logistics:"We actively budget time to test new workflow improvements and transit route optimizations."
+         }, w: 1.0, desc:"Giving people actual room to build things or experiment without dropping current delivery commitments."},
+        {t:{
+          digital:"We systematically collect user feedback and use it to improve our software products.",
+          services:"We run regular post-project reviews with clients to systematically improve our service delivery.",
+          mittelstand:"We use structured market feedback loops to drive physical product adjustments.",
+          logistics:"We systematically review delivery performance data to optimize our supply chain pipelines."
+         }, w: 1.5, desc:"Taking what customers complain about or praise and using it to fix your roadmap."}
       ]},
       {id:"finance", name:"Finance & Business Model", icon:"💰", cluster:"Strategy & Leadership", strategicWeight: 1.3, elements:[
         {t:"We maintain a live P&L and track cash flow to guide our decisions.", w: 1.0, desc:"Using real, updated cash metrics to run the business instead of banking on 'good feelings'."},
-        {t:"We know what it costs to acquire a customer and how much value they generate over time.", w: 1.5, desc:"Knowing your true customer lifetime value and client acquisition costs down to the cent."},
-        {t:"Our pricing reflects the value we deliver — not just our costs or what competitors charge.", w: 1.5, desc:"Charging based on the massive headache you solve, not just an hourly rate."},
-        {t:"We know how we plan to grow profitably and how we'll fund it.", w: 1.0, desc:"Ensuring cash flow covers hiring and infrastructure jumps before you step on the gas."}
+        {t:{
+          digital:"We know what it costs to acquire a software customer and how much value they generate over time.",
+          services:"We have full visibility into project margins, target utilization rates, and true hourly costs.",
+          mittelstand:"We have full clarity on asset depreciation, material waste metrics, and raw margin breakdowns.",
+          logistics:"We know our exact fulfillment processing costs, fuel margins, and payload efficiencies."
+         }, w: 1.5, desc:"Knowing your exact costs to win a customer and your precise margins for delivering to them."},
+        {t:{
+          digital:"Our pricing reflects the value we deliver — not just our software costs or competitor rates.",
+          services:"We use standardized pricing models (like retainers or value pricing) instead of just billing loose hours.",
+          mittelstand:"Our pricing systematically accounts for volume breaks, raw material shifts, and machinery cost.",
+          logistics:"Our tariff rates adjust dynamically to changes in shipping volume, warehouse load spikes, and regional costs."
+         }, w: 1.5, desc:"Charging based on the true value and operational complexity you handle, rather than just racing to the bottom on price."},
+        {t:{
+          digital:"We know how we plan to scale our user base profitably and how we'll fund that growth.",
+          services:"Our hiring plans map cleanly to our upcoming contract backlog to protect cash margins.",
+          mittelstand:"Our capital investments in equipment scale systematically based on factory capacity demands.",
+          logistics:"Our fleet expansions and warehouse leases are tied directly to long-term volume commitments."
+         }, w: 1.0, desc:"Ensuring cash flow covers hiring and infrastructure jumps before you step on the gas."}
       ]},
 
       /* Cluster 2: Go-To-Market */
       {id:"sales", name:"Sales & Marketing", icon:"📣", cluster:"Go-To-Market", strategicWeight: 1.4, elements:[
         {t:"Our value proposition is clear and consistent — across website, sales calls, and proposals.", w: 2.0, desc:"Eliminating mixed messages so a pitch deck, website copy, and sales call all say the exact same thing."},
-        {t:"We use a CRM to track all leads and customer interactions in one place.", w: 1.0, desc:"Keeping interaction histories and deals out of notebooks and personal spreadsheets."},
-        {t:"Our sales team has a clear pipeline process and the materials/training to execute it.", w: 1.5, desc:"Arming salespeople with scripts, decks, and answers to hard objections instead of winging it."},
-        {t:"Marketing generates a predictable flow of leads that get passed to sales with clear handover criteria.", w: 1.5, desc:"A steady lead engine that filters out bad fits before they waste your sales team's time."},
+        {t:{
+          digital:"We use a central CRM to track all software sales leads and interactions in one place.",
+          services:"We use a central pipeline matrix to track consulting proposals and contract stages.",
+          mittelstand:"We use a central pipeline to manage multi-stage distributor relationships and large corporate deals.",
+          logistics:"We use a centralized bidding system to log and track incoming customer tender requests."
+         }, w: 1.0, desc:"Keeping interaction histories and deals out of notebooks and personal spreadsheets."},
+        {t:{
+          digital:"Our sales team has a clear software pipeline process and the materials/training to execute it.",
+          services:"Our team uses standardized key account pitch decks and custom proposal frameworks.",
+          mittelstand:"We provide our field network with structured sales materials, training, and configured product catalogs.",
+          logistics:"Our account executives use unified contract templates and automated routing scenarios to close deals."
+         }, w: 1.5, desc:"Arming your sales teams with standardized pitches, templates, and pricing tools instead of winging it."},
+        {t:{
+          digital:"Marketing generates a predictable flow of inbound leads with clear handover criteria to sales.",
+          services:"Our thought leadership and industry presence generate a predictable flow of client inquiries.",
+          mittelstand:"Our industrial trade presence and product certifications generate verified wholesale opportunities.",
+          logistics:"Our digital platforms systematically bring in high-volume commercial shipping accounts."
+         }, w: 1.5, desc:"A steady lead engine that filters out bad fits before they waste your sales team's time."},
         {t:"We actively monitor our competitors and market trends to inform our go-to-market decisions.", w: 1.0, desc:"Tracking rival moves and industry shifts so you aren't blindsided by market changes."}
       ]},
       {id:"ecosystem", name:"Ecosystem & Partners", icon:"🤝", cluster:"Go-To-Market", strategicWeight: 1.1, elements:[
-        {t:"We have strategic partnerships that help us reach new customers or markets.", w: 1.0, desc:"Building networks or channel partners that pull in new deals automatically."},
-        {t:"Third parties (tools, vendors, partners) can connect to our systems via defined interfaces.", w: 1.0, desc:"Letting external partners or tools securely plug into your software without manual file sharing."},
-        {t:"We actively onboard, enable, and review our partners — not just sign contracts with them.", w: 1.0, desc:"Setting expectations and tracking partner performance instead of letting contracts gather dust."},
-        {t:"We have an active community of users, partners, or developers who engage beyond transactions.", w: 1.0, desc:"Cultivating a fan base of users or builders who actively talk about you and solve each other's problems."}
+        {t:{
+          digital:"We have strategic distribution or channel partners that help us scale our market reach.",
+          services:"We have a reliable pool of vetted sub-contractors or freelancers to handle project spikes.",
+          mittelstand:"We have long-term relationships with vetted component suppliers and production logistics vendors.",
+          logistics:"We have integrated network partners to handle non-standard transit legs or last-mile extensions cleanly."
+         }, w: 1.0, desc:"Securing trusted external capacity so your business can scale up or down smoothly without hitting an operational ceiling."},
+        {t:{
+          digital:"Third parties can securely connect to our software product via clearly defined APIs.",
+          services:"We use unified project portals and shared digital spaces to collaborate directly with clients.",
+          mittelstand:"We use electronic data interchange (EDI) systems to link our suppliers directly to production lines.",
+          logistics:"We use standard API connectors to plug external e-commerce shops directly into our dispatch systems."
+         }, w: 1.0, desc:"Letting external partners or tools securely plug into your software without manual file sharing."},
+        {t:{
+          digital:"We actively onboard, enable, and review our channel partners — not just sign contracts.",
+          services:"We have a standardized process to source, vet, and check compliance for external contractors.",
+          mittelstand:"We systematically enforce quality review metrics and procurement standards for all suppliers.",
+          logistics:"We continuously monitor sub-carrier safety records and performance standards."
+         }, w: 1.0, desc:"Setting expectations and tracking partner performance instead of letting contracts gather dust."},
+        {t:{
+          digital:"We have an active community of users or developers who engage beyond simple transactions.",
+          services:"We maintain an active alumni or expert network that refers talent and new business deals.",
+          mittelstand:"We have a reliable network of authorized maintenance and service partners across our regions.",
+          logistics:"We utilize a broad, dependable broker network to balance line-haul capacity and load drops."
+         }, w: 1.0, desc:"Nurturing a reliable secondary network that steps in to protect your capacity, refer business, or handle local service needs."}
       ]},
 
       /* Cluster 3: Delivery & Operations */
       {id:"ops", name:"Operations", icon:"⚙️", cluster:"Delivery & Operations", strategicWeight: 1.2, elements:[
         {t:"Our key recurring processes are documented digitally and regularly reviewed for improvement.", w: 1.5, desc:"Building a company playbook so anyone can run core tasks perfectly if someone goes on vacation."},
         {t:"We make decisions based on data and clear responsibilities — not via endless escalation.", w: 1.0, desc:"Letting teams act on dashboards and rules instead of pausing work for executive sign-offs."},
-        {t:"We track team workload and proactively manage capacity to prevent overload.", w: 1.0, desc:"Keeping an eye on resource utilization so you don't burn out top performers during a rush."},
-        {t:"We measure customer satisfaction (e.g. NPS, SLA compliance) and act on the results.", w: 1.5, desc:"Using concrete customer ratings to catch operational drops before clients cancel."}
+        {t:{
+          digital:"We track team workload and proactively manage capacity to prevent engineering burnout.",
+          services:"We actively project consulting schedules to match upcoming workloads and protect team bench metrics.",
+          mittelstand:"We optimize shift schedules and machine loads to safely maximize factory output capacity.",
+          logistics:"We coordinate driver hours-of-service rules with our terminal layouts to build smart schedules."
+         }, w: 1.0, desc:"Keeping an eye on resource utilization so you don't burn out top performers during a rush."},
+        {t:{
+          digital:"We measure customer support metrics and product usage patterns to act on customer satisfaction.",
+          services:"We track project health scores and client Net Promoter Scores (NPS) consistently.",
+          mittelstand:"We track manufacturing yield ratios and run systematic quality assurance tests on production lines.",
+          logistics:"We measure our On-Time In-Full (OTIF) fulfillment rates and freight claim frequencies tightly."
+         }, w: 1.5, desc:"Tracking real-time quality and delivery metrics so you fix operational errors before they destroy your reputation."}
       ]},
 
       /* Cluster 4: Technology & Data */
       {id:"devorg", name:{digital:"Product & Engineering", services:"Service Delivery Org", mittelstand:"Engineering & R&D Org", logistics:"Fleet & Network Architecture"}, icon:"💻", cluster:"Technology & Data", strategicWeight: 1.1, elements:[
-        {t:"We have a product roadmap that connects our long-term vision to what the team is building now.", w: 1.5, desc:"Ensuring the development team knows exactly why they are coding a specific feature this week."},
-        {t:"Our development teams work in structured, iterative cycles (e.g. Scrum or Kanban).", w: 1.0, desc:"Working in short, predictable sprints to ship functional updates instead of massive, multi-month drops."},
-        {t:"Our engineering team follows documented standards for code quality and technical architecture.", w: 1.0, desc:"Having clear rules on code style and logic architecture so the codebase doesn't turn into spaghetti."},
-        {t:"Roadmap priorities are tied to company goals (e.g. revenue, retention) — not just feature requests.", w: 1.0, desc:"Choosing what to build next based on business metrics like churn or revenue, not just cool ideas."}
+        {t:{
+          digital:"We have a product roadmap that connects our long-term vision to what the team is building now.",
+          services:"We have a clear portfolio strategy and delivery frameworks to standardize our service offerings.",
+          mittelstand:"We use structured engineering design blueprints to control our product development lifecycles.",
+          logistics:"Our network layout, hub footprint, and capacity plans connect directly to long-term business goals."
+         }, w: 1.5, desc:"Ensuring your execution teams know exactly how their current day-to-day work maps back to long-term company goals."},
+        {t:{
+          digital:"Our development teams work in structured, iterative cycles (e.g. Scrum or Kanban).",
+          services:"We use clear phase-tracking and milestone rules to keep complex client projects on time.",
+          mittelstand:"We use structured stage-gate development lifecycles to manage product changes safely.",
+          logistics:"We use dynamic assignment rules to shift transport assets instantly as volumes fluctuate."
+         }, w: 1.0, desc:"Working in structured, predictable deployment cadences instead of running tasks ad-hoc or putting out fires."},
+        {t:{
+          digital:"Our engineering team follows documented standards for code quality and technical architecture.",
+          services:"Our delivery teams follow standard quality rubrics and use uniform templates for all deliverables.",
+          mittelstand:"Our team follows strict engineering design guidelines and clear component specification baselines.",
+          logistics:"We enforce uniform terminal processing guidelines and clear packaging standard rules across the network."
+         }, w: 1.0, desc:"Enforcing strict, documented quality baselines so your final deliverables or outputs stay perfectly consistent."},
+        {t:{
+          digital:"Roadmap priorities are tied to company goals (e.g. revenue, retention) — not just feature requests.",
+          services:"Changes to our service portfolio link directly to business profitability and market revenue data.",
+          mittelstand:"Our engineering and R&D initiatives link directly to clear manufacturing cost and margin targets.",
+          logistics:"Our network distribution upgrades are chosen based on asset efficiency and truck utilization data."
+         }, w: 1.0, desc:"Making priority investments based on hard business metrics—like margins, utilization, or retention—instead of gut feeling or loud requests."}
       ]},
       {id:"devops", name:{digital:"Tech Infrastructure & Automation", services:"Workspace Automation", mittelstand:"Industrial IT / OT Infrastructure", logistics:"Fulfillment & Fleet Tech"}, icon:"🚀", cluster:"Technology & Data", strategicWeight: 1.0, elements:[
-        {t:"Routine setup tasks (servers, environments) run via automated scripts — not manual steps.", w: 1.0, desc:"Spinning up new servers or team environments with a single click instead of hours of manual tweaking."},
-        {t:"We manage our infrastructure through code (IaC) rather than manual configuration.", w: 1.0, desc:"Writing infrastructure rules in code files so your setups can be duplicated or recovered instantly."},
-        {t:"We have CI/CD pipelines that automatically test and deploy code changes.", w: 1.5, desc:"Automatically checking code for bugs and deploying it to live environments instantly upon approval."},
-        {t:"Our system configurations are version-controlled so changes are tracked and reversible.", w: 1.0, desc:"Tracking environment configurations via Git so you can roll back a bad setting in seconds."},
+        {t:{
+          digital:"Routine setup tasks (servers, environments) run via automated scripts — not manual steps.",
+          services:"Setting up client workspaces, directories, and internal profiles is automated via scripts.",
+          mittelstand:"Our plant communication systems utilize secure, automated scripts to push routine firmware updates.",
+          logistics:"Fulfillment hardware profiles and automated sorting rules run via pre-configured scripts."
+         }, w: 1.0, desc:"Automating highly repetitive environment setups or device configurations to eliminate human delay."},
+        {t:{
+          digital:"We manage our infrastructure through code (IaC) rather than manual configuration.",
+          services:"We use automated cloud templates to spin up and secure new client storage spaces instantly.",
+          mittelstand:"We manage factory network configurations digitally rather than through hands-on manual wiring.",
+          logistics:"We update and configure device configurations remotely through central scripts rather than manual tool checks."
+         }, w: 1.0, desc:"Managing your infrastructure centrally and systematically, ensuring it can be duplicated or recovered instantly."},
+        {t:{
+          digital:"We have CI/CD pipelines that automatically test and deploy code changes.",
+          services:"Our project tracking systems automatically update and link internal platforms upon deal closure.",
+          mittelstand:"We use secure industrial firewalls to isolate critical plant machinery from general office IT networks.",
+          logistics:"Our dispatch tracking platform pushes cargo trajectory updates directly to clients automatically."
+         }, w: 1.5, desc:"Using system-driven logic to execute key workflows and updates smoothly without causing downtime or manual friction."},
+        {t:{
+          digital:"Our system configurations are version-controlled so changes are tracked and reversible.",
+          services:"Our master operational playbooks, templates, and frameworks are managed centrally through version tracking.",
+          mittelstand:"Our factory automation scripts are version-controlled to secure precision manufacturing setups.",
+          logistics:"Our fleet tracking parameters are controlled via a central, versioned device management platform."
+         }, w: 1.0, desc:"Enforcing centralized version tracking over your configuration data so any change can be audited or reversed in seconds."},
         {t:"We have monitoring in place that alerts us to infrastructure issues before they cause outages.", w: 1.0, desc:"System monitors that ping the tech team on Slack or PagerDuty before users notice the site is down."}
       ]},
       {id:"itlandscape", name:"Core Systems & Integration", icon:"🗄️", cluster:"Technology & Data", strategicWeight: 1.1, elements:[
-        {t:"Our core systems (ERP, CRM) are the central source of record for business operations.", w: 1.5, desc:"Making sure every tool treats your main ERP or CRM as the absolute authority on business facts."},
+        {t:{
+          digital:"Our core platforms (ERP, CRM) are the central source of record for business operations.",
+          services:"Our professional services automation (PSA) system serves as the central anchor for project operations.",
+          mittelstand:"Our core enterprise resource planning (ERP) system serves as the definitive source of truth for business operations.",
+          logistics:"Our transportation and warehouse management systems (TMS/WMS) serve as the operational anchors for our data."
+         }, w: 1.5, desc:"Making sure every department and tool treats your primary enterprise platform as the absolute authority on business facts."},
         {t:"Our key systems exchange data automatically — no manual exports or copy-paste between tools.", w: 1.5, desc:"If a client changes their billing address in your CRM, it should update in your accounting software instantly without human intervention."},
         {t:"Workflows that span multiple systems run automatically without manual handoffs.", w: 1.0, desc:"Triggering background actions automatically—like sending an invoice the moment a CRM deal closes."}
       ]},
@@ -1056,9 +1186,19 @@
       ]},
       {id:"ai", name:"Artificial Intelligence", icon:"🤖", cluster:"Technology & Data", strategicWeight: 0.9, elements:[
         {t:"We have a clear AI strategy that identifies where AI creates the most value for us — and in what order we tackle it.", w: 1.0, desc:"Picking low-hanging AI use cases that save immediate hours rather than chasing expensive sci-fi pipe dreams."},
-        {t:"Our data is structured and clean enough to actually power AI models and tools.", w: 1.5, desc:"Formatting internal files and databases so an LLM or script can read them without throwing errors."},
+        {t:{
+          digital:"Our product data is structured and clean enough to actually power advanced AI models.",
+          services:"Our case studies, delivery assets, and templates are indexed so internal AI models can query them.",
+          mittelstand:"Our historical production logs and manufacturing metrics are clean enough to train predictive patterns.",
+          logistics:"Our historical route records and warehouse volume archives are clean and structured for machine learning."
+         }, w: 1.5, desc:"Formatting internal files and databases so an LLM or script can read them without throwing errors."},
         {t:"We have clear rules for how AI tools are used — including data privacy, approvals, and risk.", w: 1.0, desc:"Creating explicit policies so employees don't paste sensitive client data or source code into public AI tools."},
-        {t:"Our team is trained to use AI tools effectively and safely in their day-to-day work.", w: 1.5, desc:"Giving teams actual prompt-engineering or workflow training so AI moves past a toy to a real productivity booster."},
+        {t:{
+          digital:"Our team is trained to use AI tools effectively and safely in their day-to-day work.",
+          services:"Our consultants use generative AI tools safely to draft reports, run market analysis, and prepare briefs.",
+          mittelstand:"Our engineering teams use AI models to run simulation models or optimize floor setups.",
+          logistics:"Our dispatch and logistics coordinators use predictive AI models to optimize routes and payload margins."
+         }, w: 1.5, desc:"Giving your staff concrete workflow training so AI moves past a buzzword and becomes a real day-to-day productivity booster."},
         {t:"AI actively handles parts of our workflow — automating decisions, predictions, or repetitive analysis.", w: 1.0, desc:"Think automated triage: AI reads incoming customer emails, drafts the correct technical response, and queues it for your team to review."}
       ]},
       {id:"sovereignty", name:"Security & Compliance", icon:"🔒", cluster:"Technology & Data", strategicWeight: 1.0, elements:[
@@ -1066,7 +1206,12 @@
         {t:"We have automated backups and a tested plan to recover from data loss or a system failure.", w: 1.5, desc:"Running regular backups and—crucially—testing that you can actually restore files from them."},
         {t:"We can restore full business operations within 24 hours of a major outage.", w: 1.5, desc:"A step-by-step crisis drill to keep the business alive and trading if a primary server crashes."},
         {t:"Access to sensitive data is restricted by role — and these permissions are regularly reviewed.", w: 1.0, desc:"Locking down permissions so an intern can't access employee salaries or client master keys."},
-        {t:"We hold recognized security certifications (e.g. ISO 27001, SOC 2) or are actively working toward them.", w: 1.0, desc:"Passing formal security checks to unlock enterprise contracts and clear vendor assessments."}
+        {t:{
+          digital:"We hold recognized security certifications (e.g. ISO 27001, SOC 2) or are actively working toward them.",
+          services:"We maintain official data isolation parameters and pass customer-mandated data security audits.",
+          mittelstand:"We maintain auditable intellectual property controls and standard industrial quality compliance baselines.",
+          logistics:"We hold validated international customs profiles and strict warehouse asset security certifications."
+         }, w: 1.0, desc:"Passing formal security checks to unlock enterprise contracts and clear vendor assessments."}
       ]}
     ];
 
