@@ -10,12 +10,12 @@
   <meta property="og:description" content="Assess your organization's digital and operational maturity across 12 key dimensions.">
   <meta property="og:type" content="website">
   
-  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="icon" type="image/png" href="/Maturity/favicon.png">
   
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <script defer src="app.js"></script>
-  <script defer src="unlock-handler.js"></script>
+  <script defer src="/Maturity/app.js"></script>
+  <script defer src="/Maturity/unlock-handler.js"></script>
   
   <style>
     /* ── Reset & Core Base ── */
@@ -199,654 +199,807 @@
     }
     .accordion-content {
       margin-top: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      border-top: 1px solid var(--tk-light);
-      padding-top: 14px;
-    }
-    .accordion-item {
-      font-size: 0.875rem;
-      line-height: 1.45;
+      padding-top: 10px;
+      border-top: 1px solid var(--tk-border);
+      font-size: 0.95rem;
       color: #4a5568;
     }
+    .accordion-item {
+      margin: 8px 0;
+    }
+    .accordion-item strong {
+      color: var(--tk-text-main);
+    }
 
-    /* ── Optimized Single-Row Desktop Archetype Selector Card ── */
+    /* ── Archetype Selector Card ── */
     .archetype-selector-card {
       background: #fff;
-      border-radius: 12px;
-      padding: 28px;
-      margin-bottom: 36px;
       border: 1px solid var(--tk-border);
-      box-shadow: 0 4px 14px rgba(77, 93, 171, 0.04);
-    }
-    .archetype-selector-card h3 {
-      font-size: 1.2rem;
-      color: var(--tk-dark);
-      margin-bottom: 8px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-    }
-    .archetype-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      margin-top: 18px;
-    }
-    
-    /* Desktop Horizontal Row configuration transformation overrides */
-    @media (min-width: 850px) {
-      .archetype-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-    
-    .arch-btn {
-      padding: 16px;
-      border-radius: 8px;
-      border: 1.5px solid var(--tk-border);
-      background: #fafbfc;
-      color: var(--tk-text-main);
-      font-size: 0.85rem;
-      font-weight: 600;
-      text-align: left;
-      cursor: pointer;
-      transition: all var(--transition-fast);
-      line-height: 1.35;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-    }
-    .arch-btn:hover {
-      border-color: var(--tk-teal);
-      background: #f0f9fa;
-    }
-    .arch-btn.active {
-      border-color: var(--tk-blue);
-      background: var(--tk-light);
-      color: var(--tk-dark);
-      box-shadow: inset 0 0 0 1px var(--tk-blue);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 32px;
+      max-width: 840px;
     }
 
-    /* ── Wizard Step Progress Headers ── */
-    .wizard-header {
-      background: #fff;
-      border-radius: 12px;
-      padding: 16px 20px;
-      margin-bottom: 24px;
-      border: 1px solid var(--tk-border);
+    .archetype-selector-card h3 {
+      color: var(--tk-text-main);
+      margin-bottom: 16px;
+      font-size: 1rem;
+    }
+
+    .arch-buttons {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
       gap: 12px;
       flex-wrap: wrap;
     }
+
+    .arch-btn {
+      flex: 1;
+      min-width: 140px;
+      padding: 12px 16px;
+      border: 2px solid var(--tk-border);
+      background: #fff;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--tk-text-main);
+      transition: all var(--transition-fast);
+    }
+
+    .arch-btn:hover {
+      border-color: var(--tk-teal);
+      background: #fafbfc;
+    }
+
+    .arch-btn.active {
+      border-color: var(--tk-teal);
+      background: var(--tk-teal);
+      color: #fff;
+    }
+
+    /* ── Wizard Container ── */
+    .wizard-container {
+      background: #fff;
+      border: 1px solid var(--tk-border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+
+    .wizard-header {
+      background: linear-gradient(135deg, var(--tk-dark) 0%, #0a2435 100%);
+      color: #fff;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
     .wizard-steps {
       display: flex;
       gap: 8px;
-      flex-grow: 1;
-    }
-    .wiz-step {
       flex: 1;
-      padding: 10px 12px;
-      border-radius: 6px;
-      background: var(--tk-light);
-      color: var(--tk-text-muted);
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      text-align: center;
-      transition: all var(--transition-fast);
-    }
-    .wiz-step.active {
-      background: var(--tk-blue);
-      color: #fff;
-    }
-    .wiz-step.completed {
-      background: #e6fffa;
-      color: #0d9488;
     }
 
-    /* ── Wizard Flow Panes with Smooth Perceptual Motions ── */
+    .wiz-step {
+      flex: 1;
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all var(--transition-fast);
+    }
+
+    .wiz-step.active {
+      background: var(--tk-mint);
+      color: var(--tk-dark);
+    }
+
+    .wiz-step.completed {
+      background: var(--tk-teal);
+    }
+
+    /* ── Dimensions Container ── */
+    .dims-container {
+      position: relative;
+      min-height: 400px;
+      padding: 24px;
+      overflow: hidden;
+    }
+
     .step-pane {
       display: none;
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity 0.3s ease, transform 0.3s ease;
+      animation: fadeIn 0.3s ease;
     }
+
     .step-pane.active {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
+      display: block;
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .pane-title {
-      font-size: 1.3rem;
-      color: var(--tk-dark);
+      font-size: 1.1rem;
       font-weight: 700;
-      border-bottom: 2px solid var(--tk-blue);
-      padding-bottom: 8px;
-      margin-bottom: 4px;
-      letter-spacing: -0.01em;
+      color: var(--tk-dark);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--tk-teal);
     }
 
     /* ── Dimension Cards ── */
     .dim-card {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+      background: #fafbfc;
       border: 1px solid var(--tk-border);
-    }
-    
-    .dim-head {
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--tk-light);
-      border-top-left-radius: 12px;
-      border-top-right-radius: 12px;
-    }
-    
-    .dim-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .dim-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      background: var(--tk-light);
-    }
-    
-    .dim-name {
-      font-weight: 600;
-      font-size: 1rem;
-      color: var(--tk-dark);
-    }
-    
-    .dim-badge {
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 4px 12px;
-      border-radius: 100px;
-      background: var(--tk-light);
-      color: var(--tk-text-muted);
-      border: 1px solid transparent;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
       transition: all var(--transition-fast);
     }
-    
+
+    .dim-card:hover {
+      border-color: var(--tk-teal);
+      box-shadow: 0 4px 12px rgba(69, 162, 181, 0.1);
+    }
+
+    .dim-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .dim-title {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .dim-icon {
+      font-size: 1.4rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .dim-name {
+      font-weight: 700;
+      color: var(--tk-text-main);
+      line-height: 1.3;
+      font-size: 0.95rem;
+    }
+
+    .dim-badge {
+      background: #e2e8f0;
+      color: #4a5568;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      transition: all var(--transition-fast);
+    }
+
     .dim-badge.active {
-      background: #f0f9fa;
-      color: var(--tk-teal);
-      border: 1px solid var(--tk-teal);
+      background: rgba(88, 245, 166, 0.2);
+      color: #22863a;
     }
 
     .dim-badge.completed {
-      background: #e6fffa;
-      color: #0d9488;
-      border: 1px solid #0d9488;
-      font-weight: 700;
-    }
-    
-    .elements {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 10px;
-      padding: 16px 20px;
+      background: var(--tk-mint);
+      color: var(--tk-dark);
     }
 
-    /* ── Checkbox Styles ── */
+    /* ── Elements / Checkboxes ── */
+    .elements {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
     .el-label {
       display: flex;
       align-items: flex-start;
       gap: 10px;
-      padding: 12px 14px;
-      border-radius: 8px;
-      border: 1.5px solid var(--tk-border);
-      background: #fafbfc;
       cursor: pointer;
+      padding: 10px;
+      border-radius: 8px;
       transition: all var(--transition-fast);
       position: relative;
     }
-    
+
     .el-label:hover {
-      border-color: var(--tk-teal);
-      background: #f0f9fa;
-    }
-    
-    .el-label:focus-within {
-      border-color: var(--tk-blue);
-      box-shadow: 0 0 0 3px rgba(77, 93, 171, 0.2);
+      background: rgba(69, 162, 181, 0.05);
     }
 
-    /* Highlight class synced instantly via change events */
     .el-label.is-checked {
-      border-color: var(--tk-teal);
-      background: #f0fdf4;
-      box-shadow: 0 2px 8px rgba(69, 162, 181, 0.06);
+      background: rgba(88, 245, 166, 0.1);
     }
-    
-    /* Clean custom native checkbox hider configuration rule */
+
     .dim-cb {
-      position: absolute;
-      opacity: 0;
-      width: 0;
-      height: 0;
-      margin: 0;
-      padding: 0;
-      pointer-events: none;
-    }
-    
-    .el-box {
       width: 20px;
       height: 20px;
-      border-radius: 4px;
-      border: 2px solid #cbd5e0;
-      background: #fff;
-      flex-shrink: 0;
       margin-top: 2px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background var(--transition-fast), border-color var(--transition-fast);
+      cursor: pointer;
+      flex-shrink: 0;
+      accent-color: var(--tk-teal);
     }
-    
-    .el-label input:checked ~ .el-box {
-      background: var(--tk-teal);
-      border-color: var(--tk-teal);
+
+    .el-box {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--tk-border);
+      border-radius: 4px;
+      flex-shrink: 0;
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      opacity: 0;
     }
-    
-    .el-label input:checked ~ .el-box::after {
-      content: '';
-      display: block;
-      width: 5px;
-      height: 10px;
-      border: 2px solid #fff;
-      border-top: none;
-      border-left: none;
-      transform: rotate(45deg) translateY(-1px);
+
+    .el-text {
+      font-size: 0.9rem;
+      color: var(--tk-text-main);
+      line-height: 1.4;
+      flex: 1;
     }
-    
-    .el-label input:checked ~ .el-text {
+
+    .el-label.is-checked .el-text {
       color: var(--tk-dark);
       font-weight: 500;
     }
-    
-    .el-text {
-      font-size: 0.85rem;
-      line-height: 1.4;
-      color: #4a5568;
-      flex-grow: 1;
-    }
 
-    /* ── Tooltips ── */
+    /* ── Tooltip ── */
     .tt-wrap {
       position: relative;
-      display: inline-block;
-      margin-left: 4px;
-      color: var(--tk-blue);
-      cursor: help;
+      flex-shrink: 0;
     }
-    
+
     .tt-icon {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: var(--tk-light);
-      font-size: 0.65rem;
-      font-weight: bold;
-    }
-    
-    .tt-text {
-      visibility: hidden;
-      width: 240px;
-      background-color: var(--tk-dark);
+      width: 18px;
+      height: 18px;
+      background: #cbd5e0;
       color: #fff;
-      text-align: center;
-      border-radius: 6px;
-      padding: 8px 12px;
-      position: absolute;
-      z-index: 100; 
-      bottom: 140%;
-      left: 50%;
-      transform: translateX(-50%); 
-      opacity: 0;
-      transition: opacity 0.2s;
+      border-radius: 50%;
       font-size: 0.75rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      pointer-events: none; 
+      font-weight: 700;
+      cursor: help;
+      transition: all var(--transition-fast);
     }
-    
+
+    .tt-wrap:hover .tt-icon {
+      background: var(--tk-teal);
+    }
+
+    .tt-text {
+      display: none;
+      position: absolute;
+      bottom: 100%;
+      right: 0;
+      background: var(--tk-dark);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      line-height: 1.3;
+      width: 200px;
+      z-index: 10;
+      margin-bottom: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
     .tt-text::after {
       content: "";
       position: absolute;
       top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      border-width: 5px;
-      border-style: solid;
-      border-color: var(--tk-dark) transparent transparent transparent;
-    }
-    
-    .tt-wrap:hover .tt-text,
-    .tt-wrap:focus-within .tt-text {
-      visibility: visible;
-      opacity: 1;
+      right: 12px;
+      width: 6px;
+      height: 6px;
+      background: var(--tk-dark);
+      transform: rotate(45deg);
     }
 
-    /* ── Layout Component Wrappers ── */
-    .btn-group {
-      margin-top: 28px; 
-      display: flex; 
-      gap: 12px; 
-      align-items: center; 
-      flex-wrap: wrap;
-    }
-
-    #resetBtn {
-      margin-left: auto;
-    }
-
-    /* ── Lead Gate ── */
-    .lead-gate {
-      display: none;
-      background: #fff;
-      border-radius: 12px;
-      padding: 40px;
-      margin-top: 30px;
-      text-align: center;
-      border: 2px solid var(--tk-teal);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    }
-    
-    .lead-gate h2 {
-      color: var(--tk-dark);
-      margin-bottom: 10px;
-    }
-    
-    .lead-logo {
-      height: 60px;
-      width: auto;
-      object-fit: contain;
+    .tt-wrap:hover .tt-text {
       display: block;
-      margin: 0 auto 15px;
     }
 
-    .lead-form {
-      max-width: 400px;
-      margin: 20px auto;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-    
-    .lead-form input {
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #cbd5e0;
-      font-size: 1rem;
-      width: 100%;
-    }
-
-    /* ── Results Area ── */
-    .results-section {
-      display: none;
-      margin-top: 36px;
-    }
-    
-    .res-hero {
-      background: linear-gradient(135deg, var(--tk-dark), var(--tk-blue));
-      border-radius: 16px;
-      padding: 36px;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 32px;
-      margin-bottom: 24px;
-    }
-    
-    .res-logo {
-      height: 80px;
-      width: auto;
-      object-fit: contain;
-      display: block;
-      margin-left: auto;
-      opacity: 0.8;
-    }
-
-    .score-ring {
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      border: 4px solid rgba(255,255,255,.2);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255,255,255,.05);
-      flex-shrink: 0;
-    }
-    
-    .score-num {
-      font-size: 2.4rem;
-      font-weight: 800;
-    }
-    
-    .score-sub {
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.8);
-    }
-    
-    .res-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 14px;
-      margin-bottom: 24px;
-    }
-    
-    .res-card {
-      background: #fff;
-      border-radius: 10px;
-      padding: 14px 16px;
-      border: 1px solid var(--tk-border);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-      transition: opacity var(--transition-fast);
-    }
-    
-    .rc-head {
+    /* ── Wizard Controls ── */
+    .wizard-controls {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 8px;
+      padding: 20px 24px;
+      background: #f5f7fa;
+      border-top: 1px solid var(--tk-border);
+      flex-wrap: wrap;
+      gap: 12px;
     }
-    
-    .rc-name {
-      font-size: 0.8rem;
+
+    .control-group {
+      display: flex;
+      gap: 12px;
+    }
+
+    button {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 8px;
       font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-btn {
+      background: var(--tk-border);
+      color: var(--tk-text-main);
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background: var(--tk-teal);
+      color: #fff;
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    #resetBtn {
+      background: #f5f5f5;
+      border: 1px solid var(--tk-border);
+      color: #666;
+      margin-left: auto;
+    }
+
+    #resetBtn:hover {
+      background: #eee;
+      border-color: #ccc;
+    }
+
+    #showLeadBtn {
+      background: linear-gradient(135deg, var(--tk-teal) 0%, #3d9ca6 100%);
+      color: #fff;
+      display: none;
+    }
+
+    #showLeadBtn:hover {
+      box-shadow: 0 4px 12px rgba(69, 162, 181, 0.3);
+    }
+
+    /* ── Lead Gate (Form) ── */
+    #leadGate {
+      display: none;
+      background: linear-gradient(135deg, var(--tk-dark) 0%, #0a2435 100%);
+      color: #fff;
+      padding: 40px 24px;
+      border-radius: 12px;
+      margin-bottom: 32px;
+      text-align: center;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    #leadGate h3 {
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+
+    #leadGate p {
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      font-size: 0.9rem;
+      background: rgba(255, 255, 255, 0.95);
+      color: var(--tk-text-main);
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--tk-mint);
+      background: #fff;
+    }
+
+    .lead-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .lead-buttons button {
+      flex: 1;
+    }
+
+    #unlockResultsBtn {
+      background: var(--tk-mint);
       color: var(--tk-dark);
     }
-    
-    .rc-badge {
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 2px 10px;
-      border-radius: 100px;
+
+    #unlockResultsBtn:hover {
+      background: #3ce597;
+    }
+
+    #skipLeadBtn {
+      background: rgba(255, 255, 255, 0.2);
       color: #fff;
-      background: var(--tk-teal);
-    }
-    
-    .rc-bar-wrap {
-      height: 6px;
-      background: var(--tk-light);
-      border-radius: 3px;
-      margin: 8px 0;
-      overflow: hidden;
-    }
-    
-    .rc-bar {
-      height: 6px;
-      background: var(--tk-teal);
-      transition: width 0.6s ease;
-    }
-    
-    .rc-detail {
-      font-size: 0.75rem;
-      color: var(--tk-text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.3);
     }
 
-    .radar-card {
-      background: #fff;
-      padding: 24px;
+    #skipLeadBtn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* ── Locked Preview Wrapper ── */
+    .locked-preview {
+      filter: blur(6px);
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    /* ── Results Section ── */
+    #results {
+      display: none;
+    }
+
+    .res-hero {
+      background: linear-gradient(135deg, var(--tk-dark) 0%, #0a2435 100%);
+      color: #fff;
+      padding: 48px 32px;
       border-radius: 12px;
-      border: 1px solid var(--tk-border);
-      margin-bottom: 24px;
+      text-align: center;
+      margin-bottom: 32px;
     }
 
-    .radar-card h3 {
+    .res-score {
+      font-size: 4rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--tk-mint), var(--tk-teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .res-score-label {
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 600;
       margin-bottom: 16px;
     }
 
-    .focus-card {
-      background: #f0f9fa;
-      border: 1px solid var(--tk-teal);
-      border-radius: 12px;
-      padding: 24px;
+    .res-subtitle {
+      font-size: 1.1rem;
+      font-style: italic;
+      color: rgba(255, 255, 255, 0.9);
+      max-width: 600px;
+      margin: 0 auto;
     }
 
-    .focus-desc {
+    /* ── Result Cards Grid ── */
+    .res-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .res-card {
+      background: #fff;
+      border: 1px solid var(--tk-border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: all var(--transition-fast);
+    }
+
+    .res-card:hover {
+      border-color: var(--tk-teal);
+      box-shadow: 0 4px 12px rgba(69, 162, 181, 0.1);
+    }
+
+    .rc-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .rc-name {
+      font-weight: 700;
+      color: var(--tk-text-main);
+      font-size: 0.9rem;
+      flex: 1;
+      line-height: 1.3;
+    }
+
+    .rc-badge {
+      background: var(--tk-mint);
+      color: var(--tk-dark);
+      padding: 4px 10px;
+      border-radius: 6px;
       font-size: 0.85rem;
-      color: #4a5568;
-      margin-bottom: 15px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-left: 8px;
+    }
+
+    .rc-bar-wrap {
+      width: 100%;
+      height: 6px;
+      background: #e2e8f0;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .rc-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--tk-teal), var(--tk-mint));
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .rc-detail {
+      font-size: 0.8rem;
+      color: var(--tk-text-muted);
+      font-weight: 600;
+    }
+
+    /* ── Radar Chart ── */
+    .radar-container {
+      background: #fff;
+      border: 1px solid var(--tk-border);
+      border-radius: 10px;
+      padding: 24px;
+      margin-bottom: 32px;
+      text-align: center;
+    }
+
+    .radar-container h3 {
+      color: var(--tk-text-main);
+      margin-bottom: 16px;
+      font-size: 1rem;
+    }
+
+    .radar-svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* ── Priority List ── */
+    .priorities-container {
+      background: #fff;
+      border: 1px solid var(--tk-border);
+      border-radius: 10px;
+      padding: 24px;
+      margin-bottom: 32px;
+    }
+
+    .priorities-container h3 {
+      color: var(--tk-text-main);
+      margin-bottom: 20px;
+      font-size: 1rem;
     }
 
     .prio-row {
-      background: #fff;
-      border-radius: 8px;
-      padding: 14px 16px;
-      margin-bottom: 10px;
       display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      box-shadow: 0 1px 3px rgba(0,0,0,.05);
+      gap: 16px;
+      padding: 16px;
+      background: #fafbfc;
+      border-radius: 8px;
+      margin-bottom: 12px;
     }
-    
+
+    .prio-row:last-child {
+      margin-bottom: 0;
+    }
+
     .prio-rank {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: var(--tk-dark);
-      color: var(--tk-mint);
-      font-weight: 700;
-      font-size: 0.85rem;
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--tk-teal), var(--tk-mint));
+      color: #fff;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 1.1rem;
       flex-shrink: 0;
     }
-    
+
     .prio-content {
-      flex-grow: 1;
+      flex: 1;
     }
 
     .prio-name {
-      font-weight: 600;
-      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--tk-text-main);
+      font-size: 0.95rem;
       margin-bottom: 4px;
-      color: var(--tk-dark);
     }
-    
+
     .prio-missing {
       display: flex;
       flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 8px;
-    }
-    
-    .miss-tag {
-      font-size: 0.75rem;
-      background: #fff;
-      color: #2d3748;
-      border: 1.5px solid #cbd5e0;
-      padding: 4px 10px;
-      border-radius: 100px;
-      font-weight: 600;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-    }
-
-    /* ── Buttons ── */
-    .btn {
-      padding: 12px 28px;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
       gap: 8px;
-      transition: all var(--transition-fast);
-    }
-    
-    .btn-primary {
-      background: var(--tk-dark);
-      color: #fff;
-    }
-    
-    .btn-primary:hover:not(:disabled) {
-      background: var(--tk-teal);
-      transform: translateY(-1px);
-    }
-    
-    .btn-primary:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-    
-    .btn-teal {
-      background: var(--tk-teal);
-      color: #fff;
-    }
-    
-    .btn-teal:hover {
-      background: var(--tk-blue);
+      margin-top: 10px;
     }
 
-    .btn-ghost {
-      background: transparent;
-      color: #4a5568;
-      border: 1.5px solid #cbd5e0;
-    }
-    
-    .btn-ghost:hover {
-      background: var(--tk-light);
+    .miss-tag {
+      background: rgba(69, 162, 181, 0.1);
+      border: 1px solid rgba(69, 162, 181, 0.3);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      color: #2c5282;
     }
 
-    @media (max-width: 600px) {
-      .elements {
-        grid-template-columns: 1fr;
-      }
-      .res-hero {
+    /* ── PDF Content ── */
+    #pdfContent {
+      background: #fff;
+      padding: 32px;
+      border-radius: 0;
+      margin-bottom: 32px;
+    }
+
+    .pdf-logo {
+      max-width: 200px;
+      margin: 0 auto 24px;
+    }
+
+    .res-logo {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .res-logo img {
+      max-width: 180px;
+      height: auto;
+    }
+
+    /* ── Download Button ── */
+    #downloadPdfBtn {
+      background: linear-gradient(135deg, var(--tk-teal) 0%, #3d9ca6 100%);
+      color: #fff;
+      margin-bottom: 32px;
+    }
+
+    #downloadPdfBtn:hover {
+      box-shadow: 0 4px 12px rgba(69, 162, 181, 0.3);
+    }
+
+    #backBtn {
+      background: var(--tk-border);
+      color: var(--tk-text-main);
+    }
+
+    #backBtn:hover {
+      background: #cbd5e0;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .top-bar {
         flex-direction: column;
-        text-align: center;
+        align-items: flex-start;
+        gap: 12px;
       }
-      .res-logo {
-        margin: 0 auto;
+      
+      .top-bar-right {
+        width: 100%;
+        justify-content: space-between;
       }
-      .wizard-steps {
+      
+      .header-status-text {
+        font-size: 0.75rem;
+      }
+      
+      .progress-pill {
+        font-size: 0.75rem;
+      }
+      
+      .page {
+        padding: 24px 16px 40px;
+      }
+      
+      .intro h2 {
+        font-size: 1.2rem;
+      }
+      
+      .intro p {
+        font-size: 0.9rem;
+      }
+      
+      .archetype-selector-card {
+        padding: 16px;
+      }
+      
+      .arch-buttons {
         flex-direction: column;
+      }
+      
+      .arch-btn {
         width: 100%;
       }
+      
+      .wizard-header {
+        flex-direction: column;
+        gap: 12px;
+      }
+      
+      .wizard-steps {
+        width: 100%;
+        gap: 6px;
+      }
+      
+      .wiz-step {
+        font-size: 0.75rem;
+        padding: 6px 8px;
+      }
+      
+      .dims-container {
+        padding: 16px;
+      }
+      
+      .res-hero {
+        padding: 32px 16px;
+      }
+      
+      .res-score {
+        font-size: 2.5rem;
+      }
+      
+      .res-cards-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .wizard-controls {
+        flex-direction: column;
+      }
+      
+      .control-group {
+        width: 100%;
+        flex-direction: column;
+      }
+      
+      .control-group button {
+        width: 100%;
+      }
+      
       #resetBtn {
         margin-left: 0;
         width: 100%;
@@ -858,7 +1011,7 @@
 
   <header class="top-bar">
     <div class="top-bar-left">
-      <img src="TEKTIT_Cons-Logo_color-white.png" alt="Tektit Consulting Logo">
+      <img src="/Maturity/TEKTIT_Cons-Logo_color-white.png" alt="Tektit Consulting Logo">
       <h1>Tektit Maturity Check</h1>
     </div>
     <div class="top-bar-right">
@@ -903,86 +1056,113 @@
 
     <section class="archetype-selector-card" id="archetypeSelector">
       <h3>Select your organization's primary business profile:</h3>
-      <p style="font-size: 0.85rem; color: var(--tk-text-muted); margin-bottom: 4px;">The assessment definitions adapt dynamically to match your specific operational ecosystem realities.</p>
-      <div class="archetype-grid">
-        <button type="button" class="arch-btn active" data-arch="digital">🌐 Pure Digital / SaaS / Tech Products</button>
-        <button type="button" class="arch-btn" data-arch="services">💼 Professional Services / Agencies</button>
-        <button type="button" class="arch-btn" data-arch="mittelstand">🏭 Traditional Mittelstand / Industrial</button>
-        <button type="button" class="arch-btn" data-arch="logistics">🚚 Retail / E-Com / Logistics Heavy</button>
-      </div>
-    </section>
-    
-    <div class="wizard-header">
-      <div class="wizard-steps" id="wizardStepsNav">
-        <div class="wiz-step active" data-step-idx="0">1. Strategy & Leadership</div>
-        <div class="wiz-step" data-step-idx="1">2. Go-To-Market</div>
-        <div class="wiz-step" data-step-idx="2">3. Operations</div>
-        <div class="wiz-step" data-step-idx="3">4. Tech & Data</div>
-      </div>
-    </div>
-
-    <section id="dimsContainer" aria-label="Maturity Dimensions Wizard Checklist"></section>
-
-    <div class="btn-group">
-      <button type="button" class="btn btn-ghost" id="prevStepBtn" style="display: none;">⬅️ Previous Pillar</button>
-      <button type="button" class="btn btn-primary" id="nextStepBtn">Next Pillar ➡️</button>
-      <button type="button" class="btn btn-primary" id="showLeadBtn" style="display: none;" disabled>📊 Generate analysis</button>
-      <button type="button" class="btn btn-ghost" id="resetBtn">Reset All</button>
-    </div>
-
-    <section id="leadGate" class="lead-gate" aria-labelledby="leadGateTitle">
-      <img src="Tektit Consulting Bildmarke square.png" alt="Tektit Consulting" class="lead-logo" loading="lazy">
-      <h2 id="leadGateTitle">Almost there!</h2>
-      <p>Where can we send your detailed report? (Optional for this test)</p>
-      
-      <div class="lead-form">
-        <div>
-          <label for="leadName" class="sr-only">Your name</label>
-          <input type="text" id="leadName" placeholder="Your name">
-        </div>
-        <div>
-          <label for="leadEmail" class="sr-only">Your email address</label>
-          <input type="email" id="leadEmail" placeholder="Your email address">
-        </div>
-        <button type="button" class="btn btn-teal" id="unlockResultsBtn">View results now</button>
-        <button type="button" class="btn btn-ghost" id="skipLeadBtn" style="margin-top: 8px;">Skip and view directly in the browser</button>
+      <div class="arch-buttons">
+        <button class="arch-btn active" data-arch="digital">Digital / SaaS</button>
+        <button class="arch-btn" data-arch="services">Services / Consulting</button>
+        <button class="arch-btn" data-arch="mittelstand">SMB / Traditional</button>
+        <button class="arch-btn" data-arch="logistics">Logistics / Supply Chain</button>
       </div>
     </section>
 
-    <section id="results" class="results-section" aria-labelledby="userGreeting">
-      <div id="pdfContent">
-        <div class="res-hero">
-          <div class="score-ring">
-            <span class="score-num" id="totalScoreEl">—</span>
-            <span class="score-sub">/ 5.0</span>
-          </div>
-          <div>
-            <h2 id="userGreeting">Your results</h2>
-            <p id="scoreSubtitle"></p>
-          </div>
-          <img src="TEKTIT_Cons-Bildmarke_color-white.png" alt="Tektit Logo Accent" class="res-logo" loading="lazy">
-        </div>
-        
-        <div class="res-cards" id="resCards"></div>
-        
-        <div class="radar-card">
-          <h3>Maturity radar</h3>
-          <svg id="radarSvg" viewBox="0 0 580 540" style="width:100%; height:auto; overflow: visible;"></svg>
-        </div>
-        
-        <div class="focus-card">
-          <h3>🚀 Your top 3 focus areas</h3>
-          <p class="focus-desc">These are the areas with the greatest optimization leverage.</p>
-          <div id="prioList"></div>
-          <p style="font-size: 0.75rem; color: var(--tk-text-muted); margin-top: 14px; font-style: italic; line-height: 1.4;">
-            * Note: Focus areas are ranked based on calculated optimization leverage (combining your current implementation gap with the dimension's strategic business impact weight), not strictly by lowest scores.
-          </p>
+    <section class="wizard-container">
+      <div class="wizard-header">
+        <div class="wizard-steps" id="wizardSteps">
+          <div class="wiz-step active" data-step="0">Strategy & Leadership</div>
+          <div class="wiz-step" data-step="1">Go-To-Market</div>
+          <div class="wiz-step" data-step="2">Operations</div>
+          <div class="wiz-step" data-step="3">Tech & Data</div>
         </div>
       </div>
-      
-      <div class="btn-group" style="margin-top:24px;">
-        <button type="button" class="btn btn-primary" id="downloadPdfBtn">⬇️ Download PDF report</button>
-        <button type="button" class="btn btn-ghost" id="backBtn">⬆️ Edit selections</button>
+
+      <div class="dims-container" id="dimsContainer">
+        <!-- Dimensions rendered here by app.js -->
+      </div>
+
+      <div class="wizard-controls">
+        <div class="control-group">
+          <button class="nav-btn" id="prevStepBtn" style="display:none;">← Previous</button>
+          <button class="nav-btn" id="nextStepBtn">Next →</button>
+        </div>
+        <button id="showLeadBtn" style="display:none;">Generate Analysis</button>
+        <button id="resetBtn">Reset</button>
+      </div>
+    </section>
+
+    <!-- Lead Gate Form (Modal-style) -->
+    <div id="leadGate">
+      <h3>Get Your Full Report</h3>
+      <p>Enter your details to unlock your personalized maturity assessment.</p>
+      <div class="form-group">
+        <label for="leadName">Full Name (optional)</label>
+        <input type="text" id="leadName" placeholder="Your name">
+      </div>
+      <div class="form-group">
+        <label for="leadEmail">Email Address *</label>
+        <input type="email" id="leadEmail" placeholder="you@company.com" required>
+      </div>
+      <div class="lead-buttons">
+        <button id="unlockResultsBtn">Unlock Results</button>
+        <button id="skipLeadBtn">Skip</button>
+      </div>
+    </div>
+
+    <!-- Results Section (Hidden until unlocked) -->
+    <section id="results">
+      <div class="res-hero">
+        <div class="res-score-label">Your Maturity Score</div>
+        <div class="res-score" id="totalScoreEl">0.0</div>
+        <div class="res-subtitle" id="scoreSubtitle">Assessment complete.</div>
+      </div>
+
+      <div id="lockedPreviewWrapper">
+        <div class="res-cards-grid" id="resCards">
+          <!-- Result cards rendered here -->
+        </div>
+
+        <div class="radar-container">
+          <h3>Dimension Performance Profile</h3>
+          <svg class="radar-svg" id="radarSvg" viewBox="0 0 580 520" style="max-width: 100%; height: auto;">
+            <!-- Radar chart rendered here -->
+          </svg>
+        </div>
+
+        <div class="priorities-container">
+          <h3>Your Top 3 Focus Areas</h3>
+          <div id="prioList">
+            <!-- Priority list rendered here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- PDF Content Section -->
+      <div id="pdfContent" style="display:none;">
+        <div class="res-logo">
+          <img src="/Maturity/TEKTIT_Cons-Logo_color-white.png" alt="Tektit Consulting">
+        </div>
+        <div class="res-hero" style="background: #fff; color: var(--tk-text-main); border: 1px solid var(--tk-border);">
+          <div class="res-score-label" style="color: var(--tk-text-muted);">Your Maturity Score</div>
+          <div class="res-score" id="pdfScoreEl" style="background: linear-gradient(135deg, var(--tk-teal), var(--tk-mint)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">0.0</div>
+          <div class="res-subtitle" id="pdfSubtitle" style="color: #4a5568;">Assessment complete.</div>
+        </div>
+        <div class="res-cards-grid" id="pdfResCards">
+          <!-- PDF Result cards -->
+        </div>
+        <div class="radar-container" style="border: none; box-shadow: none; padding: 16px 0;">
+          <svg class="radar-svg" id="pdfRadarSvg" viewBox="0 0 580 520">
+            <!-- PDF Radar chart -->
+          </svg>
+        </div>
+        <div class="priorities-container" style="border: none; box-shadow: none; padding: 16px 0;">
+          <h3>Your Top 3 Focus Areas</h3>
+          <div id="pdfPrioList">
+            <!-- PDF Priority list -->
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-bottom: 32px;">
+        <button id="downloadPdfBtn">📥 Download PDF Report</button>
+        <button id="backBtn">← Back to Assessment</button>
       </div>
     </section>
   </main>
