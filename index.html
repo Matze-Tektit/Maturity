@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,7 +56,7 @@
       border: 0;
     }
 
-    /* ── Header with Consolidated Progress Real Estate ── */
+    /* ── Header ── */
     .top-bar {
       background: var(--tk-dark);
       color: #fff;
@@ -115,7 +114,6 @@
       color: var(--tk-mint);
     }
 
-    /* High-end thin integrated visual progress tracking strip */
     .header-progress-track {
       position: absolute;
       bottom: 0;
@@ -139,14 +137,10 @@
       padding: 40px 20px 64px;
     }
     
-    /* Elegant Borderless/Shadowless Spatial Contrast Intro Typography */
     .intro {
       background: transparent;
-      border-radius: 0;
       padding: 0 0 24px 0;
       margin-bottom: 32px;
-      border-left: none;
-      box-shadow: none;
     }
     
     .intro p {
@@ -156,10 +150,6 @@
       max-width: 840px;
     }
     
-    .intro p:last-child {
-      margin-bottom: 0;
-    }
-    
     .intro h2 {
       font-size: 1.4rem;
       color: var(--tk-dark);
@@ -167,14 +157,6 @@
       line-height: 1.3;
     }
 
-    .intro h3 {
-      font-size: 1.1rem;
-      color: var(--tk-dark);
-      margin-bottom: 8px;
-      margin-top: 24px;
-    }
-
-    /* ── Accordion UI Styling ── */
     .usage-accordion {
       background: #fafbfc;
       border: 1px solid var(--tk-border);
@@ -194,7 +176,6 @@
       font-size: 0.95rem;
       font-weight: 600;
       outline: none;
-      user-select: none;
     }
     .accordion-content {
       margin-top: 14px;
@@ -210,7 +191,6 @@
       color: #4a5568;
     }
 
-    /* ── Optimized Single-Row Desktop Archetype Selector Card ── */
     .archetype-selector-card {
       background: #fff;
       border-radius: 12px;
@@ -223,8 +203,6 @@
       font-size: 1.2rem;
       color: var(--tk-dark);
       margin-bottom: 8px;
-      font-weight: 700;
-      letter-spacing: -0.01em;
     }
     .archetype-grid {
       display: grid;
@@ -233,7 +211,6 @@
       margin-top: 18px;
     }
     
-    /* Desktop Horizontal Row configuration transformation overrides */
     @media (min-width: 850px) {
       .archetype-grid {
         grid-template-columns: repeat(4, 1fr);
@@ -251,10 +228,8 @@
       text-align: left;
       cursor: pointer;
       transition: all var(--transition-fast);
-      line-height: 1.35;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
     }
     .arch-btn:hover {
       border-color: var(--tk-teal);
@@ -267,7 +242,7 @@
       box-shadow: inset 0 0 0 1px var(--tk-blue);
     }
 
-    /* ── Wizard Step Progress Headers ── */
+    /* ── Wizard Flow ── */
     .wizard-header {
       background: #fff;
       border-radius: 12px;
@@ -275,10 +250,6 @@
       margin-bottom: 24px;
       border: 1px solid var(--tk-border);
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
     }
     .wizard-steps {
       display: flex;
@@ -294,9 +265,7 @@
       font-size: 0.75rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
       text-align: center;
-      transition: all var(--transition-fast);
     }
     .wiz-step.active {
       background: var(--tk-blue);
@@ -307,7 +276,6 @@
       color: #0d9488;
     }
 
-    /* ── Wizard Flow Panes with Smooth Perceptual Motions ── */
     .step-pane {
       display: none;
       opacity: 0;
@@ -325,15 +293,11 @@
       font-weight: 700;
       border-bottom: 2px solid var(--tk-blue);
       padding-bottom: 8px;
-      margin-bottom: 4px;
-      letter-spacing: -0.01em;
     }
 
-    /* ── Dimension Cards ── */
     .dim-card {
       background: #fff;
       border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
       border: 1px solid var(--tk-border);
     }
     
@@ -343,8 +307,6 @@
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid var(--tk-light);
-      border-top-left-radius: 12px;
-      border-top-right-radius: 12px;
     }
     
     .dim-title {
@@ -360,13 +322,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.2rem;
       background: var(--tk-light);
     }
     
     .dim-name {
       font-weight: 600;
-      font-size: 1rem;
       color: var(--tk-dark);
     }
     
@@ -377,21 +337,16 @@
       border-radius: 100px;
       background: var(--tk-light);
       color: var(--tk-text-muted);
-      border: 1px solid transparent;
-      transition: all var(--transition-fast);
     }
-    
     .dim-badge.active {
       background: #f0f9fa;
       color: var(--tk-teal);
       border: 1px solid var(--tk-teal);
     }
-
     .dim-badge.completed {
       background: #e6fffa;
       color: #0d9488;
       border: 1px solid #0d9488;
-      font-weight: 700;
     }
     
     .elements {
@@ -401,7 +356,6 @@
       padding: 16px 20px;
     }
 
-    /* ── Checkbox Styles ── */
     .el-label {
       display: flex;
       align-items: flex-start;
@@ -411,36 +365,22 @@
       border: 1.5px solid var(--tk-border);
       background: #fafbfc;
       cursor: pointer;
-      transition: all var(--transition-fast);
       position: relative;
     }
-    
     .el-label:hover {
       border-color: var(--tk-teal);
       background: #f0f9fa;
     }
-    
-    .el-label:focus-within {
-      border-color: var(--tk-blue);
-      box-shadow: 0 0 0 3px rgba(77, 93, 171, 0.2);
-    }
-
-    /* Highlight class synced instantly via change events */
     .el-label.is-checked {
       border-color: var(--tk-teal);
       background: #f0fdf4;
-      box-shadow: 0 2px 8px rgba(69, 162, 181, 0.06);
     }
     
-    /* Clean custom native checkbox hider configuration rule */
     .dim-cb {
       position: absolute;
       opacity: 0;
       width: 0;
       height: 0;
-      margin: 0;
-      padding: 0;
-      pointer-events: none;
     }
     
     .el-box {
@@ -454,14 +394,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background var(--transition-fast), border-color var(--transition-fast);
     }
-    
     .el-label input:checked ~ .el-box {
       background: var(--tk-teal);
       border-color: var(--tk-teal);
     }
-    
     .el-label input:checked ~ .el-box::after {
       content: '';
       display: block;
@@ -473,16 +410,9 @@
       transform: rotate(45deg) translateY(-1px);
     }
     
-    .el-label input:checked ~ .el-text {
-      color: var(--tk-dark);
-      font-weight: 500;
-    }
-    
     .el-text {
       font-size: 0.85rem;
-      line-height: 1.4;
       color: #4a5568;
-      flex-grow: 1;
     }
 
     /* ── Tooltips ── */
@@ -493,7 +423,6 @@
       color: var(--tk-blue);
       cursor: help;
     }
-    
     .tt-icon {
       display: inline-flex;
       align-items: center;
@@ -505,7 +434,6 @@
       font-size: 0.65rem;
       font-weight: bold;
     }
-    
     .tt-text {
       visibility: hidden;
       width: 240px;
@@ -522,10 +450,8 @@
       opacity: 0;
       transition: opacity 0.2s;
       font-size: 0.75rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       pointer-events: none; 
     }
-    
     .tt-text::after {
       content: "";
       position: absolute;
@@ -536,251 +462,15 @@
       border-style: solid;
       border-color: var(--tk-dark) transparent transparent transparent;
     }
-    
-    .tt-wrap:hover .tt-text,
-    .tt-wrap:focus-within .tt-text {
+    .tt-wrap:hover .tt-text {
       visibility: visible;
       opacity: 1;
     }
 
-    /* ── Layout Component Wrappers ── */
-    .btn-group {
-      margin-top: 28px; 
-      display: flex; 
-      gap: 12px; 
-      align-items: center; 
-      flex-wrap: wrap;
-    }
-
-    #resetBtn {
-      margin-left: auto;
-    }
-
-    /* ── Lead Gate ── */
-    .lead-gate {
-      display: none;
-      background: #fff;
-      border-radius: 12px;
-      padding: 40px;
-      margin-top: 30px;
-      text-align: center;
-      border: 2px solid var(--tk-teal);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    }
-    
-    .lead-gate h2 {
-      color: var(--tk-dark);
-      margin-bottom: 10px;
-    }
-    
-    .lead-logo {
-      height: 60px;
-      width: auto;
-      object-fit: contain;
-      display: block;
-      margin: 0 auto 15px;
-    }
-
-    .lead-form {
-      max-width: 400px;
-      margin: 20px auto;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-    
-    .lead-form input {
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #cbd5e0;
-      font-size: 1rem;
-      width: 100%;
-    }
-
-    /* ── Results Area ── */
-    .results-section {
-      display: none;
-      margin-top: 36px;
-    }
-    
-    .res-hero {
-      background: linear-gradient(135deg, var(--tk-dark), var(--tk-blue));
-      border-radius: 16px;
-      padding: 36px;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 32px;
-      margin-bottom: 24px;
-    }
-    
-    .res-logo {
-      height: 80px;
-      width: auto;
-      object-fit: contain;
-      display: block;
-      margin-left: auto;
-      opacity: 0.8;
-    }
-
-    .score-ring {
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      border: 4px solid rgba(255,255,255,.2);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255,255,255,.05);
-      flex-shrink: 0;
-    }
-    
-    .score-num {
-      font-size: 2.4rem;
-      font-weight: 800;
-    }
-    
-    .res-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 14px;
-      margin-bottom: 24px;
-    }
-    
-    .res-card {
-      background: #fff;
-      border-radius: 10px;
-      padding: 14px 16px;
-      border: 1px solid var(--tk-border);
-      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-      transition: opacity var(--transition-fast);
-    }
-    
-    .rc-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 8px;
-    }
-    
-    .rc-name {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--tk-dark);
-    }
-    
-    .rc-badge {
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 2px 10px;
-      border-radius: 100px;
-      color: #fff;
-      background: var(--tk-teal);
-    }
-    
-    .rc-bar-wrap {
-      height: 6px;
-      background: var(--tk-light);
-      border-radius: 3px;
-      margin: 8px 0;
-      overflow: hidden;
-    }
-    
-    .rc-bar {
-      height: 6px;
-      background: var(--tk-teal);
-      transition: width 0.6s ease;
-    }
-    
-    .rc-detail {
-      font-size: 0.75rem;
-      color: var(--tk-text-muted);
-    }
-
-    .radar-card {
-      background: #fff;
-      padding: 24px;
-      border-radius: 12px;
-      border: 1px solid var(--tk-border);
-      margin-bottom: 24px;
-    }
-
-    .radar-card h3 {
-      margin-bottom: 16px;
-    }
-
-    .focus-card {
-      background: #f0f9fa;
-      border: 1px solid var(--tk-teal);
-      border-radius: 12px;
-      padding: 24px;
-    }
-
-    .focus-desc {
-      font-size: 0.85rem;
-      color: #4a5568;
-      margin-bottom: 15px;
-    }
-
-    .prio-row {
-      background: #fff;
-      border-radius: 8px;
-      padding: 14px 16px;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      box-shadow: 0 1px 3px rgba(0,0,0,.05);
-    }
-    
-    .prio-rank {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: var(--tk-dark);
-      color: var(--tk-mint);
-      font-weight: 700;
-      font-size: 0.85rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    
-    .prio-content {
-      flex-grow: 1;
-    }
-
-    .prio-name {
-      font-weight: 600;
-      font-size: 0.875rem;
-      margin-bottom: 4px;
-      color: var(--tk-dark);
-    }
-    
-    .prio-missing {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-top: 8px;
-    }
-    
-    .miss-tag {
-      font-size: 0.75rem;
-      background: #fff;
-      color: #2d3748;
-      border: 1.5px solid #cbd5e0;
-      padding: 4px 10px;
-      border-radius: 100px;
-      font-weight: 600;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-    }
-
-    /* ── Buttons ── */
+    /* ── REVERTED ELEGANT ROUNDED BUTTON STYLE ── */
     .btn {
       padding: 12px 28px;
-      border-radius: 8px;
+      border-radius: 8px !important;
       font-size: 0.9rem;
       font-weight: 600;
       border: none;
@@ -791,39 +481,355 @@
       gap: 8px;
       transition: all var(--transition-fast);
     }
-    
     .btn-primary {
       background: var(--tk-dark);
       color: #fff;
     }
-    
     .btn-primary:hover:not(:disabled) {
       background: var(--tk-teal);
       transform: translateY(-1px);
     }
-    
     .btn-primary:disabled {
       opacity: 0.4;
       cursor: not-allowed;
     }
-    
     .btn-teal {
       background: var(--tk-teal);
       color: #fff;
     }
-    
     .btn-teal:hover {
       background: var(--tk-blue);
     }
-
     .btn-ghost {
       background: transparent;
       color: #4a5568;
       border: 1.5px solid #cbd5e0;
     }
-    
     .btn-ghost:hover {
       background: var(--tk-light);
+    }
+
+    .btn-group {
+      margin-top: 28px; 
+      display: flex; 
+      gap: 12px; 
+      align-items: center; 
+      flex-wrap: wrap;
+    }
+    #resetBtn {
+      margin-left: auto;
+    }
+
+    /* ── Lead Gate Premium Placement ── */
+    .lead-gate {
+      background: #fff;
+      border-radius: 12px;
+      padding: 36px;
+      margin: 24px 0;
+      text-align: center;
+      border: 2px solid var(--tk-teal);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    }
+    .lead-gate h2 {
+      color: var(--tk-dark);
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+    .lead-gate p {
+      font-size: 0.95rem;
+      color: #4a5568;
+      max-width: 640px;
+      margin: 0 auto 20px;
+    }
+    .lead-logo {
+      height: 55px;
+      width: auto;
+      margin: 0 auto 12px;
+      display: block;
+    }
+    .lead-form {
+      max-width: 400px;
+      margin: 20px auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .lead-form input {
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e0;
+      font-size: 1rem;
+      width: 100%;
+      outline: none;
+    }
+
+    /* ── Faded Locked Teaser Effects ── */
+    .locked-preview {
+      filter: blur(6px);
+      opacity: 0.25;
+      pointer-events: none;
+      user-select: none;
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ── MCKINSEY & COMPANY EXECUTIVE EDITORIAL ARCHITECTURE ── */
+    .results-section {
+      display: none;
+      margin-top: 40px;
+    }
+    
+    .res-hero {
+      background: #071727 !important;
+      border-radius: 0px;
+      padding: 40px;
+      color: #ffffff !important;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      margin-bottom: 32px;
+      border-bottom: 3px solid #45a2b5;
+    }
+    .res-hero h2 {
+      font-family: Georgia, serif !important;
+      font-size: 2rem !important;
+      font-weight: 400 !important;
+      color: #ffffff !important;
+      letter-spacing: -0.02em;
+    }
+    .res-hero p {
+      font-family: system-ui, sans-serif !important;
+      font-size: 0.95rem !important;
+      color: #edf2f7 !important;
+      max-width: 580px;
+      margin-top: 6px;
+    }
+    .res-logo {
+      height: 70px;
+      width: auto;
+      margin-left: auto;
+      opacity: 0.95;
+    }
+    .score-ring {
+      width: 120px;
+      height: 120px;
+      border-radius: 0px;
+      border: none !important;
+      border-left: 2px solid #58f5a6;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding-left: 20px;
+      background: transparent !important;
+    }
+    .score-num {
+      font-family: Georgia, serif !important;
+      font-size: 3rem !important;
+      font-weight: 400 !important;
+      color: #ffffff !important;
+      line-height: 1;
+    }
+    .score-sub {
+      font-size: 0.85rem !important;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #58f5a6 !important;
+      margin-top: 4px;
+    }
+    
+    .res-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .res-card {
+      background: #ffffff !important;
+      border-radius: 0px !important;
+      padding: 20px;
+      border: none !important;
+      border-top: 1px solid #071727 !important;
+      box-shadow: none !important;
+    }
+    .rc-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .rc-name {
+      font-family: Georgia, serif !important;
+      font-size: 0.95rem !important;
+      font-weight: 700 !important;
+      color: #071727 !important;
+    }
+    .rc-badge {
+      font-family: Georgia, serif !important;
+      font-size: 0.95rem !important;
+      font-weight: 700 !important;
+      padding: 0 !important;
+      border-radius: 0px !important;
+      color: #45a2b5 !important;
+      background: transparent !important;
+    }
+    .rc-bar-wrap {
+      height: 4px !important;
+      background: #edf2f7 !important;
+      border-radius: 0px !important;
+      margin: 12px 0 6px !important;
+    }
+    .rc-bar {
+      height: 4px !important;
+      background: #071727 !important;
+    }
+    .rc-detail {
+      font-size: 0.75rem !important;
+      color: #718096 !important;
+    }
+
+    .radar-card {
+      background: #ffffff !ffffff;
+      padding: 32px;
+      border-radius: 0px !important;
+      border: 1px solid #e2e8f0 !important;
+      margin-bottom: 32px;
+      box-shadow: none !important;
+    }
+    .radar-card h3 {
+      margin-bottom: 16px;
+      font-size: 1.4rem;
+      color: #071727;
+      font-weight: 400;
+      border-bottom: 1px solid #071727;
+      padding-bottom: 12px;
+      margin-bottom: 24px;
+      font-family: Georgia, serif !important;
+    }
+
+    .focus-card {
+      background: #ffffff !important;
+      border: none !important;
+      border-radius: 0px !important;
+      padding: 0px !important;
+    }
+    .focus-card h3 {
+      font-family: Georgia, serif !important;
+      font-size: 1.4rem !important;
+      color: #071727 !important;
+      font-weight: 400 !important;
+      border-bottom: 1px solid #071727;
+      padding-bottom: 12px;
+      margin-bottom: 6px;
+    }
+    .focus-desc {
+      font-size: 0.95rem !important;
+      color: #4a5568 !important;
+      margin-bottom: 24px !important;
+      line-height: 1.6;
+    }
+
+    /* ── RESET STANDARDIZED PRIO ROWS WITH CLEAN DESIGN ── */
+    .prio-row {
+      background: #ffffff !important;
+      border-radius: 0px !important;
+      padding: 24px !important;
+      margin-bottom: 20px !important;
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      border: none !important;
+      border-left: 3px solid #45a2b5 !important;
+      background-color: #f8fafc !important;
+      box-shadow: none !important;
+    }
+    .prio-rank {
+      width: 28px !important;
+      height: 28px !important;
+      border-radius: 0px !important;
+      background: #071727 !important;
+      color: #ffffff !important;
+      font-family: Georgia, serif !important;
+      font-weight: 400 !important;
+      font-size: 0.85rem !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: none !important;
+    }
+    .prio-content {
+      flex-grow: 1;
+    }
+    .prio-name {
+      font-family: Georgia, serif !important;
+      font-weight: 700 !important;
+      font-size: 1.1rem !important;
+      margin-bottom: 8px !important;
+      color: #071727 !important;
+    }
+    .prio-missing {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 14px !important;
+      border-top: 1px dashed #cbd5e0 !important;
+      padding-top: 14px !important;
+    }
+
+    /* ── HIGH-CONTRAST PROFESSIONAL ADVISORY BRAND MATRIX ── */
+    .minto-booking-card {
+      margin-top: 36px !important;
+      padding: 40px !important;
+      background: #ffffff !important;
+      border: 1px solid #cbd5e0 !important;
+      border-top: 4px solid #071727 !important;
+      border-radius: 0px !important;
+      color: #071727 !important;
+      box-shadow: none !important;
+      text-align: left !important;
+    }
+    .minto-booking-card h2 {
+      font-family: Georgia, serif !important;
+      font-size: 1.6rem !important;
+      font-weight: 400 !important;
+      color: #071727 !important;
+      margin-bottom: 12px !important;
+      letter-spacing: -0.01em;
+    }
+    .minto-booking-card p {
+      font-family: system-ui, sans-serif !important;
+      font-size: 0.95rem !important;
+      color: #4a5568 !important;
+      line-height: 1.6 !important;
+      max-width: 760px !important;
+      margin-bottom: 28px !important;
+    }
+    .minto-booking-btn {
+      background: #071727 !important;
+      color: #ffffff !important;
+      font-family: system-ui, sans-serif !important;
+      font-weight: 600 !important;
+      font-size: 0.95rem !important;
+      text-decoration: none !important;
+      padding: 14px 32px !important;
+      border-radius: 8px !important; /* Unified elegant button curves */
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 10px !important;
+      transition: background 0.2s !important;
+    }
+    .minto-booking-btn:hover {
+      background: #45a2b5 !important;
+    }
+
+    /* Corporate Information Layout Segment For Standardized PDF Exports */
+    .pdf-footer-block {
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid #cbd5e0;
+      font-size: 0.8rem;
+      color: #718096;
+      line-height: 1.5;
     }
 
     @media (max-width: 600px) {
@@ -833,6 +839,7 @@
       .res-hero {
         flex-direction: column;
         text-align: center;
+        padding: 24px;
       }
       .res-logo {
         margin: 0 auto;
@@ -924,65 +931,110 @@
       <button type="button" class="btn btn-ghost" id="resetBtn">Reset All</button>
     </div>
 
-    <section id="leadGate" class="lead-gate" aria-labelledby="leadGateTitle">
-      <img src="Tektit Consulting Bildmarke square.png" alt="Tektit Consulting" class="lead-logo" loading="lazy">
-      <h2 id="leadGateTitle">Almost there!</h2>
-      <p>Where can we send your detailed report? (Optional for this test)</p>
-      
-      <div class="lead-form">
-        <div>
-          <label for="leadName" class="sr-only">Your name</label>
-          <input type="text" id="leadName" placeholder="Your name">
+    <!-- ── ACCESSIBLE EDITORIAL RESULTS VIEW CONTAINER ── -->
+    <section id="results" class="results-section">
+      <!-- ALWAYS UNLOCKED SUMMARY TEASER CARD -->
+      <div class="res-hero">
+        <div class="score-ring">
+          <span class="score-num" id="totalScoreEl">—</span>
+          <span class="score-sub">/ 5.0</span>
         </div>
         <div>
-          <label for="leadEmail" class="sr-only">Your email address</label>
-          <input type="email" id="leadEmail" placeholder="Your email address">
+          <h2 id="userGreeting">Your Results</h2>
+          <p id="scoreSubtitle"></p>
         </div>
-        <button type="button" class="btn btn-teal" id="unlockResultsBtn">View results now</button>
-        <button type="button" class="btn btn-ghost" id="skipLeadBtn" style="margin-top: 8px;">Skip and view directly in the browser</button>
+        <img src="TEKTIT_Cons-Logo_color-white.png" alt="Tektit Logo Accent" class="res-logo" loading="lazy">
       </div>
-    </section>
 
-    <section id="results" class="results-section" aria-labelledby="userGreeting">
-      <div id="pdfContent">
-        <div class="res-hero">
-          <div class="score-ring">
-            <span class="score-num" id="totalScoreEl">—</span>
-            <span class="score-sub">/ 5.0</span>
+      <!-- HYBRID LEAD GATE CARD BRIDGE -->
+      <section id="leadGate" class="lead-gate">
+        <img src="Tektit Consulting Bildmarke square.png" alt="Tektit Consulting" class="lead-logo" loading="lazy">
+        <h2 id="leadGateTitle">Unlock Your Custom Execution Roadmap</h2>
+        <p>Enter your contact details below to instantly remove the blur filter, display your interactive <strong>Maturity Radar Chart</strong>, unlock tailored <strong>Cost of Inaction</strong> reports, and receive your comprehensive PDF archive directly via email.</p>
+        
+        <div class="lead-form">
+          <div>
+            <label for="leadName" class="sr-only">Your name</label>
+            <input type="text" id="leadName" placeholder="Your name">
           </div>
           <div>
-            <h2 id="userGreeting">Your results</h2>
-            <p id="scoreSubtitle"></p>
+            <label for="leadEmail" class="sr-only">Your email address</label>
+            <input type="email" id="leadEmail" placeholder="Your work email address" required>
           </div>
-          <img src="TEKTIT_Cons-Bildmarke_color-white.png" alt="Tektit Logo Accent" class="res-logo" loading="lazy">
+          <button type="button" class="btn btn-teal" id="unlockResultsBtn">Unlock Full Performance Analysis 📊</button>
         </div>
-        
-        <div class="res-cards" id="resCards"></div>
-        
-        <div class="radar-card">
-          <h3>Maturity radar</h3>
-          <svg id="radarSvg" viewBox="0 0 540 520"></svg>
-        </div>
-        
-        <div class="focus-card">
-          <h3>🚀 Your top 3 focus areas</h3>
-          <p class="focus-desc">These are the areas with the greatest optimization leverage.</p>
-          <div id="prioList"></div>
-          <p style="font-size: 0.75rem; color: var(--tk-text-muted); margin-top: 14px; font-style: italic; line-height: 1.4;">
-            * Note: Focus areas are ranked based on calculated optimization leverage (combining your current implementation gap with the dimension's strategic business impact weight), not strictly by raw score.
-          </p>
+      </section>
+
+      <!-- FADED DETAILED RESULTS WRAPPER CONTAINER -->
+      <div id="lockedPreviewWrapper">
+        <div id="pdfContent" style="background:#ffffff; padding:24px; border: 1px solid #e2e8f0;">
+          
+          <!-- CORPORATE DESIGN HEADER FOR PDF EXPORT ONLY -->
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #071727; padding-bottom: 16px; margin-bottom: 32px;">
+            <div style="font-family: Georgia, serif; font-size: 1.5rem; font-weight: 700; color: #071727;">TEKTIT CONSULTING</div>
+            <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: #718096; font-weight: 600;">Organizational Maturity Audit</div>
+          </div>
+
+          <div class="res-cards" id="resCards"></div>
+          
+          <!-- EXPANDED BOUNDS RADAR DISPLAY TO PREVENT CLIP ERROR LINES -->
+          <div class="radar-card" id="radarCard">
+            <h3>Maturity Radar</h3>
+            <div style="max-width:540px; margin:0 auto; padding: 10px;">
+              <svg id="radarSvg" viewBox="0 0 580 540" style="width:100%; height:auto; overflow: visible;"></svg>
+            </div>
+          </div>
+          
+          <div class="focus-card" id="focusCard">
+            <h3>🚀 Your Top 3 Focus Areas</h3>
+            <p class="focus-desc">A company scales as an interconnected, end-to-end holistic system[cite: 2]. Attempting to overhaul every operational gap simultaneously triggers execution paralysis[cite: 2]. To prepare the company to become a clear market leader, it is highly recommended to take a deeper look into these prioritized shortcomings to validate the baseline findings and map out a focused, sequential optimization roadmap[cite: 2]. By tackling the single biggest infrastructure bottleneck first, you protect your momentum and ensure fast, visible execution progress[cite: 2].</p>
+            <div id="prioList"></div>
+          </div>
+
+          <!-- STRATEGIC SECTOR DIAGNOSTIC TEXT SEGMENT -->
+          <div class="radar-card" id="sparringCard" style="margin-top:36px; border-top: 2px solid #071727; border-radius: 0px;">
+            <h3 style="color: #071727; margin-bottom: 12px; font-weight: 700; font-family: Georgia, serif;">💡 Understanding Structural Bottlenecks</h3>
+            <p style="font-size: 0.95rem; color: #4a5568; margin-bottom: 12px; line-height: 1.6; text-align: left;">
+              When an organization attempts to overhaul its own internal workflows or technology infrastructure, execution groups are often too close to the daily operations to accurately isolate systemic dependencies[cite: 2]. Internal diagnostics frequently prioritize immediate, visible operational symptoms rather than address the structural root causes[cite: 2]. 
+            </p>
+            <p style="font-size: 0.95rem; color: #4a5568; line-height: 1.6; text-align: left;">
+              Utilizing objective, cross-industry benchmarking models allows leadership groups to bypass internal status-quo blind spots entirely[cite: 2]. Pressure-testing framework parameters against validated development milestones isolates your optimal investment vector, ensuring scaling metrics hold together before capital is deployed to internal teams[cite: 2].
+            </p>
+            
+            <!-- REWORKED MINTO COMPLIANT EXPERT ADVISORY MODULE -->
+            <div class="advisor-profile" style="display: flex; gap: 24px; align-items: center; margin-top: 32px; padding-top: 24px; border-top: 1px dashed #cbd5e0;">
+              <img src="cutout 800.jpeg" alt="Matthias Paratsch" style="width: 85px; height: 85px; border-radius: 50%; object-fit: cover; border: 1px solid #071727; flex-shrink: 0; display: block;">
+              <div style="text-align: left;">
+                <h4 style="margin: 0; font-family: Georgia, serif; font-size: 1.15rem; color: #071727; font-weight: 700;">Matthias Paratsch</h4>
+                <p style="margin: 2px 0 0; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #45a2b5; font-weight: 600;">Associate Partner & Strategy Advisor</p>
+                <p style="margin: 6px 0 0; font-size: 0.85rem; color: #718096; line-height: 1.55;">Industry veteran specialized in optimizing high-performing operations. Delivers direct architectural feedback—focused exclusively on removing organizational drag and mapping execution shortcuts[cite: 2].</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- TEKTIT ADVISORY FOOTER COMPONENT -->
+          <div class="pdf-footer-block">
+            <strong>Tektit Consulting Partner Network</strong><br>
+            Matthias Paratsch | Associate Partner (Prokurist)<br>
+            Email: matthias.paratsch@tektitconsulting.com | Tel: +49 171 5296 756<br>
+            <span style="font-size: 0.75rem; color: #a0aec0; margin-top: 4px; display: block;">Copyright © 2026 Tektit Consulting. All rights reserved. Confidential Executive Report[cite: 2].</span>
+          </div>
+
         </div>
       </div>
+
+      <!-- HIGH-CONTRAST CONVERTING BOX BRIDGE -->
+      <div id="bookingSection"></div>
       
-      <div class="btn-group" style="margin-top:24px;">
-        <button type="button" class="btn btn-primary" id="downloadPdfBtn">⬇️ Download PDF report</button>
-        <button type="button" class="btn btn-ghost" id="backBtn">⬆️ Edit selections</button>
+      <div class="btn-group" id="resultsActionButtonGroup" style="margin-top:24px;">
+        <button type="button" class="btn btn-primary" id="downloadPdfBtn">⬇️ Download PDF Report</button>
+        <button type="button" class="btn btn-ghost" id="backBtn">⬆️ Edit Selections</button>
       </div>
     </section>
   </main>
 
   <script>
-    // Master matrix containing track-specific tailoring and high-value tooltips
+    // Configured Matrix with custom multi-tier weighting maps for balanced priority reporting
     const DIMS_TEMPLATE = [
       /* Cluster 1: Strategy & Leadership */
       {id:"leadership", name:{digital:"Leadership", services:"Leadership & Talent", mittelstand:"Leadership & Governance", logistics:"Leadership & Control"}, icon:"🧭", cluster:"Strategy & Leadership", strategicWeight: 1.5, elements:[
@@ -1022,7 +1074,7 @@
           logistics:"We systematically review delivery performance data to optimize our supply chain pipelines."
          }, w: 1.5, desc:"Taking what customers complain about or praise and using it to fix your roadmap."}
       ]},
-      {id:"finance", name:"Finance & Business Model", icon:"💰", cluster:"Strategy & Leadership", strategicWeight: 1.3, elements:[
+      {id:"finance", name:"Finance & Business Model", icon:"💰", cluster:"Strategy & Leadership", strategicWeight: 0.8, elements:[ // Optimized Downward
         {t:"We maintain a live P&L and track cash flow to guide our decisions.", w: 1.0, desc:"Using real, updated cash metrics to run the business instead of banking on 'good feelings'."},
         {t:{
           digital:"We know what it costs to acquire a software customer and how much value they generate over time.",
@@ -1113,13 +1165,13 @@
       ]},
 
       /* Cluster 4: Technology & Data */
-      {id:"devorg", name:{digital:"Product & Engineering", services:"Service Delivery Org", mittelstand:"Engineering & R&D Org", logistics:"Fleet & Network Architecture"}, icon:"💻", cluster:"Technology & Data", strategicWeight: 1.1, elements:[
+      {id:"devorg", name:{digital:"Product & Engineering", services:"Service Delivery Org", mittelstand:"Engineering & R&D Org", logistics:"Fleet & Network Architecture"}, icon:"💻", cluster:"Technology & Data", strategicWeight: 1.4, elements:[ // Elevated Weight
         {t:{
           digital:"We have a product roadmap that connects our long-term vision to what the team is building now.",
           services:"We have a clear portfolio strategy and delivery frameworks to standardize our service offerings.",
           mittelstand:"We use structured engineering design blueprints to control our product development lifecycles.",
           logistics:"Our network layout, hub footprint, and capacity plans connect directly to long-term business goals."
-         }, w: 1.5, desc:"Ensuring your execution teams know exactly how their current day-to-day work maps back to long-term company goals."},
+         }, w: 2.0, desc:"Ensuring your execution teams know exactly how their current day-to-day work maps back to long-term company goals."},
         {t:{
           digital:"Our development teams work in structured, iterative cycles (e.g. Scrum or Kanban).",
           services:"We use clear phase-tracking and milestone rules to keep complex client projects on time.",
@@ -1131,7 +1183,7 @@
           services:"Our delivery teams follow standard quality rubrics and use uniform templates for all deliverables.",
           mittelstand:"Our team follows strict engineering design guidelines and clear component specification baselines.",
           logistics:"We enforce uniform terminal processing guidelines and clear packaging standard rules across the network."
-         }, w: 1.0, desc:"Enforcing strict, documented quality baselines so your final deliverables or outputs stay perfectly consistent."},
+         }, w: 1.5, desc:"Enforcing strict, documented quality baselines so your final deliverables or outputs stay perfectly consistent."},
         {t:{
           digital:"Roadmap priorities are tied to company goals (e.g. revenue, retention) — not just feature requests.",
           services:"Changes to our service portfolio link directly to business profitability and market revenue data.",
@@ -1139,7 +1191,7 @@
           logistics:"Our network distribution upgrades are chosen based on asset efficiency and truck utilization data."
          }, w: 1.0, desc:"Making priority investments based on hard business metrics—like margins, utilization, or retention—instead of gut feeling or loud requests."}
       ]},
-      {id:"devops", name:{digital:"Tech Infrastructure & Automation", services:"Workspace Automation", mittelstand:"Industrial IT / OT Infrastructure", logistics:"Fulfillment & Fleet Tech"}, icon:"🚀", cluster:"Technology & Data", strategicWeight: 1.0, elements:[
+      {id:"devops", name:{digital:"Tech Infrastructure & Automation", services:"Workspace Automation", mittelstand:"Industrial IT / OT Infrastructure", logistics:"Fulfillment & Fleet Tech"}, icon:"🚀", cluster:"Technology & Data", strategicWeight: 1.3, elements:[ // Elevated Weight
         {t:{
           digital:"Routine setup tasks (servers, environments) run via automated scripts — not manual steps.",
           services:"Setting up client workspaces, directories, and internal profiles is automated via scripts.",
@@ -1151,13 +1203,13 @@
           services:"We use automated cloud templates to spin up and secure new client storage spaces instantly.",
           mittelstand:"We manage factory network configurations digitally rather than through hands-on manual wiring.",
           logistics:"We update and configure device configurations remotely through central scripts rather than manual tool checks."
-         }, w: 1.0, desc:"Managing your infrastructure centrally and systematically, ensuring it can be duplicated or recovered instantly."},
+         }, w: 1.5, desc:"Managing your infrastructure centrally and systematically, ensuring it can be duplicated or recovered instantly."},
         {t:{
           digital:"We have CI/CD pipelines that automatically test and deploy code changes.",
           services:"Our project tracking systems automatically update and link internal platforms upon deal closure.",
           mittelstand:"We use secure industrial firewalls to isolate critical plant machinery from general office IT networks.",
           logistics:"Our dispatch tracking platform pushes cargo trajectory updates directly to clients automatically."
-         }, w: 1.5, desc:"Using system-driven logic to execute key workflows and updates smoothly without causing downtime or manual friction."},
+         }, w: 2.0, desc:"Using system-driven logic to execute key workflows and updates smoothly without causing downtime or manual friction."},
         {t:{
           digital:"Our system configurations are version-controlled so changes are tracked and reversible.",
           services:"Our master operational playbooks, templates, and frameworks are managed centrally through version tracking.",
@@ -1166,13 +1218,13 @@
          }, w: 1.0, desc:"Enforcing centralized version tracking over your configuration data so any change can be audited or reversed in seconds."},
         {t:"We have monitoring in place that alerts us to infrastructure issues before they cause outages.", w: 1.0, desc:"System monitors that ping the tech team on Slack or PagerDuty before users notice the site is down."}
       ]},
-      {id:"itlandscape", name:"Core Systems & Integration", icon:"🗄️", cluster:"Technology & Data", strategicWeight: 1.1, elements:[
+      {id:"itlandscape", name:"Core Systems & Integration", icon:"🗄️", cluster:"Technology & Data", strategicWeight: 1.4, elements:[ // Elevated Weight
         {t:{
           digital:"Our core platforms (ERP, CRM) are the central source of record for business operations.",
           services:"Our professional services automation (PSA) system serves as the central anchor for project operations.",
           mittelstand:"Our core enterprise resource planning (ERP) system serves as the definitive source of truth for business operations.",
           logistics:"Our transportation and warehouse management systems (TMS/WMS) serve as the operational anchors for our data."
-         }, w: 1.5, desc:"Making sure every department and tool treats your primary enterprise platform as the absolute authority on business facts."},
+         }, w: 2.0, desc:"Making sure every department and tool treats your primary enterprise platform as the absolute authority on business facts."},
         {t:"Our key systems exchange data automatically — no manual exports or copy-paste between tools.", w: 1.5, desc:"If a client changes their billing address in your CRM, it should update in your accounting software instantly without human intervention."},
         {t:"Workflows that span multiple systems run automatically without manual handoffs.", w: 1.0, desc:"Triggering background actions automatically—like sending an invoice the moment a CRM deal closes."}
       ]},
@@ -1184,14 +1236,14 @@
         {t:"Our key reports and dashboards reflect live data — not yesterday's export.", w: 1.0, desc:"If sales close at 9 AM, leadership can see those exact revenue spikes on the main dashboard by 10 AM, not next Monday."},
         {t:"All our business systems pull from a single source of truth — no contradictory numbers.", w: 1.5, desc:"Linking all software to one central data pool so you never get conflicting operational totals."}
       ]},
-      {id:"ai", name:"Artificial Intelligence", icon:"🤖", cluster:"Technology & Data", strategicWeight: 0.9, elements:[
-        {t:"We have a clear AI strategy that identifies where AI creates the most value for us — and in what order we tackle it.", w: 1.0, desc:"Picking low-hanging AI use cases that save immediate hours rather than chasing expensive sci-fi pipe dreams."},
+      {id:"ai", name:"Artificial Intelligence", icon:"🤖", cluster:"Technology & Data", strategicWeight: 1.2, elements:[ // Elevated Weight
+        {t:"We have a clear AI strategy that identifies where AI creates the most value for us — and in what order we tackle it.", w: 1.5, desc:"Picking low-hanging AI use cases that save immediate hours rather than chasing expensive sci-fi pipe dreams."},
         {t:{
           digital:"Our product data is structured and clean enough to actually power advanced AI models.",
           services:"Our case studies, delivery assets, and templates are indexed so internal AI models can query them.",
           mittelstand:"Our historical production logs and manufacturing metrics are clean enough to train predictive patterns.",
           logistics:"Our historical route records and warehouse volume archives are clean and structured for machine learning."
-         }, w: 1.5, desc:"Formatting internal files and databases so an LLM or script can read them without throwing errors."},
+         }, w: 2.0, desc:"Formatting internal files and databases so an LLM or script can read them without throwing errors."},
         {t:"We have clear rules for how AI tools are used — including data privacy, approvals, and risk.", w: 1.0, desc:"Creating explicit policies so employees don't paste sensitive client data or source code into public AI tools."},
         {t:{
           digital:"Our team is trained to use AI tools effectively and safely in their day-to-day work.",
@@ -1201,9 +1253,9 @@
          }, w: 1.5, desc:"Giving your staff concrete workflow training so AI moves past a buzzword and becomes a real day-to-day productivity booster."},
         {t:"AI actively handles parts of our workflow — automating decisions, predictions, or repetitive analysis.", w: 1.0, desc:"Think automated triage: AI reads incoming customer emails, drafts the correct technical response, and queues it for your team to review."}
       ]},
-      {id:"sovereignty", name:"Security & Compliance", icon:"🔒", cluster:"Technology & Data", strategicWeight: 1.0, elements:[
-        {t:"Our data storage and processing comply with applicable privacy regulations (e.g. GDPR).", w: 1.0, desc:"Protecting user data properly so you don't face massive regulatory fines or compliance audits."},
-        {t:"We have automated backups and a tested plan to recover from data loss or a system failure.", w: 1.5, desc:"Running regular backups and—crucially—testing that you can actually restore files from them."},
+      {id:"sovereignty", name:"Security & Compliance", icon:"🔒", cluster:"Technology & Data", strategicWeight: 1.3, elements:[ // Elevated Weight
+        {t:"Our data storage and processing comply with applicable privacy regulations (e.g. GDPR).", w: 1.5, desc:"Protecting user data properly so you don't face massive regulatory fines or compliance audits."},
+        {t:"We have automated backups and a tested plan to recover from data loss or a system failure.", w: 2.0, desc:"Running regular backups and—crucially—testing that you can actually restore files from them."},
         {t:"We can restore full business operations within 24 hours of a major outage.", w: 1.5, desc:"A step-by-step crisis drill to keep the business alive and trading if a primary server crashes."},
         {t:"Access to sensitive data is restricted by role — and these permissions are regularly reviewed.", w: 1.0, desc:"Locking down permissions so an intern can't access employee salaries or client master keys."},
         {t:{
@@ -1215,8 +1267,21 @@
       ]}
     ];
 
-    let DIMS = []; 
-    let selectedArchetype = "digital";
+    // Restored pure target question texts without consultancy self-positioning hooks
+    const ACTIONABLE_NEXT_STEPS = {
+      leadership: "Audit your internal decision lanes. Map out clear operational ownership rules so divisions can finalize choices inside their focus domain independently. This helps dismantle historical management consensus bottlenecks completely.",
+      innovation: "Carve out dedicated development or optimization resources completely insulated from client delivery timelines. Building a neutral tracking loop to categorize user inputs allows you to systematically resolve gaps without burning out staff.",
+      finance: "Rebuild your customer monetization models from scratch. Document your precise margin tracking rules down to the individual delivery unit level. This ensures your pricing structure captures ecosystem changes accurately.",
+      sales: "Standardize your primary pitch decks, proposal templates, and CRM data lanes immediately. Define strict criteria for routing handovers between divisions. This designs repeatable pipelines that do not depend on individual sales heroes.",
+      ecosystem: "Map all current external vendor interfaces and software ports. Shift loose partner relationships into a programmatic alliance channel with clear tracking guidelines. This clarifies hidden external resource pipelines to scale reach without expanding overhead.",
+      ops: "Consolidate recurring workflows into a centralized, live digital playbook. Build clean tracking data around your daily capacity boundaries. This cuts through legacy status-quo habits to build lean, easily scannable delivery frameworks.",
+      devorg: "Sync your development tracking milestones directly to underlying business performance metrics. Protect your delivery roadmap from sudden overrides by validating each item against revenue or retention data directly.",
+      devops: "Transition away from manual configuration scripts and deploy infrastructure setups centrally through code configurations. This ensures your engineers spend hours building real features instead of reinventing common automated testing pathways.",
+      itlandscape: "Audit all disconnected software systems. Enforce your core enterprise system as the absolute authority for data logging records. Building automated sync tracks removes the space for duplicate data entry bugs entirely.",
+      data: "Enforce uniform, cross-departmentally shared definitions for your core corporate KPIs. Consolidate your fragmented dashboard data tracks into a single source of truth to guarantee data governance structures hold together tightly.",
+      ai: "Isolate high-value, low-complexity use cases that save immediate production hours today. Organize your files and tables into clean schemas before attempting model queries to protect parameters from public exposure.",
+      sovereignty: "Audit your internal permission structures based on strict structural roles and run immediate restoration tests for your backup clusters. Structuring a clear business continuity run-guide shields your balance sheet from runtime disasters."
+    };
 
     const CONTEXT_HINTS = {
       leadership: "Strong leadership alignment and clear strategic frameworks anchor all other organizational capabilities.",
@@ -1232,6 +1297,9 @@
       ai: "Prioritized AI use cases turn artificial intelligence from a buzzword into measurable daily productivity.",
       sovereignty: "Robust data security and compliance guardrails protect your enterprise from existential risks."
     };
+
+    let DIMS = []; 
+    let selectedArchetype = "digital";
 
     const CLUSTERS = [
       "Strategy & Leadership",
@@ -1340,7 +1408,6 @@
         updateGlobalProgress();
         
         document.getElementById("results").style.display = "none";
-        document.getElementById("leadGate").style.display = "none";
       });
     }
 
@@ -1465,7 +1532,6 @@
       updateGlobalProgress();
       
       document.getElementById("results").style.display = "none";
-      document.getElementById("leadGate").style.display = "none";
       window.scrollTo({top: 0, behavior: "smooth"});
     }
 
@@ -1498,67 +1564,27 @@
       });
 
       document.getElementById("showLeadBtn").addEventListener("click", () => {
-        const leadGate = document.getElementById("leadGate");
-        leadGate.style.display = "block";
-        leadGate.scrollIntoView({behavior:"smooth"});
+        evaluate(true); 
       });
 
       document.getElementById("unlockResultsBtn").addEventListener("click", () => {
-        const name = document.getElementById("leadName").value;
-        document.getElementById("userGreeting").textContent = name ? `Hello ${name.split(' ')[0]}, here are your results:` : "Your results:";
-        document.getElementById("leadGate").style.display = "none";
-        evaluate();
-      });
-
-      document.getElementById("skipLeadBtn").addEventListener("click", () => {
-        document.getElementById("userGreeting").textContent = "Your results:";
-        document.getElementById("leadGate").style.display = "none";
-        evaluate();
+        const emailInput = document.getElementById("leadEmail");
+        const nameInput = document.getElementById("leadName");
+        
+        if (!emailInput.checkValidity() || !emailInput.value) {
+          alert("Please enter a valid work email address to map your architecture values.");
+          return;
+        }
+        
+        const name = nameInput.value;
+        document.getElementById("userGreeting").textContent = name ? `Hello ${name.split(' ')[0]}, Here Are Your Results:` : "Your Results:";
+        evaluate(false); 
       });
 
       updateGlobalProgress();
     }
 
-    function calcScore(dimId) {
-      const dim = DIMS.find(d => d.id === dimId);
-      let totalWeight = 0;
-      let checkedWeight = 0;
-      
-      dim.elements.forEach((el, idx) => {
-        const w = el.w || 1.0;
-        totalWeight += w;
-        const cb = document.getElementById(`cb-${dimId}-${idx}`);
-        if (cb && cb.checked) {
-          checkedWeight += w;
-        }
-      });
-      
-      return totalWeight === 0 ? 0 : parseFloat((checkedWeight / totalWeight * 5).toFixed(2));
-    }
-
-    function animateScoreCounter(targetValue) {
-      const element = document.getElementById("totalScoreEl");
-      const duration = 1500; 
-      const startTimestamp = performance.now();
-      
-      function step(now) {
-        const progress = now - startTimestamp;
-        const percentage = Math.min(progress / duration, 1);
-        const easeOutCubic = 1 - Math.pow(1 - percentage, 3);
-        const currentCount = easeOutCubic * targetValue;
-        
-        element.textContent = currentCount.toFixed(1);
-        
-        if (percentage < 1) {
-          requestAnimationFrame(step);
-        } else {
-          element.textContent = targetValue.toFixed(1);
-        }
-      }
-      requestAnimationFrame(step);
-    }
-
-    function evaluate() {
+    function evaluate(isLocked) {
       const scores = DIMS.map(function(d) {
         const finalScore = calcScore(d.id);
         const normScore = finalScore / 5;
@@ -1577,15 +1603,12 @@
       });
       
       const avg = scores.reduce(function(s, r) { return s + r.score; }, 0) / scores.length;
-      
       animateScoreCounter(avg);
       
       document.getElementById("scoreSubtitle").textContent =
-        avg < 1.5 ? "Early Stage — many potentials still untapped." :
-        avg < 2.5 ? "Foundations in place — targeted development will pay off." :
-        avg < 3.5 ? "Solid organization — well on your way to the top." :
-        avg < 4.5 ? "Strong organization — continue to expand and defend your position." :
-        "Market Leader Level — continuously optimize!";
+        avg < 2.0 ? "Reactive Stage (Operational Drag) — Your operations rely heavily on manual workarounds and continuous fire-fighting. Scaling volume now will block execution." :
+        avg < 3.5 ? "Functional Baseline Stage — Core processes are uniform on paper, but stepping up customer capacity will prompt severe coordination and speed gaps." :
+        "Leveraged Scaling Stage — Highly systemized and optimized framework parameters. Ready to expand and secure definitive market leadership.";
 
       const cards = document.getElementById("resCards");
       cards.innerHTML = "";
@@ -1606,40 +1629,70 @@
       pList.innerHTML = "";
       
       top3.forEach(function(r, i) {
-        const dim = DIMS.find(d => d.id === r.id);
-        const missing = dim.elements.filter((_, idx) => !document.getElementById(`cb-${r.id}-${idx}`).checked);
+        const nextStepsText = ACTIONABLE_NEXT_STEPS[r.id] || "";
         const hintText = CONTEXT_HINTS[r.id] || "";
         
-        let tagsHtml = missing.slice(0, 6).map(el => `<span class="miss-tag">✗ ${el.t}</span>`).join("");
-        if(missing.length > 6) tagsHtml += `<span class="miss-tag">+${missing.length - 6} more</span>`;
-        
+        // Output clean McKinsey typography stack with standard flex layout counts[cite: 2]
         pList.innerHTML += `<div class="prio-row">
           <div class="prio-rank">${i + 1}</div>
           <div class="prio-content">
             <div class="prio-name">${r.icon} ${r.name} (Score: ${r.score.toFixed(1)})</div>
-            <p style="font-size: 0.8rem; color: #4a5568; margin-bottom: 8px; font-style: italic; line-height: 1.4;">${hintText}</p>
-            <div class="prio-missing">${tagsHtml}</div>
+            <p style="font-size: 0.85rem; color: #4a5568; margin-bottom: 8px; font-style: italic; line-height: 1.45;">${hintText}</p>
+            <div style="margin: 12px 0 0; padding: 16px; background: #f8fafc; border-left: 3px solid #45a2b5; font-size: 0.9rem; color: #071727; line-height: 1.55;">
+              <strong>🎯 Recommended Next Steps:</strong> ${nextStepsText}
+            </div>
           </div>
         </div>`;
       });
 
-      document.getElementById("results").style.display = "block";
-      setTimeout(() => document.getElementById("results").scrollIntoView({behavior: "smooth", block: "start"}), 80);
+      const resultsSection = document.getElementById("results");
+      const previewWrapper = document.getElementById("lockedPreviewWrapper");
+      const actionButtons = document.getElementById("resultsActionButtonGroup");
+      const leadGate = document.getElementById("leadGate");
+      const bookingSec = document.getElementById("bookingSection");
+
+      resultsSection.style.display = "block";
+
+      if (isLocked) {
+        previewWrapper.classList.add("locked-preview");
+        actionButtons.classList.add("locked-preview");
+        leadGate.style.display = "block";
+        bookingSec.style.display = "none";
+        bookingSec.innerHTML = "";
+        leadGate.scrollIntoView({behavior: "smooth", block: "center"});
+      } else {
+        previewWrapper.classList.remove("locked-preview");
+        actionButtons.classList.remove("locked-preview");
+        leadGate.style.display = "none";
+        
+        bookingSec.innerHTML = `
+          <div class="minto-booking-card">
+            <h2>Let's Dissect Your Roadmap: Book a 20-Minute Sparring Session</h2>
+            <p>
+              Your full report dataset is being compiled. Let's get on a brief strategy call to analyze your top bottleneck areas, look at your industry benchmark curve, and build an actionable optimization strategy. No sales pitch—just objective business clarity[cite: 2].
+            </p>
+            <a href="https://calendly.com/your-placeholder" target="_blank" class="minto-booking-btn">📅 Claim Your Sparring Slot With Matthias Paratsch</a>
+          </div>`;
+        bookingSec.style.display = "block";
+        bookingSec.scrollIntoView({behavior: "smooth", block: "start"});
+      }
     }
 
+    // Fixed absolute coordinates mapping parameters to ensure labels fit beautifully
     function drawRadar(scores) {
       const svg = document.getElementById("radarSvg");
       const N = scores.length;
-      const cx = 270, cy = 255, maxR = 155, labelR = 195;
+      // Shrink maxR slightly from 155 to 125, adjust center to give dimension titles plenty of overflow room
+      const cx = 290, cy = 270, maxR = 125, labelR = 160;
       
       let html = `
         <defs>
           <linearGradient id="radarGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="var(--tk-teal)" stop-opacity="0.4" />
-            <stop offset="100%" stop-color="var(--tk-mint)" stop-opacity="0.15" />
+            <stop offset="0%" stop-color="#45a2b5" stop-opacity="0.4" />
+            <stop offset="100%" stop-color="#58f5a6" stop-opacity="0.15" />
           </linearGradient>
           <filter id="radarShadow" x="-20%" y="-20%" width="140%" height="140%">
-            <drop-shadow dx="0" dy="4" stdDeviation="6" flood-color="var(--tk-blue)" flood-opacity="0.15"/>
+            <drop-shadow dx="0" dy="4" stdDeviation="6" flood-color="#4d5dab" flood-opacity="0.15"/>
           </filter>
         </defs>
       `;
@@ -1661,18 +1714,25 @@
         const ly = cy + labelR * Math.sin(angle);
         const anchor = Math.cos(angle) > 0.15 ? "start" : Math.cos(angle) < -0.15 ? "end" : "middle";
         const dy = Math.sin(angle) > 0.5 ? "1em" : Math.sin(angle) < -0.5 ? "0" : ".35em";
-        html += `<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" dy="${dy}" text-anchor="${anchor}" font-size="10" font-family="system-ui,sans-serif" font-weight="600" fill="#4a5568">${scores[i].icon || ""} ${scores[i].name}</text>`;
+        
+        // Text labels mapped natively with a crisp font weight parameter to avoid truncating
+        html += `<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" dy="${dy}" text-anchor="${anchor}" font-size="11" font-family="system-ui,sans-serif" font-weight="600" fill="#071727">${scores[i].icon || ""} ${scores[i].name}</text>`;
 
         const sr = scores[i].score / 5 * maxR;
         polyPoints.push(`${(cx + sr * Math.cos(angle)).toFixed(1)},${(cy + sr * Math.sin(angle)).toFixed(1)}`);
       }
 
-      html += `<polygon points="${polyPoints.join(" ")}" fill="url(#radarGrad)" stroke="var(--tk-teal)" stroke-width="2.5" stroke-linejoin="round" filter="url(#radarShadow)"/>`;
+      // Explicitly tie the path loop array elements together to create a solid closed polygon mesh
+      if (polyPoints.length > 0) {
+        polyPoints.push(polyPoints[0]); 
+      }
+
+      html += `<polygon points="${polyPoints.join(" ")}" fill="url(#radarGrad)" stroke="#071727" stroke-width="2.5" stroke-linejoin="round" filter="url(#radarShadow)"/>`;
 
       for (let i = 0; i < N; i++) {
         const angle2 = (i / N) * 2 * Math.PI - Math.PI / 2;
         const sr2 = scores[i].score / 5 * maxR;
-        html += `<circle cx="${(cx + sr2 * Math.cos(angle2)).toFixed(1)}" cy="${(cy + sr2 * Math.sin(angle2)).toFixed(1)}" r="4" fill="#071727" stroke="#58f5a6" stroke-width="1.5"/>`;
+        html += `<circle cx="${(cx + sr2 * Math.cos(angle2)).toFixed(1)}" cy="${(cy + sr2 * Math.sin(angle2)).toFixed(1)}" r="4.5" fill="#071727" stroke="#45a2b5" stroke-width="1.5"/>`;
       }
 
       svg.innerHTML = html;
@@ -1681,13 +1741,25 @@
     document.getElementById("downloadPdfBtn").addEventListener("click", () => {
       const element = document.getElementById('pdfContent');
       const opt = {
-        margin: 10,
+        margin: [15, 15, 15, 15],
         filename: 'Tektit_Maturity_Report.pdf',
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
+        html2canvas: { 
+          scale: 2, 
+          useCORS: true, 
+          logging: false,
+          scrollY: 0,
+          scrollX: 0
+        },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
-      html2pdf().set(opt).from(element).save();
+      
+      const currentScroll = window.scrollY;
+      window.scrollTo(0, 0);
+      
+      html2pdf().set(opt).from(element).save().then(() => {
+        window.scrollTo(0, currentScroll);
+      });
     });
 
     initGlobalApp();
