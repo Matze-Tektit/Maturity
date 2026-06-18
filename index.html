@@ -14,6 +14,7 @@
   
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script defer src="app.js"></script>
   <script defer src="unlock-handler.js"></script>
   
   <style>
@@ -641,6 +642,11 @@
       font-weight: 800;
     }
     
+    .score-sub {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.8);
+    }
+    
     .res-cards {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -867,9 +873,9 @@
   <main class="page">
     <section class="intro">
       <h2>Most companies don't know where they actually stand.</h2>
-      <p>They invest in tools, hire talent, and run initiatives — yet growth stalls, decisions slow down, and the same bottlenecks keep coming back. The reason is almost always the same: blind spots.</p>
-      <p>At Tektit, we build market leaders. Not as a tagline — as a track record. As industry veterans, we've lived inside high-performing organizations, learned what separates the best from the rest.</p>
-      <p>The <strong>Tektit Maturity Check</strong> gives you an honest, structured snapshot of your organization across 12 critical dimensions — from Leadership and Sales to AI readiness and Data Strategy.</p>
+      <p>They invest in tools, hire talent, and run initiatives — yet growth stalls, decisions slow down, and the same bottlenecks keep coming back. The reason is almost always the same: blind spots in how the business actually operates.</p>
+      <p>At Tektit, we build market leaders. Not as a tagline — as a track record. As industry veterans, we've lived inside high-performing organizations, learned what separates the best from the rest, and now help other companies get there.</p>
+      <p>The <strong>Tektit Maturity Check</strong> gives you an honest, structured snapshot of your organization across 12 critical dimensions — from Leadership and Sales to AI readiness and Data Strategy. Then it tells you exactly where to focus first.</p>
       <p>No fluff. No consultant-speak. Just clarity.</p>
       
       <p style="font-size: 0.85rem; color: var(--tk-text-muted); margin-top: 12px; font-style: italic;">
@@ -961,15 +967,15 @@
         
         <div class="radar-card">
           <h3>Maturity radar</h3>
-          <svg id="radarSvg" viewBox="0 0 540 520"></svg>
+          <svg id="radarSvg" viewBox="0 0 580 540" style="width:100%; height:auto; overflow: visible;"></svg>
         </div>
         
         <div class="focus-card">
-          <h3>�� Your top 3 focus areas</h3>
+          <h3>🚀 Your top 3 focus areas</h3>
           <p class="focus-desc">These are the areas with the greatest optimization leverage.</p>
           <div id="prioList"></div>
           <p style="font-size: 0.75rem; color: var(--tk-text-muted); margin-top: 14px; font-style: italic; line-height: 1.4;">
-            * Note: Focus areas are ranked based on calculated optimization leverage.
+            * Note: Focus areas are ranked based on calculated optimization leverage (combining your current implementation gap with the dimension's strategic business impact weight), not strictly by lowest scores.
           </p>
         </div>
       </div>
@@ -981,9 +987,5 @@
     </section>
   </main>
 
-  <script>
-    // Placeholder for your existing DIMS_TEMPLATE and JavaScript logic
-    // Your existing code goes here...
-  </script>
 </body>
 </html>
