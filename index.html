@@ -1,1726 +1,888 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tektit Maturity Check</title>
-
-<meta name="description" content="Assess your organization's digital and operational maturity across 12 key dimensions. Get an instant PDF report and actionable focus areas.">
-<meta property="og:title" content="Tektit Maturity Check">
-<meta property="og:description" content="Assess your organization's digital and operational maturity across 12 key dimensions.">
-<meta property="og:type" content="website">
-
-<link rel="icon" type="image/png" href="favicon.png">
-
-<link rel="preconnect" href="https://cdnjs.cloudflare.com">
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-<style>
-/* ── Reset & Core Base ── */
-*, *::before, *::after {
-box-sizing: border-box;
-margin: 0;
-padding: 0;
-}
-
-:root {
---tk-dark: #071727;      
---tk-teal: #45a2b5;      
---tk-mint: #58f5a6;      
---tk-blue: #4d5dab;      
---tk-light: #edf2f7;     
---tk-border: #e2e8f0;
---tk-text-main: #1a202c;
---tk-text-muted: #718096;
---transition-fast: 0.2s ease;
-}
-
-body {
-font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-background: #f5f7fa;
-color: var(--tk-text-main);
-line-height: 1.5;
-min-height: 100vh;
-}
-
-/* ── Accessibility Utility ── */
-.sr-only {
-position: absolute;
-width: 1px;
-height: 1px;
-padding: 0;
-margin: -1px;
-overflow: hidden;
-clip: rect(0, 0, 0, 0);
-white-space: nowrap;
-border: 0;
-}
-
-/* ── Header with Consolidated Progress Real Estate ── */
-.top-bar {
-background: var(--tk-dark);
-color: #fff;
-padding: 14px 24px;
-display: flex;
-align-items: center;
-justify-content: space-between;
-position: sticky;
-top: 0;
-z-index: 50;
-box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
-}
-
-.top-bar-left {
-display: flex;
-align-items: center;
-gap: 16px;
-}
-
-.top-bar-left img {
-height: 45px;
-width: auto;
-object-fit: contain;
-display: block;
-} 
-
-.top-bar h1 {
-font-size: 1.2rem;
-font-weight: 700;
-letter-spacing: -0.01em;
-}
-
-.top-bar-right {
-display: flex;
-align-items: center;
-gap: 18px;
-}
-
-.header-status-text {
-font-size: 0.8rem;
-color: rgba(255, 255, 255, 0.7);
-font-weight: 600;
-}
-
-.progress-pill {
-background: rgba(255, 255, 255, 0.1);
-border-radius: 100px;
-padding: 6px 14px;
-font-size: 0.8rem;
-border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.progress-pill span {
-font-weight: 700;
-color: var(--tk-mint);
-}
-
-/* High-end thin integrated visual progress tracking strip */
-.header-progress-track {
-position: absolute;
-bottom: 0;
-left: 0;
-width: 100%;
-height: 4px;
-background: rgba(255, 255, 255, 0.1);
-}
-
-.header-progress-fill {
-height: 100%;
-width: 0%;
-background: linear-gradient(90deg, var(--tk-teal), var(--tk-mint));
-transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* ── Page Layout ── */
-.page {
-max-width: 980px;
-margin: 0 auto;
-padding: 40px 20px 64px;
-}
-
-/* Elegant Borderless/Shadowless Spatial Contrast Intro Typography */
-.intro {
-background: transparent;
-border-radius: 0;
-padding: 0 0 24px 0;
-margin-bottom: 32px;
-border-left: none;
-box-shadow: none;
-}
-
-.intro p {
-margin-bottom: 18px;
-font-size: 1rem;
-color: #4a5568;
-max-width: 840px;
-}
-
-.intro p:last-child {
-margin-bottom: 0;
-}
-
-.intro h2 {
-font-size: 1.4rem;
-color: var(--tk-dark);
-margin-bottom: 16px;
-line-height: 1.3;
-}
-
-.intro h3 {
-font-size: 1.1rem;
-color: var(--tk-dark);
-margin-bottom: 8px;
-margin-top: 24px;
-}
-
-/* ── Accordion UI Styling ── */
-.usage-accordion {
-background: #fafbfc;
-border: 1px solid var(--tk-border);
-border-radius: 8px;
-margin-top: 24px;
-padding: 14px 16px;
-max-width: 840px;
-transition: background var(--transition-fast);
-}
-.usage-accordion[open] {
-background: #fff;
-box-shadow: 0 2px 6px rgba(0,0,0,0.02);
-}
-.usage-accordion summary {
-cursor: pointer;
-color: var(--tk-dark);
-font-size: 0.95rem;
-font-weight: 600;
-outline: none;
-user-select: none;
-}
-.accordion-content {
-margin-top: 14px;
-display: flex;
-flex-direction: column;
-gap: 12px;
-border-top: 1px solid var(--tk-light);
-padding-top: 14px;
-}
-.accordion-item {
-font-size: 0.875rem;
-line-height: 1.45;
-color: #4a5568;
-}
-
-/* ── Optimized Single-Row Desktop Archetype Selector Card ── */
-.archetype-selector-card {
-background: #fff;
-border-radius: 12px;
-padding: 28px;
-margin-bottom: 36px;
-border: 1px solid var(--tk-border);
-box-shadow: 0 4px 14px rgba(77, 93, 171, 0.04);
-}
-.archetype-selector-card h3 {
-font-size: 1.2rem;
-color: var(--tk-dark);
-margin-bottom: 8px;
-font-weight: 700;
-letter-spacing: -0.01em;
-}
-.archetype-grid {
-display: grid;
-grid-template-columns: 1fr;
-gap: 12px;
-margin-top: 18px;
-}
-
-/* Desktop Horizontal Row configuration transformation overrides */
-@media (min-width: 850px) {
-.archetype-grid {
-grid-template-columns: repeat(4, 1fr);
-}
-}
-
-.arch-btn {
-padding: 16px;
-border-radius: 8px;
-border: 1.5px solid var(--tk-border);
-background: #fafbfc;
-color: var(--tk-text-main);
-font-size: 0.85rem;
-font-weight: 600;
-text-align: left;
-cursor: pointer;
-transition: all var(--transition-fast);
-line-height: 1.35;
-display: flex;
-flex-direction: column;
-justify-content: flex-start;
-}
-.arch-btn:hover {
-border-color: var(--tk-teal);
-background: #f0f9fa;
-}
-.arch-btn.active {
-border-color: var(--tk-blue);
-background: var(--tk-light);
-color: var(--tk-dark);
-box-shadow: inset 0 0 0 1px var(--tk-blue);
-}
-
-/* ── Wizard Step Progress Headers ── */
-.wizard-header {
-background: #fff;
-border-radius: 12px;
-padding: 16px 20px;
-margin-bottom: 24px;
-border: 1px solid var(--tk-border);
-display: flex;
-justify-content: space-between;
-align-items: center;
-gap: 12px;
-flex-wrap: wrap;
-}
-.wizard-steps {
-display: flex;
-gap: 8px;
-flex-grow: 1;
-}
-.wiz-step {
-flex: 1;
-padding: 10px 12px;
-border-radius: 6px;
-background: var(--tk-light);
-color: var(--tk-text-muted);
-font-size: 0.75rem;
-font-weight: 700;
-text-transform: uppercase;
-letter-spacing: 0.05em;
-text-align: center;
-transition: all var(--transition-fast);
-}
-.wiz-step.active {
-background: var(--tk-blue);
-color: #fff;
-}
-.wiz-step.completed {
-background: #e6fffa;
-color: #0d9488;
-}
-
-/* ── Wizard Flow Panes with Smooth Perceptual Motions ── */
-.step-pane {
-display: none;
-opacity: 0;
-transform: translateY(8px);
-transition: opacity 0.3s ease, transform 0.3s ease;
-}
-.step-pane.active {
-display: flex;
-flex-direction: column;
-gap: 24px;
-}
-.pane-title {
-font-size: 1.3rem;
-color: var(--tk-dark);
-font-weight: 700;
-border-bottom: 2px solid var(--tk-blue);
-padding-bottom: 8px;
-margin-bottom: 4px;
-letter-spacing: -0.01em;
-}
-
-/* ── Dimension Cards ── */
-.dim-card {
-background: #fff;
-border-radius: 12px;
-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-border: 1px solid var(--tk-border);
-}
-
-.dim-head {
-padding: 16px 20px;
-display: flex;
-align-items: center;
-justify-content: space-between;
-border-bottom: 1px solid var(--tk-light);
-border-top-left-radius: 12px;
-border-top-right-radius: 12px;
-}
-
-.dim-title {
-display: flex;
-align-items: center;
-gap: 10px;
-}
-
-.dim-icon {
-width: 36px;
-height: 36px;
-border-radius: 8px;
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 1.2rem;
-background: var(--tk-light);
-}
-
-.dim-name {
-font-weight: 600;
-font-size: 1rem;
-color: var(--tk-dark);
-}
-
-.dim-badge {
-font-size: 0.75rem;
-font-weight: 600;
-padding: 4px 12px;
-border-radius: 100px;
-background: var(--tk-light);
-color: var(--tk-text-muted);
-border: 1px solid transparent;
-transition: all var(--transition-fast);
-}
-
-.dim-badge.active {
-background: #f0f9fa;
-color: var(--tk-teal);
-border: 1px solid var(--tk-teal);
-}
-
-.dim-badge.completed {
-background: #e6fffa;
-color: #0d9488;
-border: 1px solid #0d9488;
-font-weight: 700;
-}
-
-.elements {
-display: grid;
-grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-gap: 10px;
-padding: 16px 20px;
-}
-
-/* ── Checkbox Styles ── */
-.el-label {
-display: flex;
-align-items: flex-start;
-gap: 10px;
-padding: 12px 14px;
-border-radius: 8px;
-border: 1.5px solid var(--tk-border);
-background: #fafbfc;
-cursor: pointer;
-transition: all var(--transition-fast);
-position: relative;
-}
-
-.el-label:hover {
-border-color: var(--tk-teal);
-background: #f0f9fa;
-}
-
-.el-label:focus-within {
-border-color: var(--tk-blue);
-box-shadow: 0 0 0 3px rgba(77, 93, 171, 0.2);
-}
-
-/* Highlight class synced instantly via change events */
-.el-label.is-checked {
-border-color: var(--tk-teal);
-background: #f0fdf4;
-box-shadow: 0 2px 8px rgba(69, 162, 181, 0.06);
-}
-
-/* Clean custom native checkbox hider configuration rule */
-.dim-cb {
-position: absolute;
-opacity: 0;
-width: 0;
-height: 0;
-margin: 0;
-padding: 0;
-pointer-events: none;
-}
-
-.el-box {
-width: 20px;
-height: 20px;
-border-radius: 4px;
-border: 2px solid #cbd5e0;
-background: #fff;
-flex-shrink: 0;
-margin-top: 2px;
-display: flex;
-align-items: center;
-justify-content: center;
-transition: background var(--transition-fast), border-color var(--transition-fast);
-}
-
-.el-label input:checked ~ .el-box {
-background: var(--tk-teal);
-border-color: var(--tk-teal);
-}
-
-.el-label input:checked ~ .el-box::after {
-content: '';
-display: block;
-width: 5px;
-height: 10px;
-border: 2px solid #fff;
-border-top: none;
-border-left: none;
-transform: rotate(45deg) translateY(-1px);
-}
-
-.el-label input:checked ~ .el-text {
-color: var(--tk-dark);
-font-weight: 500;
-}
-
-.el-text {
-font-size: 0.85rem;
-line-height: 1.4;
-color: #4a5568;
-flex-grow: 1;
-}
-
-/* ── Tooltips ── */
-.tt-wrap {
-position: relative;
-display: inline-block;
-margin-left: 4px;
-color: var(--tk-blue);
-cursor: help;
-}
-
-.tt-icon {
-display: inline-flex;
-align-items: center;
-justify-content: center;
-width: 16px;
-height: 16px;
-border-radius: 50%;
-background: var(--tk-light);
-font-size: 0.65rem;
-font-weight: bold;
-}
-
-.tt-text {
-visibility: hidden;
-width: 240px;
-background-color: var(--tk-dark);
-color: #fff;
-text-align: center;
-border-radius: 6px;
-padding: 8px 12px;
-position: absolute;
-z-index: 100; 
-bottom: 140%;
-left: 50%;
-transform: translateX(-50%); 
-opacity: 0;
-transition: opacity 0.2s;
-font-size: 0.75rem;
-box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-pointer-events: none; 
-}
-
-.tt-text::after {
-content: "";
-position: absolute;
-top: 100%;
-left: 50%;
-transform: translateX(-50%);
-border-width: 5px;
-border-style: solid;
-border-color: var(--tk-dark) transparent transparent transparent;
-}
-
-.tt-wrap:hover .tt-text,
-.tt-wrap:focus-within .tt-text {
-visibility: visible;
-opacity: 1;
-}
-
-/* ── Layout Component Wrappers ── */
-.btn-group {
-margin-top: 28px; 
-display: flex; 
-gap: 12px; 
-align-items: center; 
-flex-wrap: wrap;
-}
-
-#resetBtn {
-margin-left: auto;
-}
-
-/* ── Lead Gate ── */
-.lead-gate {
-display: none;
-background: #fff;
-border-radius: 12px;
-padding: 40px;
-margin-top: 30px;
-text-align: center;
-border: 2px solid var(--tk-teal);
-box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
-
-.lead-gate h2 {
-color: var(--tk-dark);
-margin-bottom: 10px;
-}
-
-.lead-logo {
-height: 60px;
-width: auto;
-object-fit: contain;
-display: block;
-margin: 0 auto 15px;
-}
-
-.lead-form {
-max-width: 400px;
-margin: 20px auto;
-display: flex;
-flex-direction: column;
-gap: 15px;
-}
-
-.lead-form input {
-padding: 12px;
-border-radius: 8px;
-border: 1px solid #cbd5e0;
-font-size: 1rem;
-width: 100%;
-}
-
-/* ── Results Area ── */
-.results-section {
-display: none;
-margin-top: 36px;
-}
-
-.res-hero {
-background: linear-gradient(135deg, var(--tk-dark), var(--tk-blue));
-border-radius: 16px;
-padding: 36px;
-color: #fff;
-display: flex;
-align-items: center;
-gap: 32px;
-margin-bottom: 24px;
-}
-
-.res-logo {
-height: 80px;
-width: auto;
-object-fit: contain;
-display: block;
-margin-left: auto;
-opacity: 0.8;
-}
-
-.score-ring {
-width: 110px;
-height: 110px;
-border-radius: 50%;
-border: 4px solid rgba(255,255,255,.2);
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-background: rgba(255,255,255,.05);
-flex-shrink: 0;
-}
-
-.score-num {
-font-size: 2.4rem;
-font-weight: 800;
-}
-
-.res-cards {
-display: grid;
-grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-gap: 14px;
-margin-bottom: 24px;
-}
-
-.res-card {
-background: #fff;
-border-radius: 10px;
-padding: 14px 16px;
-border: 1px solid var(--tk-border);
-box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-transition: opacity var(--transition-fast);
-}
-
-.rc-head {
-display: flex;
-align-items: center;
-justify-content: space-between;
-margin-bottom: 8px;
-}
-
-.rc-name {
-font-size: 0.8rem;
-font-weight: 600;
-color: var(--tk-dark);
-}
-
-.rc-badge {
-font-size: 0.75rem;
-font-weight: 700;
-padding: 2px 10px;
-border-radius: 100px;
-color: #fff;
-background: var(--tk-teal);
-}
-
-.rc-bar-wrap {
-height: 6px;
-background: var(--tk-light);
-border-radius: 3px;
-margin: 8px 0;
-overflow: hidden;
-}
-
-.rc-bar {
-height: 6px;
-background: var(--tk-teal);
-transition: width 0.6s ease;
-}
-
-.rc-detail {
-font-size: 0.75rem;
-color: var(--tk-text-muted);
-}
-
-.radar-card {
-background: #fff;
-padding: 24px;
-border-radius: 12px;
-border: 1px solid var(--tk-border);
-margin-bottom: 24px;
-}
-
-.radar-card h3 {
-margin-bottom: 16px;
-}
-
-.focus-card {
-background: #f0f9fa;
-border: 1px solid var(--tk-teal);
-border-radius: 12px;
-padding: 24px;
-}
-
-.focus-desc {
-font-size: 0.85rem;
-color: #4a5568;
-margin-bottom: 15px;
-}
-
-.prio-row {
-background: #fff;
-border-radius: 8px;
-padding: 14px 16px;
-margin-bottom: 10px;
-display: flex;
-align-items: flex-start;
-gap: 12px;
-box-shadow: 0 1px 3px rgba(0,0,0,.05);
-}
-
-.prio-rank {
-width: 30px;
-height: 30px;
-border-radius: 50%;
-background: var(--tk-dark);
-color: var(--tk-mint);
-font-weight: 700;
-font-size: 0.85rem;
-display: flex;
-align-items: center;
-justify-content: center;
-flex-shrink: 0;
-}
-
-.prio-content {
-flex-grow: 1;
-}
-
-.prio-name {
-font-weight: 600;
-font-size: 0.875rem;
-margin-bottom: 4px;
-color: var(--tk-dark);
-}
-
-.prio-missing {
-display: flex;
-flex-wrap: wrap;
-gap: 6px;
-margin-top: 8px;
-}
-
-.miss-tag {
-font-size: 0.75rem;
-background: #fff;
-color: #2d3748;
-border: 1.5px solid #cbd5e0;
-padding: 4px 10px;
-border-radius: 100px;
-font-weight: 600;
-box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-}
-
-/* ── Buttons ── */
-.btn {
-padding: 12px 28px;
-border-radius: 8px;
-font-size: 0.9rem;
-font-weight: 600;
-border: none;
-cursor: pointer;
-display: inline-flex;
-align-items: center;
-justify-content: center;
-gap: 8px;
-transition: all var(--transition-fast);
-}
-
-.btn-primary {
-background: var(--tk-dark);
-color: #fff;
-}
-
-.btn-primary:hover:not(:disabled) {
-background: var(--tk-teal);
-transform: translateY(-1px);
-}
-
-.btn-primary:disabled {
-opacity: 0.4;
-cursor: not-allowed;
-}
-
-.btn-teal {
-background: var(--tk-teal);
-color: #fff;
-}
-
-.btn-teal:hover {
-background: var(--tk-blue);
-}
-
-.btn-ghost {
-background: transparent;
-color: #4a5568;
-border: 1.5px solid #cbd5e0;
-}
-
-.btn-ghost:hover {
-background: var(--tk-light);
-}
-
-@media (max-width: 600px) {
-.elements {
-grid-template-columns: 1fr;
-}
-.res-hero {
-flex-direction: column;
-text-align: center;
-}
-.res-logo {
-margin: 0 auto;
-}
-.wizard-steps {
-flex-direction: column;
-width: 100%;
-}
-#resetBtn {
-margin-left: 0;
-width: 100%;
-}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tektit Maturity Check - Assessment</title>
+  
+  <meta name="description" content="Assess your organization's digital and operational maturity across 12 key dimensions. Get an instant PDF report and actionable focus areas.">
+  
+  <link rel="icon" type="image/png" href="favicon.png">
+  
+  <style>
+    /* ── Reset & Core Base ── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    :root {
+      --tk-dark: #071727;      
+      --tk-teal: #45a2b5;      
+      --tk-mint: #58f5a6;      
+      --tk-blue: #4d5dab;      
+      --tk-light: #edf2f7;     
+      --tk-border: #e2e8f0;
+      --tk-text-main: #1a202c;
+      --tk-text-muted: #718096;
+      --transition-fast: 0.2s ease;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #f5f7fa;
+      color: var(--tk-text-main);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* ── Header ── */
+    .top-bar {
+      background: var(--tk-dark);
+      color: #fff;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .top-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .top-bar-left img {
+      height: 45px;
+      width: auto;
+      object-fit: contain;
+      display: block;
+    } 
+    
+    .top-bar h1 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .top-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .header-status-text {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 600;
+    }
+    
+    .progress-pill {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .progress-pill span {
+      font-weight: 700;
+      color: var(--tk-mint);
+    }
+
+    .header-progress-track {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .header-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--tk-teal), var(--tk-mint));
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ── Page Layout ── */
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 40px 20px 64px;
+    }
+    
+    .intro {
+      background: transparent;
+      padding: 0 0 24px 0;
+      margin-bottom: 32px;
+    }
+    
+    .intro p {
+      margin-bottom: 18px;
+      font-size: 1rem;
+      color: #4a5568;
+      max-width: 840px;
+    }
+    
+    .intro h2 {
+      font-size: 1.4rem;
+      color: var(--tk-dark);
+      margin-bottom: 16px;
+      line-height: 1.3;
+    }
+
+    .usage-accordion {
+      background: #fafbfc;
+      border: 1px solid var(--tk-border);
+      border-radius: 8px;
+      margin-top: 24px;
+      padding: 14px 16px;
+      max-width: 840px;
+      transition: background var(--transition-fast);
+    }
+    .usage-accordion[open] {
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+    .usage-accordion summary {
+      cursor: pointer;
+      color: var(--tk-dark);
+      font-size: 0.95rem;
+      font-weight: 600;
+      outline: none;
+    }
+    .accordion-content {
+      margin-top: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      border-top: 1px solid var(--tk-light);
+      padding-top: 14px;
+    }
+    .accordion-item {
+      font-size: 0.875rem;
+      line-height: 1.45;
+      color: #4a5568;
+    }
+
+    .archetype-selector-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 36px;
+      border: 1px solid var(--tk-border);
+      box-shadow: 0 4px 14px rgba(77, 93, 171, 0.04);
+    }
+    .archetype-selector-card h3 {
+      font-size: 1.2rem;
+      color: var(--tk-dark);
+      margin-bottom: 8px;
+    }
+    .archetype-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-top: 18px;
+    }
+    
+    @media (min-width: 850px) {
+      .archetype-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    
+    .arch-btn {
+      padding: 16px;
+      border-radius: 8px;
+      border: 1.5px solid var(--tk-border);
+      background: #fafbfc;
+      color: var(--tk-text-main);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      display: flex;
+      flex-direction: column;
+    }
+    .arch-btn:hover {
+      border-color: var(--tk-teal);
+      background: #f0f9fa;
+    }
+    .arch-btn.active {
+      border-color: var(--tk-blue);
+      background: var(--tk-light);
+      color: var(--tk-dark);
+      box-shadow: inset 0 0 0 1px var(--tk-blue);
+    }
+
+    /* ── Wizard Flow ── */
+    .wizard-header {
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      border: 1px solid var(--tk-border);
+      display: flex;
+    }
+    .wizard-steps {
+      display: flex;
+      gap: 8px;
+      flex-grow: 1;
+    }
+    .wiz-step {
+      flex: 1;
+      padding: 10px 12px;
+      border-radius: 6px;
+      background: var(--tk-light);
+      color: var(--tk-text-muted);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      text-align: center;
+    }
+    .wiz-step.active {
+      background: var(--tk-blue);
+      color: #fff;
+    }
+    .wiz-step.completed {
+      background: #e6fffa;
+      color: #0d9488;
+    }
+
+    .step-pane {
+      display: none;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .step-pane.active {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .pane-title {
+      font-size: 1.3rem;
+      color: var(--tk-dark);
+      font-weight: 700;
+      border-bottom: 2px solid var(--tk-blue);
+      padding-bottom: 8px;
+    }
+
+    .dim-card {
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid var(--tk-border);
+    }
+    
+    .dim-head {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--tk-light);
+    }
+    
+    .dim-name {
+      font-weight: 600;
+      color: var(--tk-dark);
+    }
+    
+    .dim-badge {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 100px;
+      background: var(--tk-light);
+      color: var(--tk-text-muted);
+    }
+    .dim-badge.active {
+      background: #f0f9fa;
+      color: var(--tk-teal);
+      border: 1px solid var(--tk-teal);
+    }
+    .dim-badge.completed {
+      background: #e6fffa;
+      color: #0d9488;
+      border: 1px solid #0d9488;
+    }
+    
+    .elements {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 10px;
+      padding: 16px 20px;
+    }
+
+    .el-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      border: 1.5px solid var(--tk-border);
+      background: #fafbfc;
+      cursor: pointer;
+      position: relative;
+    }
+    .el-label:hover {
+      border-color: var(--tk-teal);
+      background: #f0f9fa;
+    }
+    .el-label.is-checked {
+      border-color: var(--tk-teal);
+      background: #f0fdf4;
+    }
+    
+    .dim-cb {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .el-box {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      border: 2px solid #cbd5e0;
+      background: #fff;
+      flex-shrink: 0;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .el-label input:checked ~ .el-box {
+      background: var(--tk-teal);
+      border-color: var(--tk-teal);
+    }
+    .el-label input:checked ~ .el-box::after {
+      content: '';
+      display: block;
+      width: 5px;
+      height: 10px;
+      border: 2px solid #fff;
+      border-top: none;
+      border-left: none;
+      transform: rotate(45deg) translateY(-1px);
+    }
+    
+    .el-text {
+      font-size: 0.85rem;
+      color: #4a5568;
+    }
+
+    .btn {
+      padding: 12px 28px;
+      border-radius: 8px !important;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all var(--transition-fast);
+    }
+    .btn-primary {
+      background: var(--tk-dark);
+      color: #fff;
+    }
+    .btn-primary:hover:not(:disabled) {
+      background: var(--tk-teal);
+      transform: translateY(-1px);
+    }
+    .btn-primary:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .btn-teal {
+      background: var(--tk-teal);
+      color: #fff;
+    }
+    .btn-teal:hover {
+      background: var(--tk-blue);
+    }
+    .btn-ghost {
+      background: transparent;
+      color: #4a5568;
+      border: 1.5px solid #cbd5e0;
+    }
+    .btn-ghost:hover {
+      background: var(--tk-light);
+    }
+
+    .btn-group {
+      margin-top: 28px; 
+      display: flex; 
+      gap: 12px; 
+      align-items: center; 
+      flex-wrap: wrap;
+    }
+    #resetBtn {
+      margin-left: auto;
+    }
+
+    /* ── Lead Gate Placement ── */
+    .lead-gate {
+      display: none;
+      background: #fff;
+      border-radius: 12px;
+      padding: 36px;
+      margin: 32px 0 0;
+      text-align: center;
+      border: 2px solid var(--tk-teal);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    }
+    .lead-gate h2 {
+      color: var(--tk-dark);
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+    .lead-gate p {
+      font-size: 0.95rem;
+      color: #4a5568;
+      max-width: 640px;
+      margin: 0 auto 20px;
+    }
+    .lead-logo {
+      height: 55px;
+      width: auto;
+      margin: 0 auto 12px;
+      display: block;
+    }
+    .lead-form {
+      max-width: 400px;
+      margin: 20px auto 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .lead-form input {
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e0;
+      font-size: 1rem;
+      width: 100%;
+      outline: none;
+    }
+
+    @media (max-width: 600px) {
+      .elements {
+        grid-template-columns: 1fr;
+      }
+      .wizard-steps {
+        flex-direction: column;
+        width: 100%;
+      }
+      #resetBtn {
+        margin-left: 0;
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<header class="top-bar">
-<div class="top-bar-left">
-<img src="TEKTIT_Cons-Logo_color-white.png" alt="Tektit Consulting Logo">
-<h1>Tektit Maturity Check</h1>
-</div>
-<div class="top-bar-right">
-<div class="header-status-text" id="progText">0 of 12 dimensions assessed</div>
-<div class="progress-pill">Selected: <span id="headerCount">0</span></div>
-</div>
-<div class="header-progress-track">
-<div class="header-progress-fill" id="progFill"></div>
-</div>
-</header>
-
-<main class="page">
-<section class="intro">
-<h2>Most companies don't know where they actually stand.</h2>
-<p>They invest in tools, hire talent, and run initiatives — yet growth stalls, decisions slow down, and the same bottlenecks keep coming back. The reason is almost always the same: blind spots in organizational maturity.</p>
-<p>At Tektit, we build market leaders. Not as a tagline — as a track record. As industry veterans, we've lived inside high-performing organizations, learned what separates the best from the rest, and distilled that experience into a proven approach. We've applied it successfully with 40+ companies. Now we're putting it in your hands.</p>
-<p>The <strong>Tektit Maturity Check</strong> gives you an honest, structured snapshot of your organization across 12 critical dimensions — from Leadership and Sales to AI readiness and Data Sovereignty. In under 10 minutes, you'll see exactly where you're strong, where you're losing leverage, and what to fix first.</p>
-<p>No fluff. No consultant-speak. Just clarity.</p>
-
-<p style="font-size: 0.85rem; color: var(--tk-text-muted); margin-top: 12px; font-style: italic;">
-Note: This evaluation engine is explicitly optimized for digital-first and service-oriented organizations.
-</p>
-
-<details class="usage-accordion">
-<summary>How to use this tool</summary>
-<div class="accordion-content">
-<div class="accordion-item">
-<strong>1. What the tool assesses:</strong> It reviews your organization across 4 strategic pillars and 12 distinct functional dimensions to benchmark internal infrastructure, operational capacity, growth mechanics, and technical governance.
-</div>
-<div class="accordion-item">
-<strong>2. How to select checkboxes:</strong> Mark a checkbox <strong>only</strong> if that item is completely and <strong>firmly</strong> established as a uniform standard across your organization. Leave it unchecked if it is practiced inconsistently, ad-hoc, or is still a work-in-progress.
-</div>
-<div class="accordion-item">
-<strong>3. How the score is calculated:</strong> Each checked dimension calculates an automated maturity rating from 0.0 to 5.0. Foundational components carry a higher strategic weighting multiplier than experimental or secondary capabilities.
-</div>
-<div class="accordion-item">
-<strong>4. Focus areas interpretation:</strong> Your priority highlights don't merely represent your lowest absolute numerical scores. The ranking operates via a composite optimization leverage algorithm that weights execution gaps against core revenue and scalability dependencies.
-</div>
-</div>
-</details>
-</section>
-
-<section class="archetype-selector-card" id="archetypeSelector">
-<h3>Select your organization's primary business profile:</h3>
-<p style="font-size: 0.85rem; color: var(--tk-text-muted); margin-bottom: 4px;">The assessment definitions adapt dynamically to match your specific operational ecosystem realities.</p>
-<div class="archetype-grid">
-<button type="button" class="arch-btn active" data-arch="digital">🌐 Pure Digital / SaaS / Tech Products</button>
-<button type="button" class="arch-btn" data-arch="services">💼 Professional Services / Agencies</button>
-<button type="button" class="arch-btn" data-arch="mittelstand">🏭 Traditional Mittelstand / Industrial</button>
-<button type="button" class="arch-btn" data-arch="logistics">🚚 Retail / E-Com / Logistics Heavy</button>
-</div>
-</section>
-
-<div class="wizard-header">
-<div class="wizard-steps" id="wizardStepsNav">
-<div class="wiz-step active" data-step-idx="0">1. Strategy & Leadership</div>
-<div class="wiz-step" data-step-idx="1">2. Go-To-Market</div>
-<div class="wiz-step" data-step-idx="2">3. Operations</div>
-<div class="wiz-step" data-step-idx="3">4. Tech & Data</div>
-</div>
-</div>
-
-<section id="dimsContainer" aria-label="Maturity Dimensions Wizard Checklist"></section>
-
-<div class="btn-group">
-<button type="button" class="btn btn-ghost" id="prevStepBtn" style="display: none;">⬅️ Previous Pillar</button>
-<button type="button" class="btn btn-primary" id="nextStepBtn">Next Pillar ➡️</button>
-<button type="button" class="btn btn-primary" id="showLeadBtn" style="display: none;" disabled>📊 Generate analysis</button>
-<button type="button" class="btn btn-ghost" id="resetBtn">Reset All</button>
-</div>
-
-<section id="leadGate" class="lead-gate" aria-labelledby="leadGateTitle">
-<img src="Tektit Consulting Bildmarke square.png" alt="Tektit Consulting" class="lead-logo" loading="lazy">
-<h2 id="leadGateTitle">Almost there!</h2>
-<p>Where can we send your detailed report? (Optional for this test)</p>
-
-<div class="lead-form">
-<div>
-<label for="leadName" class="sr-only">Your name</label>
-<input type="text" id="leadName" placeholder="Your name">
-</div>
-<div>
-<label for="leadEmail" class="sr-only">Your email address</label>
-<input type="email" id="leadEmail" placeholder="Your email address">
-</div>
-<button type="button" class="btn btn-teal" id="unlockResultsBtn">View results now</button>
-<button type="button" class="btn btn-ghost" id="skipLeadBtn" style="margin-top: 8px;">Skip and view directly in the browser</button>
-</div>
-</section>
-
-<section id="results" class="results-section" aria-labelledby="userGreeting">
-<div id="pdfContent">
-<div class="res-hero">
-<div class="score-ring">
-<span class="score-num" id="totalScoreEl">—</span>
-<span class="score-sub">/ 5.0</span>
-</div>
-<div>
-<h2 id="userGreeting">Your results</h2>
-<p id="scoreSubtitle"></p>
-</div>
-<img src="TEKTIT_Cons-Bildmarke_color-white.png" alt="Tektit Logo Accent" class="res-logo" loading="lazy">
-</div>
-
-<div class="res-cards" id="resCards"></div>
-
-<div class="radar-card">
-<h3>Maturity radar</h3>
-<svg id="radarSvg" viewBox="0 0 540 520"></svg>
-</div>
-
-<div class="focus-card">
-<h3>🚀 Your top 3 focus areas</h3>
-<p class="focus-desc">These are the areas with the greatest optimization leverage.</p>
-<div id="prioList"></div>
-<p style="font-size: 0.75rem; color: var(--tk-text-muted); margin-top: 14px; font-style: italic; line-height: 1.4;">
-* Note: Focus areas are ranked based on calculated optimization leverage (combining your current implementation gap with the dimension's strategic business impact weight), not strictly by raw score.
-</p>
-</div>
-</div>
-
-<div class="btn-group" style="margin-top:24px;">
-<button type="button" class="btn btn-primary" id="downloadPdfBtn">⬇️ Download PDF report</button>
-<button type="button" class="btn btn-ghost" id="backBtn">⬆️ Edit selections</button>
-</div>
-</section>
-</main>
-
-<script>
-    // Master Matrix holding 53 high-signal items total with clear contextual tooltips
-    // Master matrix containing track-specific tailoring and high-value tooltips
-const DIMS_TEMPLATE = [
-/* Cluster 1: Strategy & Leadership */
-{id:"leadership", name:{digital:"Leadership", services:"Leadership & Talent", mittelstand:"Leadership & Governance", logistics:"Leadership & Control"}, icon:"🧭", cluster:"Strategy & Leadership", strategicWeight: 1.5, elements:[
-        {t:"Everyone in our company knows our direction and who we're building for.", w: 2.0, desc:"Making sure everyone works toward the same big-picture goals, not separate agendas."},
-        {t:{
-          digital:"Everyone in our company knows our direction and who we're building for.",
-          services:"Everyone in our company knows our core service focus and what kind of clients we specialize in serving.",
-          mittelstand:"Everyone across our workforce knows our long-term market position and where the company is heading.",
-          logistics:"Everyone in our company knows our network growth plans and our key operational priorities."
-         }, w: 2.0, desc:"Making sure everyone works toward the same big-picture goals, not separate agendas."},
-{t:"We actively invest in our culture — through rituals, leadership behavior, and how we handle failure.", w: 1.0, desc:"Liking your culture on paper isn't enough; it needs to guide daily habits and how mistakes are handled."},
-        {t:"We use a structured goal system (e.g. OKRs, MBO) so every team knows what they're working toward.", w: 1.5, desc:"Breaking your high-level vision down into quarterly objectives or monthly targets that teams can actually execute."},
-        {t:"Our people can make decisions in their area without needing constant sign-off from above.", w: 1.0, desc:"Trusting your team to run their own domains so founders don't become micro-management bottlenecks."},
-        {t:{
-          digital:"We use a structured goal system (e.g. OKRs) so every team knows what they're working toward.",
-          services:"We use a structured tracking system to balance project goals with team utilization requirements.",
-          mittelstand:"We have clear targets that translate top-down business goals down to the production floor layers.",
-          logistics:"We use clear performance metrics to align daily terminal delivery targets with corporate goals."
-         }, w: 1.5, desc:"Breaking your high-level vision down into quarterly objectives or operational milestones that teams can execute."},
-        {t:{
-          digital:"Our people can make decisions in their area without needing constant sign-off from above.",
-          services:"Our delivery teams can manage client accounts and project choices independently.",
-          mittelstand:"We have clear, documented guidelines that spell out who can make which operational choices.",
-          logistics:"Our operational teams can resolve routing and transit issues on the fly without waiting for approval."
-         }, w: 1.0, desc:"Trusting your team to run their own domains so leadership doesn't become a micro-management bottleneck."},
-{t:"We have regular processes for internal feedback and resolving disagreements constructively.", w: 1.0, desc:"Having safe, established spaces to speak up, give honest feedback, and fix friction early."}
-]},
-{id:"innovation", name:"Innovation", icon:"💡", cluster:"Strategy & Leadership", strategicWeight: 1.2, elements:[
-{t:"We have a clear strategy for how we stay distinctly different from our competitors.", w: 1.5, desc:"Knowing exactly why a customer picks you over a cheaper or bigger competitor."},
-        {t:"We protect time and budget for testing new ideas — separate from day-to-day delivery.", w: 1.0, desc:"Giving people actual room to build things or experiment without dropping current client deadlines."},
-        {t:"We systematically collect customer feedback and use it to improve our products or services.", w: 1.5, desc:"Taking what customers complain about or praise and using it to fix your roadmap."}
-        {t:{
-          digital:"We protect time and budget for testing new product ideas — separate from day-to-day delivery.",
-          services:"We protect unbillable time for building internal templates, assets, or methodologies.",
-          mittelstand:"We set aside explicit capital and engineering time for research and physical product experiments.",
-          logistics:"We actively budget time to test new workflow improvements and transit route optimizations."
-         }, w: 1.0, desc:"Giving people actual room to build things or experiment without dropping current delivery commitments."},
-        {t:{
-          digital:"We systematically collect user feedback and use it to improve our software products.",
-          services:"We run regular post-project reviews with clients to systematically improve our service delivery.",
-          mittelstand:"We use structured market feedback loops to drive physical product adjustments.",
-          logistics:"We systematically review delivery performance data to optimize our supply chain pipelines."
-         }, w: 1.5, desc:"Taking what customers complain about or praise and using it to fix your roadmap."}
-]},
-{id:"finance", name:"Finance & Business Model", icon:"💰", cluster:"Strategy & Leadership", strategicWeight: 1.3, elements:[
-{t:"We maintain a live P&L and track cash flow to guide our decisions.", w: 1.0, desc:"Using real, updated cash metrics to run the business instead of banking on 'good feelings'."},
-        {t:"We know what it costs to acquire a customer and how much value they generate over time.", w: 1.5, desc:"Knowing your true customer lifetime value and client acquisition costs down to the cent."},
-        {t:"Our pricing reflects the value we deliver — not just our costs or what competitors charge.", w: 1.5, desc:"Charging based on the massive headache you solve, not just an hourly rate."},
-        {t:"We know how we plan to grow profitably and how we'll fund it.", w: 1.0, desc:"Ensuring cash flow covers hiring and infrastructure jumps before you step on the gas."}
-        {t:{
-          digital:"We know what it costs to acquire a software customer and how much value they generate over time.",
-          services:"We have full visibility into project margins, target utilization rates, and true hourly costs.",
-          mittelstand:"We have full clarity on asset depreciation, material waste metrics, and raw margin breakdowns.",
-          logistics:"We know our exact fulfillment processing costs, fuel margins, and payload efficiencies."
-         }, w: 1.5, desc:"Knowing your exact costs to win a customer and your precise margins for delivering to them."},
-        {t:{
-          digital:"Our pricing reflects the value we deliver — not just our software costs or competitor rates.",
-          services:"We use standardized pricing models (like retainers or value pricing) instead of just billing loose hours.",
-          mittelstand:"Our pricing systematically accounts for volume breaks, raw material shifts, and machinery cost.",
-          logistics:"Our tariff rates adjust dynamically to changes in shipping volume, warehouse load spikes, and regional costs."
-         }, w: 1.5, desc:"Charging based on the true value and operational complexity you handle, rather than just racing to the bottom on price."},
-        {t:{
-          digital:"We know how we plan to scale our user base profitably and how we'll fund that growth.",
-          services:"Our hiring plans map cleanly to our upcoming contract backlog to protect cash margins.",
-          mittelstand:"Our capital investments in equipment scale systematically based on factory capacity demands.",
-          logistics:"Our fleet expansions and warehouse leases are tied directly to long-term volume commitments."
-         }, w: 1.0, desc:"Ensuring cash flow covers hiring and infrastructure jumps before you step on the gas."}
-]},
-
-/* Cluster 2: Go-To-Market */
-{id:"sales", name:"Sales & Marketing", icon:"📣", cluster:"Go-To-Market", strategicWeight: 1.4, elements:[
-{t:"Our value proposition is clear and consistent — across website, sales calls, and proposals.", w: 2.0, desc:"Eliminating mixed messages so a pitch deck, website copy, and sales call all say the exact same thing."},
-        {t:"We use a CRM to track all leads and customer interactions in one place.", w: 1.0, desc:"Keeping interaction histories and deals out of notebooks and personal spreadsheets."},
-        {t:"Our sales team has a clear pipeline process and the materials/training to execute it.", w: 1.5, desc:"Arming salespeople with scripts, decks, and answers to hard objections instead of winging it."},
-        {t:"Marketing generates a predictable flow of leads that get passed to sales with clear handover criteria.", w: 1.5, desc:"A steady lead engine that filters out bad fits before they waste your sales team's time."},
-        {t:{
-          digital:"We use a central CRM to track all software sales leads and interactions in one place.",
-          services:"We use a central pipeline matrix to track consulting proposals and contract stages.",
-          mittelstand:"We use a central pipeline to manage multi-stage distributor relationships and large corporate deals.",
-          logistics:"We use a centralized bidding system to log and track incoming customer tender requests."
-         }, w: 1.0, desc:"Keeping interaction histories and deals out of notebooks and personal spreadsheets."},
-        {t:{
-          digital:"Our sales team has a clear software pipeline process and the materials/training to execute it.",
-          services:"Our team uses standardized key account pitch decks and custom proposal frameworks.",
-          mittelstand:"We provide our field network with structured sales materials, training, and configured product catalogs.",
-          logistics:"Our account executives use unified contract templates and automated routing scenarios to close deals."
-         }, w: 1.5, desc:"Arming your sales teams with standardized pitches, templates, and pricing tools instead of winging it."},
-        {t:{
-          digital:"Marketing generates a predictable flow of inbound leads with clear handover criteria to sales.",
-          services:"Our thought leadership and industry presence generate a predictable flow of client inquiries.",
-          mittelstand:"Our industrial trade presence and product certifications generate verified wholesale opportunities.",
-          logistics:"Our digital platforms systematically bring in high-volume commercial shipping accounts."
-         }, w: 1.5, desc:"A steady lead engine that filters out bad fits before they waste your sales team's time."},
-{t:"We actively monitor our competitors and market trends to inform our go-to-market decisions.", w: 1.0, desc:"Tracking rival moves and industry shifts so you aren't blindsided by market changes."}
-]},
-{id:"ecosystem", name:"Ecosystem & Partners", icon:"🤝", cluster:"Go-To-Market", strategicWeight: 1.1, elements:[
-        {t:"We have strategic partnerships that help us reach new customers or markets.", w: 1.0, desc:"Building networks or channel partners that pull in new deals automatically."},
-        {t:"Third parties (tools, vendors, partners) can connect to our systems via defined interfaces.", w: 1.0, desc:"Letting external partners or tools securely plug into your software without manual file sharing."},
-        {t:"We actively onboard, enable, and review our partners — not just sign contracts with them.", w: 1.0, desc:"Setting expectations and tracking partner performance instead of letting contracts gather dust."},
-        {t:"We have an active community of users, partners, or developers who engage beyond transactions.", w: 1.0, desc:"Cultivating a fan base of users or builders who actively talk about you and solve each other's problems."}
-        {t:{
-          digital:"We have strategic distribution or channel partners that help us scale our market reach.",
-          services:"We have a reliable pool of vetted sub-contractors or freelancers to handle project spikes.",
-          mittelstand:"We have long-term relationships with vetted component suppliers and production logistics vendors.",
-          logistics:"We have integrated network partners to handle non-standard transit legs or last-mile extensions cleanly."
-         }, w: 1.0, desc:"Securing trusted external capacity so your business can scale up or down smoothly without hitting an operational ceiling."},
-        {t:{
-          digital:"Third parties can securely connect to our software product via clearly defined APIs.",
-          services:"We use unified project portals and shared digital spaces to collaborate directly with clients.",
-          mittelstand:"We use electronic data interchange (EDI) systems to link our suppliers directly to production lines.",
-          logistics:"We use standard API connectors to plug external e-commerce shops directly into our dispatch systems."
-         }, w: 1.0, desc:"Letting external partners or tools securely plug into your software without manual file sharing."},
-        {t:{
-          digital:"We actively onboard, enable, and review our channel partners — not just sign contracts.",
-          services:"We have a standardized process to source, vet, and check compliance for external contractors.",
-          mittelstand:"We systematically enforce quality review metrics and procurement standards for all suppliers.",
-          logistics:"We continuously monitor sub-carrier safety records and performance standards."
-         }, w: 1.0, desc:"Setting expectations and tracking partner performance instead of letting contracts gather dust."},
-        {t:{
-          digital:"We have an active community of users or developers who engage beyond simple transactions.",
-          services:"We maintain an active alumni or expert network that refers talent and new business deals.",
-          mittelstand:"We have a reliable network of authorized maintenance and service partners across our regions.",
-          logistics:"We utilize a broad, dependable broker network to balance line-haul capacity and load drops."
-         }, w: 1.0, desc:"Nurturing a reliable secondary network that steps in to protect your capacity, refer business, or handle local service needs."}
-]},
-
-/* Cluster 3: Delivery & Operations */
-{id:"ops", name:"Operations", icon:"⚙️", cluster:"Delivery & Operations", strategicWeight: 1.2, elements:[
-{t:"Our key recurring processes are documented digitally and regularly reviewed for improvement.", w: 1.5, desc:"Building a company playbook so anyone can run core tasks perfectly if someone goes on vacation."},
-{t:"We make decisions based on data and clear responsibilities — not via endless escalation.", w: 1.0, desc:"Letting teams act on dashboards and rules instead of pausing work for executive sign-offs."},
-        {t:"We track team workload and proactively manage capacity to prevent overload.", w: 1.0, desc:"Keeping an eye on resource utilization so you don't burn out top performers during a rush."},
-        {t:"We measure customer satisfaction (e.g. NPS, SLA compliance) and act on the results.", w: 1.5, desc:"Using concrete customer ratings to catch operational drops before clients cancel."}
-        {t:{
-          digital:"We track team workload and proactively manage capacity to prevent engineering burnout.",
-          services:"We actively project consulting schedules to match upcoming workloads and protect team bench metrics.",
-          mittelstand:"We optimize shift schedules and machine loads to safely maximize factory output capacity.",
-          logistics:"We coordinate driver hours-of-service rules with our terminal layouts to build smart schedules."
-         }, w: 1.0, desc:"Keeping an eye on resource utilization so you don't burn out top performers during a rush."},
-        {t:{
-          digital:"We measure customer support metrics and product usage patterns to act on customer satisfaction.",
-          services:"We track project health scores and client Net Promoter Scores (NPS) consistently.",
-          mittelstand:"We track manufacturing yield ratios and run systematic quality assurance tests on production lines.",
-          logistics:"We measure our On-Time In-Full (OTIF) fulfillment rates and freight claim frequencies tightly."
-         }, w: 1.5, desc:"Tracking real-time quality and delivery metrics so you fix operational errors before they destroy your reputation."}
-]},
-
-/* Cluster 4: Technology & Data */
-{id:"devorg", name:{digital:"Product & Engineering", services:"Service Delivery Org", mittelstand:"Engineering & R&D Org", logistics:"Fleet & Network Architecture"}, icon:"💻", cluster:"Technology & Data", strategicWeight: 1.1, elements:[
-        {t:"We have a product roadmap that connects our long-term vision to what the team is building now.", w: 1.5, desc:"Ensuring the development team knows exactly why they are coding a specific feature this week."},
-        {t:"Our development teams work in structured, iterative cycles (e.g. Scrum or Kanban).", w: 1.0, desc:"Working in short, predictable sprints to ship functional updates instead of massive, multi-month drops."},
-        {t:"Our engineering team follows documented standards for code quality and technical architecture.", w: 1.0, desc:"Having clear rules on code style and logic architecture so the codebase doesn't turn into spaghetti."},
-        {t:"Roadmap priorities are tied to company goals (e.g. revenue, retention) — not just feature requests.", w: 1.0, desc:"Choosing what to build next based on business metrics like churn or revenue, not just cool ideas."}
-        {t:{
-          digital:"We have a product roadmap that connects our long-term vision to what the team is building now.",
-          services:"We have a clear portfolio strategy and delivery frameworks to standardize our service offerings.",
-          mittelstand:"We use structured engineering design blueprints to control our product development lifecycles.",
-          logistics:"Our network layout, hub footprint, and capacity plans connect directly to long-term business goals."
-         }, w: 1.5, desc:"Ensuring your execution teams know exactly how their current day-to-day work maps back to long-term company goals."},
-        {t:{
-          digital:"Our development teams work in structured, iterative cycles (e.g. Scrum or Kanban).",
-          services:"We use clear phase-tracking and milestone rules to keep complex client projects on time.",
-          mittelstand:"We use structured stage-gate development lifecycles to manage product changes safely.",
-          logistics:"We use dynamic assignment rules to shift transport assets instantly as volumes fluctuate."
-         }, w: 1.0, desc:"Working in structured, predictable deployment cadences instead of running tasks ad-hoc or putting out fires."},
-        {t:{
-          digital:"Our engineering team follows documented standards for code quality and technical architecture.",
-          services:"Our delivery teams follow standard quality rubrics and use uniform templates for all deliverables.",
-          mittelstand:"Our team follows strict engineering design guidelines and clear component specification baselines.",
-          logistics:"We enforce uniform terminal processing guidelines and clear packaging standard rules across the network."
-         }, w: 1.0, desc:"Enforcing strict, documented quality baselines so your final deliverables or outputs stay perfectly consistent."},
-        {t:{
-          digital:"Roadmap priorities are tied to company goals (e.g. revenue, retention) — not just feature requests.",
-          services:"Changes to our service portfolio link directly to business profitability and market revenue data.",
-          mittelstand:"Our engineering and R&D initiatives link directly to clear manufacturing cost and margin targets.",
-          logistics:"Our network distribution upgrades are chosen based on asset efficiency and truck utilization data."
-         }, w: 1.0, desc:"Making priority investments based on hard business metrics—like margins, utilization, or retention—instead of gut feeling or loud requests."}
-]},
-{id:"devops", name:{digital:"Tech Infrastructure & Automation", services:"Workspace Automation", mittelstand:"Industrial IT / OT Infrastructure", logistics:"Fulfillment & Fleet Tech"}, icon:"🚀", cluster:"Technology & Data", strategicWeight: 1.0, elements:[
-        {t:"Routine setup tasks (servers, environments) run via automated scripts — not manual steps.", w: 1.0, desc:"Spinning up new servers or team environments with a single click instead of hours of manual tweaking."},
-        {t:"We manage our infrastructure through code (IaC) rather than manual configuration.", w: 1.0, desc:"Writing infrastructure rules in code files so your setups can be duplicated or recovered instantly."},
-        {t:"We have CI/CD pipelines that automatically test and deploy code changes.", w: 1.5, desc:"Automatically checking code for bugs and deploying it to live environments instantly upon approval."},
-        {t:"Our system configurations are version-controlled so changes are tracked and reversible.", w: 1.0, desc:"Tracking environment configurations via Git so you can roll back a bad setting in seconds."},
-        {t:{
-          digital:"Routine setup tasks (servers, environments) run via automated scripts — not manual steps.",
-          services:"Setting up client workspaces, directories, and internal profiles is automated via scripts.",
-          mittelstand:"Our plant communication systems utilize secure, automated scripts to push routine firmware updates.",
-          logistics:"Fulfillment hardware profiles and automated sorting rules run via pre-configured scripts."
-         }, w: 1.0, desc:"Automating highly repetitive environment setups or device configurations to eliminate human delay."},
-        {t:{
-          digital:"We manage our infrastructure through code (IaC) rather than manual configuration.",
-          services:"We use automated cloud templates to spin up and secure new client storage spaces instantly.",
-          mittelstand:"We manage factory network configurations digitally rather than through hands-on manual wiring.",
-          logistics:"We update and configure device configurations remotely through central scripts rather than manual tool checks."
-         }, w: 1.0, desc:"Managing your infrastructure centrally and systematically, ensuring it can be duplicated or recovered instantly."},
-        {t:{
-          digital:"We have CI/CD pipelines that automatically test and deploy code changes.",
-          services:"Our project tracking systems automatically update and link internal platforms upon deal closure.",
-          mittelstand:"We use secure industrial firewalls to isolate critical plant machinery from general office IT networks.",
-          logistics:"Our dispatch tracking platform pushes cargo trajectory updates directly to clients automatically."
-         }, w: 1.5, desc:"Using system-driven logic to execute key workflows and updates smoothly without causing downtime or manual friction."},
-        {t:{
-          digital:"Our system configurations are version-controlled so changes are tracked and reversible.",
-          services:"Our master operational playbooks, templates, and frameworks are managed centrally through version tracking.",
-          mittelstand:"Our factory automation scripts are version-controlled to secure precision manufacturing setups.",
-          logistics:"Our fleet tracking parameters are controlled via a central, versioned device management platform."
-         }, w: 1.0, desc:"Enforcing centralized version tracking over your configuration data so any change can be audited or reversed in seconds."},
-{t:"We have monitoring in place that alerts us to infrastructure issues before they cause outages.", w: 1.0, desc:"System monitors that ping the tech team on Slack or PagerDuty before users notice the site is down."}
-]},
-{id:"itlandscape", name:"Core Systems & Integration", icon:"🗄️", cluster:"Technology & Data", strategicWeight: 1.1, elements:[
-        {t:"Our core systems (ERP, CRM) are the central source of record for business operations.", w: 1.5, desc:"Making sure every tool treats your main ERP or CRM as the absolute authority on business facts."},
-        {t:{
-          digital:"Our core platforms (ERP, CRM) are the central source of record for business operations.",
-          services:"Our professional services automation (PSA) system serves as the central anchor for project operations.",
-          mittelstand:"Our core enterprise resource planning (ERP) system serves as the definitive source of truth for business operations.",
-          logistics:"Our transportation and warehouse management systems (TMS/WMS) serve as the operational anchors for our data."
-         }, w: 1.5, desc:"Making sure every department and tool treats your primary enterprise platform as the absolute authority on business facts."},
-{t:"Our key systems exchange data automatically — no manual exports or copy-paste between tools.", w: 1.5, desc:"If a client changes their billing address in your CRM, it should update in your accounting software instantly without human intervention."},
-{t:"Workflows that span multiple systems run automatically without manual handoffs.", w: 1.0, desc:"Triggering background actions automatically—like sending an invoice the moment a CRM deal closes."}
-]},
-{id:"data", name:"Data & Analytics", icon:"📊", cluster:"Technology & Data", strategicWeight: 1.2, elements:[
-{t:"We have a clear data strategy defining what we collect, how we use it, and how we protect it.", w: 1.5, desc:"A set playbook on who owns data, where it is stored safely, and how it gets deleted securely."},
-{t:"We use dashboards to make business decisions based on data — not gut feel or spreadsheets.", w: 1.5, desc:"Pulling your performance data into clean charts so leadership doesn't argue over broken Excel macros."},
-{t:"Every team uses the same KPI definitions — Finance, Sales, and Ops all report the same numbers.", w: 2.0, desc:"Ensuring Marketing, Sales, and Finance define 'revenue' or 'active customer' exactly the same way."},
-{t:"We have automated checks to catch and clean bad data before it corrupts our reports.", w: 1.0, desc:"Setting up automatic traps to kill duplicate records or typos before they mess up your monthly dashboards."},
-{t:"Our key reports and dashboards reflect live data — not yesterday's export.", w: 1.0, desc:"If sales close at 9 AM, leadership can see those exact revenue spikes on the main dashboard by 10 AM, not next Monday."},
-{t:"All our business systems pull from a single source of truth — no contradictory numbers.", w: 1.5, desc:"Linking all software to one central data pool so you never get conflicting operational totals."}
-]},
-{id:"ai", name:"Artificial Intelligence", icon:"🤖", cluster:"Technology & Data", strategicWeight: 0.9, elements:[
-{t:"We have a clear AI strategy that identifies where AI creates the most value for us — and in what order we tackle it.", w: 1.0, desc:"Picking low-hanging AI use cases that save immediate hours rather than chasing expensive sci-fi pipe dreams."},
-        {t:"Our data is structured and clean enough to actually power AI models and tools.", w: 1.5, desc:"Formatting internal files and databases so an LLM or script can read them without throwing errors."},
-        {t:{
-          digital:"Our product data is structured and clean enough to actually power advanced AI models.",
-          services:"Our case studies, delivery assets, and templates are indexed so internal AI models can query them.",
-          mittelstand:"Our historical production logs and manufacturing metrics are clean enough to train predictive patterns.",
-          logistics:"Our historical route records and warehouse volume archives are clean and structured for machine learning."
-         }, w: 1.5, desc:"Formatting internal files and databases so an LLM or script can read them without throwing errors."},
-{t:"We have clear rules for how AI tools are used — including data privacy, approvals, and risk.", w: 1.0, desc:"Creating explicit policies so employees don't paste sensitive client data or source code into public AI tools."},
-        {t:"Our team is trained to use AI tools effectively and safely in their day-to-day work.", w: 1.5, desc:"Giving teams actual prompt-engineering or workflow training so AI moves past a toy to a real productivity booster."},
-        {t:{
-          digital:"Our team is trained to use AI tools effectively and safely in their day-to-day work.",
-          services:"Our consultants use generative AI tools safely to draft reports, run market analysis, and prepare briefs.",
-          mittelstand:"Our engineering teams use AI models to run simulation models or optimize floor setups.",
-          logistics:"Our dispatch and logistics coordinators use predictive AI models to optimize routes and payload margins."
-         }, w: 1.5, desc:"Giving your staff concrete workflow training so AI moves past a buzzword and becomes a real day-to-day productivity booster."},
-{t:"AI actively handles parts of our workflow — automating decisions, predictions, or repetitive analysis.", w: 1.0, desc:"Think automated triage: AI reads incoming customer emails, drafts the correct technical response, and queues it for your team to review."}
-]},
-{id:"sovereignty", name:"Security & Compliance", icon:"🔒", cluster:"Technology & Data", strategicWeight: 1.0, elements:[
-{t:"Our data storage and processing comply with applicable privacy regulations (e.g. GDPR).", w: 1.0, desc:"Protecting user data properly so you don't face massive regulatory fines or compliance audits."},
-{t:"We have automated backups and a tested plan to recover from data loss or a system failure.", w: 1.5, desc:"Running regular backups and—crucially—testing that you can actually restore files from them."},
-{t:"We can restore full business operations within 24 hours of a major outage.", w: 1.5, desc:"A step-by-step crisis drill to keep the business alive and trading if a primary server crashes."},
-{t:"Access to sensitive data is restricted by role — and these permissions are regularly reviewed.", w: 1.0, desc:"Locking down permissions so an intern can't access employee salaries or client master keys."},
-        {t:"We hold recognized security certifications (e.g. ISO 27001, SOC 2) or are actively working toward them.", w: 1.0, desc:"Passing formal security checks to unlock enterprise contracts and clear vendor assessments."}
-        {t:{
-          digital:"We hold recognized security certifications (e.g. ISO 27001, SOC 2) or are actively working toward them.",
-          services:"We maintain official data isolation parameters and pass customer-mandated data security audits.",
-          mittelstand:"We maintain auditable intellectual property controls and standard industrial quality compliance baselines.",
-          logistics:"We hold validated international customs profiles and strict warehouse asset security certifications."
-         }, w: 1.0, desc:"Passing formal security checks to unlock enterprise contracts and clear vendor assessments."}
-]}
-];
-
-let DIMS = []; 
-let selectedArchetype = "digital";
-
-const CONTEXT_HINTS = {
-leadership: "Strong leadership alignment and clear strategic frameworks anchor all other organizational capabilities.",
-innovation: "Continuous market monitoring and innovation safeguards your long-term competitive advantage.",
-finance: "Solid financial planning and clear unit economics ensure capital-efficient scaling.",
-sales: "A structured go-to-market engine is critical for sustainable revenue growth.",
-ecosystem: "Leveraging strategic partnerships expands your market reach exponentially without scaling internal headcount.",
-ops: "Operational excellence and documented workflows prevent your delivery from breaking under growth.",
-devorg: "A clear roadmap and agile execution bridge the gap between business strategy and execution teams.",
-devops: "Automated delivery pipelines and modern infrastructure accelerate software velocity and stability.",
-itlandscape: "Integrated core systems form the unified data highway of a modern enterprise.",
-data: "Data-driven decisions require uniform KPIs and a single source of absolute truth.",
-ai: "Prioritized AI use cases turn artificial intelligence from a buzzword into measurable daily productivity.",
-sovereignty: "Robust data security and compliance guardrails protect your enterprise from existential risks."
-};
-
-const CLUSTERS = [
-"Strategy & Leadership",
-"Go-To-Market",
-"Delivery & Operations",
-"Technology & Data"
-];
-let currentStep = 0;
-
-function compileArchetypeData() {
-DIMS = DIMS_TEMPLATE.map(template => {
-return {
-id: template.id,
-name: typeof template.name === "object" ? template.name[selectedArchetype] : template.name,
-icon: template.icon,
-cluster: template.cluster,
-strategicWeight: template.strategicWeight,
-elements: template.elements.map(el => {
-return {
-t: typeof el.t === "object" ? el.t[selectedArchetype] : el.t,
-w: el.w,
-desc: typeof el.desc === "object" ? el.desc[selectedArchetype] : el.desc
-};
-})
-};
-});
-}
-
-function buildUI() {
-const container = document.getElementById("dimsContainer");
-container.innerHTML = "";
-
-CLUSTERS.forEach((clusterName, stepIdx) => {
-const pane = document.createElement("div");
-pane.className = `step-pane${stepIdx === 0 ? " active" : ""}`;
-pane.id = `stepPane-${stepIdx}`;
-if (stepIdx === 0) {
-pane.style.opacity = "1";
-pane.style.transform = "translateY(0)";
-}
-
-const heading = document.createElement("h2");
-heading.className = "pane-title";
-heading.textContent = clusterName;
-pane.appendChild(heading);
-
-const stepDims = DIMS.filter(d => d.cluster === clusterName);
-
-stepDims.forEach(dim => {
-const card = document.createElement("div");
-card.className = "dim-card";
-card.id = "dc-" + dim.id;
-
-let elsHtml = "";
-dim.elements.forEach((el, idx) => {
-const tt = el.desc ? `<span class="tt-wrap" role="tooltip" tabIndex="0"><span class="tt-icon">?</span><span class="tt-text">${el.desc}</span></span>` : "";
-elsHtml += `<label class="el-label" for="cb-${dim.id}-${idx}">
-                       <input type="checkbox" id="cb-${dim.id}-${idx}" class="dim-cb" data-dim="${dim.id}" data-idx="${idx}">
-                       <div class="el-box"></div>
-                       <span class="el-text">${el.t}${tt}</span>
-                     </label>`;
-});
-
-card.innerHTML = `
-           <div class="dim-head">
-             <div class="dim-title">
-               <div class="dim-icon">${dim.icon}</div>
-               <span class="dim-name">${dim.name}</span>
-             </div>
-             <div class="dim-badge" id="db-${dim.id}">0 / ${dim.elements.length}</div>
-           </div>
-           <div class="elements">${elsHtml}</div>`;
-pane.appendChild(card);
-});
-
-container.appendChild(pane);
-});
-}
-
-function initArchetypeControls() {
-const group = document.getElementById("archetypeSelector");
-group.addEventListener("click", (e) => {
-const btn = e.target.closest(".arch-btn");
-if (!btn) return;
-
-const targetArch = btn.dataset.arch;
-if (targetArch === selectedArchetype) return;
-
-const dynamicCheckedCount = document.querySelectorAll(".dim-cb:checked").length;
-if (dynamicCheckedCount > 0) {
-if (!confirm("Changing your business profile track will wipe all current checkbox selections. Proceed?")) {
-return;
-}
-}
-
-document.querySelectorAll(".arch-btn").forEach(b => b.classList.remove("active"));
-btn.classList.add("active");
-
-selectedArchetype = targetArch;
-
-compileArchetypeData();
-buildUI();
-
-currentStep = 0;
-syncWizardButtonsState();
-updateGlobalProgress();
-
-document.getElementById("results").style.display = "none";
-document.getElementById("leadGate").style.display = "none";
-});
-}
-
-function moveWizardStep(direction) {
-const oldPane = document.getElementById(`stepPane-${currentStep}`);
-oldPane.style.opacity = "0";
-oldPane.style.transform = "translateY(8px)";
-
-setTimeout(() => {
-oldPane.classList.remove("active");
-const prevIndicator = document.querySelector(`[data-step-idx="${currentStep}"]`);
-if (prevIndicator) prevIndicator.classList.remove("active");
-
-currentStep += direction;
-if(currentStep < 0) currentStep = 0;
-if(currentStep > 3) currentStep = 3;
-
-const newPane = document.getElementById(`stepPane-${currentStep}`);
-newPane.classList.add("active");
-
-void newPane.offsetWidth;
-
-newPane.style.opacity = "1";
-newPane.style.transform = "translateY(0)";
-
-const nextIndicator = document.querySelector(`[data-step-idx="${currentStep}"]`);
-if (nextIndicator) nextIndicator.classList.add("active");
-
-syncWizardButtonsState();
-document.getElementById("wizardStepsNav").scrollIntoView({behavior: "smooth", block: "start"});
-}, 150);
-}
-
-function syncWizardButtonsState() {
-document.getElementById("prevStepBtn").style.display = currentStep === 0 ? "none" : "inline-flex";
-
-if (currentStep === 3) {
-document.getElementById("nextStepBtn").style.display = "none";
-document.getElementById("showLeadBtn").style.display = "inline-flex";
-} else {
-document.getElementById("nextStepBtn").style.display = "inline-flex";
-document.getElementById("showLeadBtn").style.display = "none";
-}
-
-CLUSTERS.forEach((_, idx) => {
-const ind = document.querySelector(`[data-step-idx="${idx}"]`);
-if (ind) {
-if (idx === currentStep) {
-ind.classList.add("active");
-} else {
-ind.classList.remove("active");
-}
-}
-});
-}
-
-function updateDimCard(dimId) {
-const checked = document.querySelectorAll(`#dc-${dimId} .dim-cb:checked`).length;
-const total = DIMS.find(d => d.id === dimId).elements.length;
-const badge = document.getElementById(`db-${dimId}`);
-
-badge.textContent = `${checked} / ${total}`;
-
-if (checked === total) {
-badge.className = "dim-badge completed";
-} else if (checked > 0) {
-badge.className = "dim-badge active";
-} else {
-badge.className = "dim-badge";
-}
-}
-
-function updateGlobalProgress() {
-const totalChecked = document.querySelectorAll(".dim-cb:checked").length;
-const assessed = DIMS.filter(d => document.querySelectorAll(`#dc-${d.id} .dim-cb:checked`).length > 0).length;
-
-document.getElementById("progFill").style.width = (assessed / DIMS.length * 100) + "%";
-document.getElementById("progText").textContent = assessed + " of " + DIMS.length + " dimensions assessed";
-document.getElementById("headerCount").textContent = totalChecked;
-document.getElementById("showLeadBtn").disabled = totalChecked === 0;
-
-CLUSTERS.forEach((clusterName, idx) => {
-const clusterDims = DIMS.filter(d => d.cluster === clusterName);
-const allClusterChecked = clusterDims.every(d => {
-const checked = document.querySelectorAll(`#dc-${d.id} .dim-cb:checked`).length;
-return checked > 0;
-});
-
-const stepIndicator = document.querySelector(`[data-step-idx="${idx}"]`);
-if (stepIndicator) {
-if (allClusterChecked) {
-stepIndicator.classList.add("completed");
-} else {
-stepIndicator.classList.remove("completed");
-}
-}
-});
-}
-
-function resetAll() {
-if (!confirm("Clear all selections and start over?")) return;
-document.querySelectorAll(".dim-cb").forEach(cb => {
-cb.checked = false;
-cb.closest('.el-label').classList.remove('is-checked');
-});
-DIMS.forEach(d => updateDimCard(d.id));
-
-document.getElementById(`stepPane-${currentStep}`).classList.remove("active");
-const currentIndicator = document.querySelector(`[data-step-idx="${currentStep}"]`);
-if (currentIndicator) currentIndicator.classList.remove("active");
-
-currentStep = 0;
-const zeroPane = document.getElementById(`stepPane-0`);
-zeroPane.classList.add("active");
-zeroPane.style.opacity = "1";
-zeroPane.style.transform = "translateY(0)";
-
-const zeroIndicator = document.querySelector(`[data-step-idx="0"]`);
-if (zeroIndicator) zeroIndicator.classList.add("active");
-
-syncWizardButtonsState();
-updateGlobalProgress();
-
-document.getElementById("results").style.display = "none";
-document.getElementById("leadGate").style.display = "none";
-window.scrollTo({top: 0, behavior: "smooth"});
-}
-
-function initGlobalApp() {
-compileArchetypeData();
-buildUI();
-initArchetypeControls();
-
-const mainContainer = document.getElementById("dimsContainer");
-mainContainer.addEventListener("change", (e) => {
-if(e.target.classList.contains("dim-cb")) {
-const cb = e.target;
-const label = cb.closest('.el-label');
-if(cb.checked) {
-label.classList.add('is-checked');
-} else {
-label.classList.remove('is-checked');
-}
-updateDimCard(cb.dataset.dim);
-updateGlobalProgress();
-}
-});
-
-document.getElementById("prevStepBtn").addEventListener("click", () => moveWizardStep(-1));
-document.getElementById("nextStepBtn").addEventListener("click", () => moveWizardStep(1));
-document.getElementById("resetBtn").addEventListener("click", resetAll);
-document.getElementById("backBtn").addEventListener("click", function() {
-document.getElementById("results").style.display = "none";
-window.scrollTo({top: 0, behavior: "smooth"});
-});
-
-document.getElementById("showLeadBtn").addEventListener("click", () => {
-const leadGate = document.getElementById("leadGate");
-leadGate.style.display = "block";
-leadGate.scrollIntoView({behavior:"smooth"});
-});
-
-document.getElementById("unlockResultsBtn").addEventListener("click", () => {
-const name = document.getElementById("leadName").value;
-document.getElementById("userGreeting").textContent = name ? `Hello ${name.split(' ')[0]}, here are your results:` : "Your results:";
-document.getElementById("leadGate").style.display = "none";
-evaluate();
-});
-
-document.getElementById("skipLeadBtn").addEventListener("click", () => {
-document.getElementById("userGreeting").textContent = "Your results:";
-document.getElementById("leadGate").style.display = "none";
-evaluate();
-});
-
-updateGlobalProgress();
-}
-
-function calcScore(dimId) {
-const dim = DIMS.find(d => d.id === dimId);
-let totalWeight = 0;
-let checkedWeight = 0;
-
-dim.elements.forEach((el, idx) => {
-const w = el.w || 1.0;
-totalWeight += w;
-const cb = document.getElementById(`cb-${dimId}-${idx}`);
-if (cb && cb.checked) {
-checkedWeight += w;
-}
-});
-
-return totalWeight === 0 ? 0 : parseFloat((checkedWeight / totalWeight * 5).toFixed(2));
-}
-
-function animateScoreCounter(targetValue) {
-const element = document.getElementById("totalScoreEl");
-const duration = 1500; 
-const startTimestamp = performance.now();
-
-function step(now) {
-const progress = now - startTimestamp;
-const percentage = Math.min(progress / duration, 1);
-const easeOutCubic = 1 - Math.pow(1 - percentage, 3);
-const currentCount = easeOutCubic * targetValue;
-
-element.textContent = currentCount.toFixed(1);
-
-if (percentage < 1) {
-requestAnimationFrame(step);
-} else {
-element.textContent = targetValue.toFixed(1);
-}
-}
-requestAnimationFrame(step);
-}
-
-function evaluate() {
-const scores = DIMS.map(function(d) {
-const finalScore = calcScore(d.id);
-const normScore = finalScore / 5;
-const leverage = (1.0 - normScore) * (d.strategicWeight || 1.0);
-const chkCount = document.querySelectorAll(`#dc-${d.id} .dim-cb:checked`).length;
-
-return {
-id: d.id, 
-name: d.name, 
-icon: d.icon, 
-score: finalScore, 
-leverage: leverage,
-checked: chkCount, 
-total: d.elements.length
-};
-});
-
-const avg = scores.reduce(function(s, r) { return s + r.score; }, 0) / scores.length;
-
-animateScoreCounter(avg);
-
-document.getElementById("scoreSubtitle").textContent =
-avg < 1.5 ? "Early Stage — many potentials still untapped." :
-avg < 2.5 ? "Foundations in place — targeted development will pay off." :
-avg < 3.5 ? "Solid organization — well on your way to the top." :
-avg < 4.5 ? "Strong organization — continue to expand and defend your position." :
-"Market Leader Level — continuously optimize!";
-
-const cards = document.getElementById("resCards");
-cards.innerHTML = "";
-scores.forEach(function(r) {
-const pct = r.score / 5 * 100;
-cards.innerHTML += `<div class="res-card" style="opacity:${r.score === 0 ? "0.4" : "1"}">
-         <div class="rc-head"><span class="rc-name">${r.icon} ${r.name}</span><span class="rc-badge">${r.score.toFixed(1)}</span></div>
-         <div class="rc-bar-wrap"><div class="rc-bar" style="width:${pct}%"></div></div>
-         <div class="rc-detail">${r.checked} of ${r.total} elements established</div>
-         </div>`;
-});
-
-drawRadar(scores);
-
-const sorted = scores.slice().sort(function(a, b) { return b.leverage - a.leverage; });
-const top3 = sorted.slice(0, 3);
-const pList = document.getElementById("prioList");
-pList.innerHTML = "";
-
-top3.forEach(function(r, i) {
-const dim = DIMS.find(d => d.id === r.id);
-const missing = dim.elements.filter((_, idx) => !document.getElementById(`cb-${r.id}-${idx}`).checked);
-const hintText = CONTEXT_HINTS[r.id] || "";
-
-let tagsHtml = missing.slice(0, 6).map(el => `<span class="miss-tag">✗ ${el.t}</span>`).join("");
-if(missing.length > 6) tagsHtml += `<span class="miss-tag">+${missing.length - 6} more</span>`;
-
-pList.innerHTML += `<div class="prio-row">
-         <div class="prio-rank">${i + 1}</div>
-         <div class="prio-content">
-           <div class="prio-name">${r.icon} ${r.name} (Score: ${r.score.toFixed(1)})</div>
-           <p style="font-size: 0.8rem; color: #4a5568; margin-bottom: 8px; font-style: italic; line-height: 1.4;">${hintText}</p>
-           <div class="prio-missing">${tagsHtml}</div>
-         </div>
-       </div>`;
-});
-
-document.getElementById("results").style.display = "block";
-setTimeout(() => document.getElementById("results").scrollIntoView({behavior: "smooth", block: "start"}), 80);
-}
-
-function drawRadar(scores) {
-const svg = document.getElementById("radarSvg");
-const N = scores.length;
-const cx = 270, cy = 255, maxR = 155, labelR = 195;
-
-let html = `
-       <defs>
-         <linearGradient id="radarGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-           <stop offset="0%" stop-color="var(--tk-teal)" stop-opacity="0.4" />
-           <stop offset="100%" stop-color="var(--tk-mint)" stop-opacity="0.15" />
-         </linearGradient>
-         <filter id="radarShadow" x="-20%" y="-20%" width="140%" height="140%">
-           <drop-shadow dx="0" dy="4" stdDeviation="6" flood-color="var(--tk-blue)" flood-opacity="0.15"/>
-         </filter>
-       </defs>
-     `;
-
-for (let g = 1; g <= 5; g++) {
-const r = g / 5 * maxR;
-html += `<circle cx="${cx}" cy="${cy}" r="${r.toFixed(1)}" fill="none" stroke="#cbd5e0" stroke-opacity="0.35" stroke-width="1"/>`;
-html += `<text x="${cx + 4}" y="${(cy - r + 9).toFixed(1)}" font-size="9" font-weight="600" fill="#a0aec0">${g}</text>`;
-}
-
-const polyPoints = [];
-for (let i = 0; i < N; i++) {
-const angle = (i / N) * 2 * Math.PI - Math.PI / 2;
-const xa = cx + maxR * Math.cos(angle);
-const ya = cy + maxR * Math.sin(angle);
-html += `<line x1="${cx}" y1="${cy}" x2="${xa.toFixed(1)}" y2="${ya.toFixed(1)}" stroke="#e2e8f0" stroke-opacity="0.6" stroke-width="1"/>`;
-
-const lx = cx + labelR * Math.cos(angle);
-const ly = cy + labelR * Math.sin(angle);
-const anchor = Math.cos(angle) > 0.15 ? "start" : Math.cos(angle) < -0.15 ? "end" : "middle";
-const dy = Math.sin(angle) > 0.5 ? "1em" : Math.sin(angle) < -0.5 ? "0" : ".35em";
-html += `<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" dy="${dy}" text-anchor="${anchor}" font-size="10" font-family="system-ui,sans-serif" font-weight="600" fill="#4a5568">${scores[i].icon || ""} ${scores[i].name}</text>`;
-
-const sr = scores[i].score / 5 * maxR;
-polyPoints.push(`${(cx + sr * Math.cos(angle)).toFixed(1)},${(cy + sr * Math.sin(angle)).toFixed(1)}`);
-}
-
-html += `<polygon points="${polyPoints.join(" ")}" fill="url(#radarGrad)" stroke="var(--tk-teal)" stroke-width="2.5" stroke-linejoin="round" filter="url(#radarShadow)"/>`;
-
-for (let i = 0; i < N; i++) {
-const angle2 = (i / N) * 2 * Math.PI - Math.PI / 2;
-const sr2 = scores[i].score / 5 * maxR;
-html += `<circle cx="${(cx + sr2 * Math.cos(angle2)).toFixed(1)}" cy="${(cy + sr2 * Math.sin(angle2)).toFixed(1)}" r="4" fill="#071727" stroke="#58f5a6" stroke-width="1.5"/>`;
-}
-
-svg.innerHTML = html;
-}
-
-document.getElementById("downloadPdfBtn").addEventListener("click", () => {
-const element = document.getElementById('pdfContent');
-const opt = {
-margin: 10,
-filename: 'Tektit_Maturity_Report.pdf',
-image: { type: 'jpeg', quality: 0.98 },
-html2canvas: { scale: 2 },
-jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-};
-html2pdf().set(opt).from(element).save();
-});
-
-initGlobalApp();
-</script>
+  <header class="top-bar">
+    <div class="top-bar-left">
+      <img src="TEKTIT_Cons-Logo_color-white.png" alt="Tektit Consulting Logo">
+      <h1>Tektit Maturity Check</h1>
+    </div>
+    <div class="top-bar-right">
+      <div class="header-status-text" id="progText">0 of 12 dimensions assessed</div>
+      <div class="progress-pill">Selected: <span id="headerCount">0</span></div>
+    </div>
+    <div class="header-progress-track">
+      <div class="header-progress-fill" id="progFill"></div>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="intro" id="introSection">
+      <h2>Most companies don't know where they actually stand.</h2>
+      <p>They invest in tools, hire talent, and run initiatives — yet growth stalls, decisions slow down, and the same bottlenecks keep coming back. The reason is almost always the same: blind spots in organizational maturity.</p>
+      <p>The <strong>Tektit Maturity Check</strong> gives you an honest, structured snapshot of your organization across 12 critical dimensions — from Leadership and Sales to AI readiness and Data Sovereignty.</p>
+    </section>
+
+    <section class="archetype-selector-card" id="archetypeSelector">
+      <h3>Select your organization's primary business profile:</h3>
+      <div class="archetype-grid">
+        <button type="button" class="arch-btn active" data-arch="digital">🌐 Pure Digital / SaaS / Tech Products</button>
+        <button type="button" class="arch-btn" data-arch="services">💼 Professional Services / Agencies</button>
+        <button type="button" class="arch-btn" data-arch="mittelstand">🏭 Traditional Mittelstand / Industrial</button>
+        <button type="button" class="arch-btn" data-arch="logistics">🚚 Retail / E-Com / Logistics Heavy</button>
+      </div>
+    </section>
+    
+    <div class="wizard-header" id="wizardHeader">
+      <div class="wizard-steps" id="wizardStepsNav">
+        <div class="wiz-step active" data-step-idx="0">1. Strategy & Leadership</div>
+        <div class="wiz-step" data-step-idx="1">2. Go-To-Market</div>
+        <div class="wiz-step" data-step-idx="2">3. Operations</div>
+        <div class="wiz-step" data-step-idx="3">4. Tech & Data</div>
+      </div>
+    </div>
+
+    <section id="dimsContainer" aria-label="Maturity Dimensions Wizard Checklist"></section>
+
+    <div class="btn-group" id="wizardActionButtons">
+      <button type="button" class="btn btn-ghost" id="prevStepBtn" style="display: none;">⬅️ Previous Pillar</button>
+      <button type="button" class="btn btn-primary" id="nextStepBtn">Next Pillar ➡️</button>
+      <button type="button" class="btn btn-primary" id="showLeadBtn" style="display: none;" disabled>📊 Generate analysis</button>
+      <button type="button" class="btn btn-ghost" id="resetBtn">Reset All</button>
+    </div>
+
+    <section id="leadGate" class="lead-gate">
+      <img src="Tektit Consulting Bildmarke square.png" alt="Tektit Consulting" class="lead-logo" loading="lazy">
+      <h2>Unlock Your Custom Execution Roadmap</h2>
+      <p>Enter your contact details below to map your interactive <strong>Maturity Radar Chart</strong>, unlock tailored reports, and instantly generate your comprehensive performance dashboard.</p>
+      
+      <div class="lead-form">
+        <div>
+          <label for="leadName" class="sr-only">Your name</label>
+          <input type="text" id="leadName" placeholder="Your name" required>
+        </div>
+        <div>
+          <label for="leadEmail" class="sr-only">Your email address</label>
+          <input type="email" id="leadEmail" placeholder="Your work email address" required>
+        </div>
+        <button type="button" class="btn btn-teal" id="unlockResultsBtn">Unlock Full Performance Analysis 📊</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Configuration templates array
+    const DIMS_TEMPLATE = [
+      {id:"leadership", name:{digital:"Leadership", services:"Leadership & Talent", mittelstand:"Leadership & Governance", logistics:"Leadership & Control"}, cluster:"Strategy & Leadership", elements:[
+        {t:{digital:"Everyone in our company knows our direction and who we're building for.", services:"Everyone in our company knows our core service focus and what kind of clients we specialize in serving.", mittelstand:"Everyone across our workforce knows our long-term market position and where the company is heading.", logistics:"Everyone in our company knows our network growth plans and our key operational priorities."}, w: 2.0},
+        {t:"We actively invest in our culture — through rituals, leadership behavior, and how we handle failure.", w: 1.0},
+        {t:{digital:"We use a structured goal system (e.g. OKRs) so every team knows what they're working toward.", services:"We use a structured tracking system to balance project goals with team utilization requirements.", mittelstand:"We have clear targets that translate top-down business goals down to the production floor layers.", logistics:"We use clear performance metrics to align daily terminal delivery targets with corporate goals."}, w: 1.5},
+        {t:{digital:"Our people can make decisions in their area without needing constant sign-off from above.", services:"Our delivery teams can manage client accounts and project choices independently.", mittelstand:"We have clear, documented guidelines that spell out who can make which operational choices.", logistics:"Our operational teams can resolve routing and transit issues on the fly without waiting for approval."}, w: 1.0},
+        {t:"We have regular processes for internal feedback and resolving disagreements constructively.", w: 1.0}
+      ]},
+      {id:"innovation", name:"Innovation", cluster:"Strategy & Leadership", elements:[
+        {t:"We have a clear strategy for how we stay distinctly different from our competitors.", w: 1.5},
+        {t:{digital:"We protect time and budget for testing new product ideas — separate from day-to-day delivery.", services:"We protect unbillable time for building internal templates, assets, or methodologies.", mittelstand:"We set aside explicit capital and engineering time for research and physical product experiments.", logistics:"We actively budget time to test new workflow improvements and transit route optimizations."}, w: 1.0},
+        {t:{digital:"We systematically collect user feedback and use it to improve our software products.", services:"We run regular post-project reviews with clients to systematically improve our service delivery.", mittelstand:"We use structured market feedback loops to drive physical product adjustments.", logistics:"We systematically review delivery performance data to optimize our supply chain pipelines."}, w: 1.5}
+      ]},
+      {id:"finance", name:"Finance & Business Model", cluster:"Strategy & Leadership", elements:[
+        {t:"We maintain a live P&L and track cash flow to guide our decisions.", w: 1.0},
+        {t:{digital:"We know what it costs to acquire a software customer and how much value they generate over time.", services:"We have full visibility into project margins, target utilization rates, and true hourly costs.", mittelstand:"We have full clarity on asset depreciation, material waste metrics, and raw margin breakdowns.", logistics:"We know our exact fulfillment processing costs, fuel margins, and payload efficiencies."}, w: 1.5},
+        {t:{digital:"Our pricing reflects the value we deliver — not just our software costs or competitor rates.", services:"We use standardized pricing models (like retainers or value pricing) instead of just billing loose hours.", mittelstand:"Our pricing systematically accounts for volume breaks, raw material shifts, and machinery cost.", logistics:"Our tariff rates adjust dynamically to changes in shipping volume, warehouse load spikes, and regional costs."}, w: 1.5},
+        {t:{digital:"We know how we plan to scale our user base profitably and how we'll fund that growth.", services:"Our hiring plans map cleanly to our upcoming contract backlog to protect cash margins.", mittelstand:"Our capital investments in equipment scale systematically based on factory capacity demands.", logistics:"Our fleet expansions and warehouse leases are tied directly to long-term volume commitments."}, w: 1.0}
+      ]},
+      {id:"sales", name:"Sales & Marketing", cluster:"Go-To-Market", elements:[
+        {t:"Our value proposition is clear and consistent — across website, sales calls, and proposals.", w: 2.0},
+        {t:{digital:"We use a central CRM to track all software sales leads and interactions in one place.", services:"We use a central pipeline matrix to track consulting proposals and contract stages.", mittelstand:"We use a central pipeline to manage multi-stage distributor relationships and large corporate deals.", logistics:"We use a centralized bidding system to log and track incoming customer tender requests."}, w: 1.0},
+        {t:{digital:"Our sales team has a clear software pipeline process and the materials/training to execute it.", services:"Our team uses standardized key account pitch decks and custom proposal frameworks.", mittelstand:"We provide our field network with structured sales materials, training, and configured product catalogs.", logistics:"Our account executives use unified contract templates and automated routing scenarios to close deals."}, w: 1.5},
+        {t:{digital:"Marketing generates a predictable flow of inbound leads with clear handover criteria to sales.", services:"Our thought leadership and industry presence generate a predictable flow of client inquiries.", mittelstand:"Our industrial trade presence and product certifications generate verified wholesale opportunities.", logistics:"Our digital platforms systematically bring in high-volume commercial shipping accounts."}, w: 1.5},
+        {t:"We actively monitor our competitors and market trends to inform our go-to-market decisions.", w: 1.0}
+      ]},
+      {id:"ecosystem", name:"Ecosystem & Partners", cluster:"Go-To-Market", elements:[
+        {t:{digital:"We have strategic distribution or channel partners that help us scale our market reach.", services:"We have a reliable pool of vetted sub-contractors or freelancers to handle project spikes.", mittelstand:"We have long-term relationships with vetted component suppliers and production logistics vendors.", logistics:"We have integrated network partners to handle non-standard transit legs or last-mile extensions cleanly."}, w: 1.0},
+        {t:{digital:"Third parties can securely connect to our software product via clearly defined APIs.", services:"We use unified project portals and shared digital spaces to collaborate directly with clients.", mittelstand:"We use electronic data interchange (EDI) systems to link our suppliers directly to production lines.", logistics:"We use standard API connectors to plug external e-commerce shops directly into our dispatch systems."}, w: 1.0},
+        {t:{digital:"We actively onboard, enable, and review our channel partners — not just sign contracts.", services:"We have a standardized process to source, vet, and check compliance for external contractors.", mittelstand:"We systematically enforce quality review metrics and procurement standards for all suppliers.", logistics:"We continuously monitor sub-carrier safety records and performance standards."}, w: 1.0},
+        {t:{digital:"We have an active community of users or developers who engage beyond simple transactions.", services:"We maintain an active alumni or expert network that refers talent and new business deals.", mittelstand:"We have a reliable network of authorized maintenance and service partners across our regions.", logistics:"We utilize a broad, dependable broker network to balance line-haul capacity and load drops."}, w: 1.0}
+      ]},
+      {id:"ops", name:"Operations", cluster:"Delivery & Operations", elements:[
+        {t:"Our key recurring processes are documented digitally and regularly reviewed for improvement.", w: 1.5},
+        {t:"We make decisions based on data and clear responsibilities — not via endless escalation.", w: 1.0},
+        {t:{digital:"We track team workload and proactively manage capacity to prevent engineering burnout.", services:"We actively project consulting schedules to match upcoming workloads and protect team bench metrics.", mittelstand:"We optimize shift schedules and machine loads to safely maximize factory output capacity.", logistics:"We coordinate driver hours-of-service rules with our terminal layouts to build smart schedules."}, w: 1.0},
+        {t:{digital:"We measure customer support metrics and product usage patterns to act on customer satisfaction.", services:"We track project health scores and client Net Promoter Scores (NPS) consistently.", mittelstand:"We track manufacturing yield ratios and run systematic quality assurance tests on production lines.", logistics:"We measure our On-Time In-Full (OTIF) fulfillment rates and freight claim frequencies tightly."}, w: 1.5}
+      ]},
+      {id:"devorg", name:{digital:"Product & Engineering", services:"Service Delivery Org", mittelstand:"Engineering & R&D Org", logistics:"Fleet & Network Architecture"}, cluster:"Technology & Data", elements:[
+        {t:{digital:"We have a product roadmap that connects our long-term vision to what the team is building now.", services:"We have a clear portfolio strategy and delivery frameworks to standardize our service offerings.", mittelstand:"We use structured engineering design blueprints to control our product development lifecycles.", logistics:"Our network layout, hub footprint, and capacity plans connect directly to long-term business goals."}, w: 2.0},
+        {t:{digital:"Our development teams work in structured, iterative cycles (e.g. Scrum or Kanban).", services:"We use clear phase-tracking and milestone rules to keep complex client projects on time.", mittelstand:"We use structured stage-gate development lifecycles to manage product changes safely.", logistics:"We use dynamic assignment rules to shift transport assets instantly as volumes fluctuate."}, w: 1.0},
+        {t:{digital:"Our engineering team follows documented standards for code quality and technical architecture.", services:"Our delivery teams follow standard quality rubrics and use uniform templates for all deliverables.", mittelstand:"Our team follows strict engineering design guidelines and clear component specification baselines.", logistics:"We enforce uniform terminal processing guidelines and clear packaging standard rules across the network."}, w: 1.5},
+        {t:{digital:"Roadmap priorities are tied to company goals (e.g. revenue, retention) — not just feature requests.", services:"Changes to our service portfolio link directly to business profitability and market revenue data.", mittelstand:"Our engineering and R&D initiatives link directly to clear manufacturing cost and margin targets.", logistics:"Our network distribution upgrades are chosen based on asset efficiency and truck utilization data."}, w: 1.0}
+      ]},
+      {id:"devops", name:{digital:"Tech Infrastructure & Automation", services:"Workspace Automation", mittelstand:"Industrial IT / OT Infrastructure", logistics:"Fulfillment & Fleet Tech"}, cluster:"Technology & Data", elements:[
+        {t:{digital:"Routine setup tasks (servers, environments) run via automated scripts — not manual steps.", services:"Setting up client workspaces, directories, and internal profiles is automated via scripts.", mittelstand:"Our plant communication systems utilize secure, automated scripts to push routine firmware updates.", logistics:"Fulfillment hardware profiles and automated sorting rules run via pre-configured scripts."}, w: 1.0},
+        {t:{digital:"We manage our infrastructure through code (IaC) rather than manual configuration.", services:"We use automated cloud templates to spin up and secure new client storage spaces instantly.", mittelstand:"We manage factory network configurations digitally rather than through hands-on manual wiring.", logistics:"We update and configure device configurations remotely through central scripts rather than manual tool checks."}, w: 1.5},
+        {t:{digital:"We have CI/CD pipelines that automatically test and deploy code changes.", services:"Our project tracking systems automatically update and link internal platforms upon deal closure.", mittelstand:"We use secure industrial firewalls to isolate critical plant machinery from general office IT networks.", logistics:"Our dispatch tracking platform pushes cargo trajectory updates directly to clients automatically."}, w: 2.0},
+        {t:{digital:"Our system configurations are version-controlled so changes are tracked and reversible.", services:"Our master operational playbooks, templates, and frameworks are managed centrally through version tracking.", mittelstand:"Our factory automation scripts are version-controlled to secure precision manufacturing setups.", logistics:"Our fleet tracking parameters are controlled via a central, versioned device management platform."}, w: 1.0},
+        {t:"We have monitoring in place that alerts us to infrastructure issues before they cause outages.", w: 1.0}
+      ]},
+      {id:"itlandscape", name:"Core Systems & Integration", cluster:"Technology & Data", elements:[
+        {t:{digital:"Our core platforms (ERP, CRM) are the central source of record for business operations.", services:"Our professional services automation (PSA) system serves as the central anchor for project operations.", mittelstand:"Our core enterprise resource planning (ERP) system serves as the definitive source of truth for business operations.", logistics:"Our transportation and warehouse management systems (TMS/WMS) serve as the operational anchors for our data."}, w: 2.0},
+        {t:"Our key systems exchange data automatically — no manual exports or copy-paste between tools.", w: 1.5},
+        {t:"Workflows that span multiple systems run automatically without manual handoffs.", w: 1.0}
+      ]},
+      {id:"data", name:"Data & Analytics", cluster:"Technology & Data", elements:[
+        {t:"We have a clear data strategy defining what we collect, how we use it, and how we protect it.", w: 1.5},
+        {t:"We use dashboards to make business decisions based on data — not gut feel or spreadsheets.", w: 1.5},
+        {t:"Every team uses the same KPI definitions — Finance, Sales, and Ops all report the same numbers.", w: 2.0},
+        {t:"We have automated checks to catch and clean bad data before it corrupts our reports.", w: 1.0},
+        {t:"Our key reports and dashboards reflect live data — not yesterday's export.", w: 1.0},
+        {t:"All our business systems pull from a single source of truth — no contradictory numbers.", w: 1.5}
+      ]},
+      {id:"ai", name:"Artificial Intelligence", cluster:"Technology & Data", elements:[
+        {t:"We have a clear AI strategy that identifies where AI creates the most value for us — and in what order we tackle it.", w: 1.5},
+        {t:{digital:"Our product data is structured and clean enough to actually power advanced AI models.", services:"Our case studies, delivery assets, and templates are indexed so internal AI models can query them.", mittelstand:"Our historical production logs and manufacturing metrics are clean enough to train predictive patterns.", logistics:"Our historical route records and warehouse volume archives are clean and structured for machine learning."}, w: 2.0},
+        {t:"We have clear rules for how AI tools are used — including data privacy, approvals, and risk.", w: 1.0},
+        {t:{digital:"Our team is trained to use AI tools effectively and safely in their day-to-day work.", services:"Our consultants use generative AI tools safely to draft reports, run market analysis, and prepare briefs.", mittelstand:"Our engineering teams use AI models to run simulation models or optimize floor setups.", logistics:"Our dispatch and logistics coordinators use predictive AI models to optimize routes and payload margins."}, w: 1.5},
+        {t:"AI actively handles parts of our workflow — automating decisions, predictions, or repetitive analysis.", w: 1.0}
+      ]},
+      {id:"sovereignty", name:"Security & Compliance", cluster:"Technology & Data", elements:[
+        {t:"Our data storage and processing comply with applicable privacy regulations (e.g. GDPR).", w: 1.5},
+        {t:"We have automated backups and a tested plan to recover from data loss or a system failure.", w: 2.0},
+        {t:"We can restore full business operations within 24 hours of a major outage.", w: 1.5},
+        {t:"Access to sensitive data is restricted by role — and these permissions are regularly reviewed.", w: 1.0},
+        {t:{digital:"We hold recognized security certifications (e.g. ISO 27001, SOC 2) or are actively working toward them.", services:"We maintain official data isolation parameters and pass customer-mandated data security audits.", mittelstand:"We maintain auditable intellectual property controls and standard industrial quality compliance baselines.", logistics:"We hold validated international customs profiles and strict warehouse asset security certifications."}, w: 1.0}
+      ]}
+    ];
+
+    let DIMS = []; 
+    let selectedArchetype = "digital";
+    const CLUSTERS = ["Strategy & Leadership", "Go-To-Market", "Delivery & Operations", "Technology & Data"];
+    let currentStep = 0;
+
+    function compileArchetypeData() {
+      DIMS = DIMS_TEMPLATE.map(template => ({
+        id: template.id,
+        name: typeof template.name === "object" ? template.name[selectedArchetype] : template.name,
+        cluster: template.cluster,
+        elements: template.elements.map(el => ({
+          t: typeof el.t === "object" ? el.t[selectedArchetype] : el.t,
+          w: el.w
+        }))
+      }));
+    }
+
+    function buildUI() {
+      const container = document.getElementById("dimsContainer");
+      container.innerHTML = "";
+
+      CLUSTERS.forEach((clusterName, stepIdx) => {
+        const pane = document.createElement("div");
+        pane.className = `step-pane${stepIdx === 0 ? " active" : ""}`;
+        pane.id = `stepPane-${stepIdx}`;
+        if (stepIdx === 0) {
+          pane.style.opacity = "1";
+          pane.style.transform = "translateY(0)";
+        }
+        
+        const heading = document.createElement("h2");
+        heading.className = "pane-title";
+        heading.textContent = clusterName;
+        pane.appendChild(heading);
+
+        const stepDims = DIMS.filter(d => d.cluster === clusterName);
+        
+        stepDims.forEach(dim => {
+          const card = document.createElement("div");
+          card.className = "dim-card";
+          card.id = "dc-" + dim.id;
+          
+          let elsHtml = "";
+          dim.elements.forEach((el, idx) => {
+            elsHtml += `<label class="el-label" for="cb-${dim.id}-${idx}">
+                        <input type="checkbox" id="cb-${dim.id}-${idx}" class="dim-cb" data-dim="${dim.id}" data-idx="${idx}">
+                        <div class="el-box"></div>
+                        <span class="el-text">${el.t}</span>
+                      </label>`;
+          });
+          
+          card.innerHTML = `
+            <div class="dim-head">
+              <span class="dim-name">${dim.name}</span>
+              <div class="dim-badge" id="db-${dim.id}">0 / ${dim.elements.length}</div>
+            </div>
+            <div class="elements">${elsHtml}</div>`;
+          pane.appendChild(card);
+        });
+        container.appendChild(pane);
+      });
+    }
+
+    function initArchetypeControls() {
+      document.getElementById("archetypeSelector").addEventListener("click", (e) => {
+        const btn = e.target.closest(".arch-btn");
+        if (!btn) return;
+        
+        const targetArch = btn.dataset.arch;
+        if (targetArch === selectedArchetype) return;
+
+        if (document.querySelectorAll(".dim-cb:checked").length > 0) {
+          if (!confirm("Changing your business profile track will wipe all current checkbox selections. Proceed?")) return;
+        }
+
+        document.querySelectorAll(".arch-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        
+        selectedArchetype = targetArch;
+        compileArchetypeData();
+        buildUI();
+        currentStep = 0;
+        syncWizardButtonsState();
+        updateGlobalProgress();
+        document.getElementById("leadGate").style.display = "none";
+      });
+    }
+
+    function moveWizardStep(direction) {
+      const oldPane = document.getElementById(`stepPane-${currentStep}`);
+      oldPane.style.opacity = "0";
+      oldPane.style.transform = "translateY(8px)";
+      
+      setTimeout(() => {
+        oldPane.classList.remove("active");
+        currentStep += direction;
+
+        const newPane = document.getElementById(`stepPane-${currentStep}`);
+        newPane.classList.add("active");
+        void newPane.offsetWidth;
+        newPane.style.opacity = "1";
+        newPane.style.transform = "translateY(0)";
+
+        syncWizardButtonsState();
+        document.getElementById("wizardStepsNav").scrollIntoView({behavior: "smooth", block: "start"});
+      }, 150);
+    }
+
+    function syncWizardButtonsState() {
+      document.getElementById("prevStepBtn").style.display = currentStep === 0 ? "none" : "inline-flex";
+      
+      if (currentStep === 3) {
+        document.getElementById("nextStepBtn").style.display = "none";
+        document.getElementById("showLeadBtn").style.display = "inline-flex";
+      } else {
+        document.getElementById("nextStepBtn").style.display = "inline-flex";
+        document.getElementById("showLeadBtn").style.display = "none";
+      }
+
+      CLUSTERS.forEach((_, idx) => {
+        const ind = document.querySelector(`[data-step-idx="${idx}"]`);
+        if (ind) ind.classList.toggle("active", idx === currentStep);
+      });
+    }
+
+    function updateDimCard(dimId) {
+      const checked = document.querySelectorAll(`#dc-${dimId} .dim-cb:checked`).length;
+      const total = DIMS.find(d => d.id === dimId).elements.length;
+      const badge = document.getElementById(`db-${dimId}`);
+      badge.textContent = `${checked} / ${total}`;
+      
+      if (checked === total) badge.className = "dim-badge completed";
+      else if (checked > 0) badge.className = "dim-badge active";
+      else badge.className = "dim-badge";
+    }
+
+    function updateGlobalProgress() {
+      const totalChecked = document.querySelectorAll(".dim-cb:checked").length;
+      const assessed = DIMS.filter(d => document.querySelectorAll(`#dc-${d.id} .dim-cb:checked`).length > 0).length;
+      
+      document.getElementById("progFill").style.width = (assessed / DIMS.length * 100) + "%";
+      document.getElementById("progText").textContent = assessed + " of " + DIMS.length + " dimensions assessed";
+      document.getElementById("headerCount").textContent = totalChecked;
+      document.getElementById("showLeadBtn").disabled = totalChecked === 0;
+
+      CLUSTERS.forEach((clusterName, idx) => {
+        const clusterDims = DIMS.filter(d => d.cluster === clusterName);
+        const allClusterChecked = clusterDims.every(d => document.querySelectorAll(`#dc-${d.id} .dim-cb:checked`).length > 0);
+        const stepIndicator = document.querySelector(`[data-step-idx="${idx}"]`);
+        if (stepIndicator) stepIndicator.classList.toggle("completed", allClusterChecked);
+      });
+    }
+
+    function resetAll() {
+      if (!confirm("Clear all selections and start over?")) return;
+      document.querySelectorAll(".dim-cb").forEach(cb => {
+        cb.checked = false;
+        cb.closest('.el-label').classList.remove('is-checked');
+      });
+      DIMS.forEach(d => updateDimCard(d.id));
+      
+      document.getElementById(`stepPane-${currentStep}`).classList.remove("active");
+      currentStep = 0;
+      const zeroPane = document.getElementById(`stepPane-0`);
+      zeroPane.classList.add("active");
+      zeroPane.style.opacity = "1";
+      zeroPane.style.transform = "translateY(0)";
+      
+      syncWizardButtonsState();
+      updateGlobalProgress();
+      document.getElementById("leadGate").style.display = "none";
+      window.scrollTo({top: 0, behavior: "smooth"});
+    }
+
+    function initGlobalApp() {
+      compileArchetypeData();
+      buildUI();
+      initArchetypeControls();
+
+      document.getElementById("dimsContainer").addEventListener("change", (e) => {
+        if(e.target.classList.contains("dim-cb")) {
+          const cb = e.target;
+          cb.closest('.el-label').classList.toggle('is-checked', cb.checked);
+          updateDimCard(cb.dataset.dim);
+          updateGlobalProgress();
+        }
+      });
+
+      document.getElementById("prevStepBtn").addEventListener("click", () => moveWizardStep(-1));
+      document.getElementById("nextStepBtn").addEventListener("click", () => moveWizardStep(1));
+      document.getElementById("resetBtn").addEventListener("click", resetAll);
+      
+      document.getElementById("showLeadBtn").addEventListener("click", () => {
+        document.getElementById("leadGate").style.display = "block";
+        document.getElementById("leadGate").scrollIntoView({behavior: "smooth", block: "center"});
+      });
+
+      document.getElementById("unlockResultsBtn").addEventListener("click", () => {
+        const nameInput = document.getElementById("leadName");
+        const emailInput = document.getElementById("leadEmail");
+        
+        if (!nameInput.value || !emailInput.checkValidity() || !emailInput.value) {
+          alert("Please fill in valid work contact credentials to generate your report.");
+          return;
+        }
+
+        // Package selections map state
+        const checkedStates = {};
+        document.querySelectorAll(".dim-cb").forEach(cb => {
+          if (cb.checked) {
+            if (!checkedStates[cb.dataset.dim]) checkedStates[cb.dataset.dim] = [];
+            checkedStates[cb.dataset.dim].push(parseInt(cb.dataset.idx));
+          }
+        });
+
+        const assessmentPayload = {
+          userName: nameInput.value,
+          userEmail: emailInput.value,
+          archetype: selectedArchetype,
+          selections: checkedStates
+        };
+
+        localStorage.setItem("tektit_maturity_data", JSON.stringify(assessmentPayload));
+        window.location.href = "report.html";
+      });
+    }
+
+    initGlobalApp();
+  </script>
 </body>
 </html>
