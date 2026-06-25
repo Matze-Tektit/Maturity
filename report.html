@@ -147,7 +147,6 @@
       padding: 24px 20px;
       border: none !important;
       border-top: 1px solid var(--tk-dark) !important;
-      transition: background var(--transition-fast);
     }
     
     .rc-head {
@@ -248,7 +247,7 @@
       color: var(--tk-dark) !important;
     }
 
-    /* ── Clean Advisory Blocks (No Fillers) ── */
+    /* ── Clean Advisory Blocks ── */
     .diagnostic-text {
       font-size: 1rem !important;
       color: #4a5568 !important;
@@ -321,6 +320,20 @@
       margin-bottom: 32px !important;
     }
 
+    .minto-booking-btn {
+      display: inline-block;
+      background: var(--tk-dark);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 16px 32px;
+      font-weight: 600;
+      border-radius: 6px;
+      transition: background 0.2s ease;
+    }
+    .minto-booking-btn:hover {
+      background: var(--tk-teal);
+    }
+
     .pdf-footer-block {
       margin-top: 48px;
       padding-top: 24px;
@@ -348,7 +361,6 @@
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      transition: all var(--transition-fast);
     }
     
     .btn-primary { background: var(--tk-dark); color: #fff; }
@@ -445,7 +457,6 @@
   </main>
 
   <script>
-    // System weights template array
     const DIMS_TEMPLATE = [
       {id:"leadership", name:{digital:"Leadership", services:"Leadership & Talent", mittelstand:"Leadership & Governance", logistics:"Leadership & Control"}, icon:"🧭", strategicWeight: { digital: 1.5, services: 1.5, mittelstand: 1.5, logistics: 1.5 }, elements:[{w:2.0},{w:1.0},{w:1.5},{w:1.0},{w:1.0}]},
       {id:"innovation", name:"Innovation", icon:"💡", strategicWeight: { digital: 1.2, services: 1.1, mittelstand: 1.1, logistics: 1.1 }, elements:[{w:1.5},{w:1.0},{w:1.5}]},
@@ -502,7 +513,8 @@
       }
 
       const payload = JSON.parse(rawData);
-      const arch = payload.archetype;
+      const arch = payload.archetype || "digital";
+      
       if (payload.userName) {
         clientNameString = payload.userName.replace(/[^a-zA-Z0-9]/g, "_");
         document.getElementById("userGreeting").textContent = `Hello ${payload.userName.split(' ')[0]}, Here Are Your Preliminary Results:`;
@@ -511,13 +523,16 @@
       const calculatedScores = DIMS_TEMPLATE.map(template => {
         const dimId = template.id;
         const name = typeof template.name === "object" ? template.name[arch] : template.name;
-        const weightMultiplier = template.strategicWeight[arch];
+        const weightMultiplier = template.strategicWeight[arch] || 1.0;
         
         let totalWeight = 0;
         let checkedWeight = 0;
         const checks = payload.selections[dimId] || [];
 
-        template.elements.forEach((el, idx) => { totalWeight += el.w; if (checks.includes(idx)) checkedWeight += el.w; });
+        template.elements.forEach((el, idx) => { 
+          totalWeight += el.w; 
+          if (checks.includes(idx)) checkedWeight += el.w; 
+        });
 
         const finalScore = totalWeight > 0 ? (checkedWeight / totalWeight) * 5.0 : 0;
         const leverage = (1.0 - (finalScore / 5)) * weightMultiplier;
@@ -555,4 +570,131 @@
       top3.forEach((r, i) => {
         prioList.innerHTML += `
           <div class="prio-row">
-            <div class="prio-rank">${i + 1}
+            <div class="prio-rank">${i + 1}</div>
+            <div class="prio-content">
+              <div class="prio-name">${r.icon} ${r.name} (Score: ${r.score.toFixed(1)}/5.0)</div>
+              <p class="diagnostic-text" style="font-weight: 600; margin-bottom: 4px; color: #071727;">${CONTEXT_HINTS[r.id] || ''}</p>
+              <p class="diagnostic-text">${ACTIONABLE_NEXT_STEPS[r.id] || ''}</p>
+            </div>
+          </div>`;
+      });
+    }
+
+    function animateScoreCounter(targetScore) {
+      const el = document.getElementById("totalScoreEl");
+      let current = 0;
+      const duration = 1200;
+      const stepTime = 30;
+      const steps = duration / stepTime;
+      const increment = targetScore / steps;
+      
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= targetScore) {
+          clearInterval(timer);
+          el.textContent = targetScore.toFixed(1);
+        } else {
+          el.textContent = current.toFixed(1);
+        }
+      }, stepTime);
+    }
+
+    function drawRadarChart(scores) {
+      const svg = document.getElementById("radarSvg");
+      svg.innerHTML = ""; 
+      
+      const cx = 290, cy = 250, rMax = 170;
+      const numDims = scores.length;
+      
+      // Concentric background grid lines (1-5 layers)
+      for (let i = 1; i <= 5; i++) {
+        const r = (rMax / 5) * i;
+        const points = [];
+        for (let j = 0; j < numDims; j++) {
+          const angle = (j * 2 * Math.PI / numDims) - Math.PI / 2;
+          points.push(`${cx + r * Math.cos(angle)},${cy + r * Math.sin(angle)}`);
+        }
+        const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+        polygon.setAttribute("points", points.join(" "));
+        polygon.setAttribute("fill", "none");
+        polygon.setAttribute("stroke", "#e2e8f0");
+        polygon.setAttribute("stroke-width", "1");
+        svg.appendChild(polygon);
+      }
+      
+      const dataPoints = [];
+      scores.forEach((s, j) => {
+        const angle = (j * 2 * Math.PI / numDims) - Math.PI / 2;
+        
+        // Axis Ray line
+        const xMax = cx + rMax * Math.cos(angle);
+        const yMax = cy + rMax * Math.sin(angle);
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", cx);
+        line.setAttribute("y1", cy);
+        line.setAttribute("x2", xMax);
+        line.setAttribute("y2", yMax);
+        line.setAttribute("stroke", "#edf2f7");
+        line.setAttribute("stroke-width", "1");
+        svg.appendChild(line);
+        
+        // Axis label placings
+        const labelR = rMax + 28;
+        const labelX = cx + labelR * Math.cos(angle);
+        const labelY = cy + labelR * Math.sin(angle);
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("x", labelX);
+        text.setAttribute("y", labelY);
+        text.setAttribute("fill", "#071727");
+        text.setAttribute("font-size", "11");
+        text.setAttribute("font-weight", "600");
+        text.setAttribute("text-anchor", Math.abs(labelX - cx) < 15 ? "middle" : (labelX > cx ? "start" : "end"));
+        text.setAttribute("dominant-baseline", "middle");
+        
+        let displayName = s.name;
+        if(displayName.length > 22) displayName = displayName.substring(0, 20) + "...";
+        text.textContent = `${s.icon} ${displayName}`;
+        svg.appendChild(text);
+        
+        // Metric Point calculation
+        const dataR = (rMax / 5) * s.score;
+        dataPoints.push(`${cx + dataR * Math.cos(angle)},${cy + dataR * Math.sin(angle)}`);
+      });
+      
+      // Data Matrix Polygon
+      const poly = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+      poly.setAttribute("points", dataPoints.join(" "));
+      poly.setAttribute("fill", "rgba(69, 162, 181, 0.25)"); 
+      poly.setAttribute("stroke", "#45a2b5");
+      poly.setAttribute("stroke-width", "2.5");
+      svg.appendChild(poly);
+      
+      // Structural dot anchors
+      dataPoints.forEach(p => {
+        const coord = p.split(",");
+        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute("cx", coord[0]);
+        circle.setAttribute("cy", coord[1]);
+        circle.setAttribute("r", "4");
+        circle.setAttribute("fill", "#071727");
+        svg.appendChild(circle);
+      });
+    }
+
+    // PDF Generator Integration via html2pdf library
+    document.getElementById("downloadPdfBtn").addEventListener("click", () => {
+      const element = document.getElementById("pdfContent");
+      const opt = {
+        margin:       [10, 10, 10, 10],
+        filename:     `Tektit_Maturity_Executive_Report_${clientNameString}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true, logging: false },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+      html2pdf().set(opt).from(element).save();
+    });
+
+    window.addEventListener("DOMContentLoaded", initReport);
+  </script>
+</body>
+</html>
