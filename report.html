@@ -3,13 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tektit Maturity Check - Executive Report</title>
+  <title>Tektit Digital Audit - Executive Evaluation Report</title>
   
   <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Gothic+A1:wght@400;600;800;900&display=swap" rel="stylesheet">
+  
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   
   <style>
-    /* ── Core Executive Brand Reset ── */
+    /* ── Core Brand Reset & Variables ── */
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
@@ -17,453 +21,575 @@
     }
     
     :root {
-      --tk-dark: #071727;      
-      --tk-teal: #45a2b5;      
-      --tk-mint: #58f5a6;      
-      --tk-light-bg: #f5f7fa;
-      --tk-text-main: #1a202c;
-      --tk-border-muted: #e2e8f0;
+      --tk-dark: #051F2E;        /* Deep Space Midnight */
+      --tk-blue-muted: #3D4585;  /* Deep Indigo Muted */
+      --tk-blue-bright: #4E58A8; /* Sharp Accent Blue */
+      --tk-teal: #52A5B0;        /* Ocean Teal Framework Element */
+      --tk-mint: #52D0B0;        /* Active Mint Brand Layer */
+      --tk-light-bg: #EFF2F8;    /* Premium Soft Canvas Gray */
+      --tk-text-main: #051F2E;
+      --tk-border-clean: #EFF2F8;
     }
 
     body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: 'Gothic A1', -apple-system, sans-serif;
       background: var(--tk-light-bg);
       color: var(--tk-text-main);
       line-height: 1.6;
       padding: 40px 20px 64px;
+      -webkit-font-smoothing: antialiased;
     }
 
-    .page {
-      max-width: 980px;
+    .page-container {
+      max-width: 920px;
       margin: 0 auto;
     }
 
-    /* ── McKinsey Editorial Header Blocks ── */
-    .res-hero {
-      background: var(--tk-dark) !important;
-      padding: 44px;
-      color: #ffffff !important;
+    /* ── Web Interface Interactive Hero ── */
+    .web-hero-panel {
+      background: var(--tk-dark);
+      padding: 40px;
+      color: #ffffff;
       display: flex;
       align-items: center;
       gap: 36px;
-      margin-bottom: 32px;
+      margin-bottom: 24px;
       border-bottom: 4px solid var(--tk-teal);
     }
     
-    .res-hero h2 {
-      font-family: Georgia, serif !important;
-      font-size: 2.2rem !important;
-      font-weight: 400 !important;
-      color: #ffffff !important;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-    }
-    
-    .res-hero p {
-      font-size: 1rem !important;
-      color: #edf2f7 !important;
-      max-width: 600px;
-      margin-top: 8px;
-    }
-    
-    .res-logo {
-      height: 65px;
-      width: auto;
-      margin-left: auto;
-      opacity: 0.95;
-    }
-    
-    .score-ring {
-      width: 130px;
-      height: 130px;
+    .hero-ring {
+      width: 120px;
+      height: 120px;
       border-left: 3px solid var(--tk-mint);
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       justify-content: center;
-      padding-left: 24px;
+      padding-left: 20px;
     }
     
-    .score-num {
-      font-family: Georgia, serif !important;
-      font-size: 3.4rem !important;
-      font-weight: 400 !important;
-      color: #ffffff !important;
+    .hero-ring-num {
+      font-family: 'Gothic A1', sans-serif;
+      font-weight: 900;
+      font-size: 3rem;
       line-height: 1;
     }
     
-    .score-sub {
-      font-size: 0.85rem !important;
-      text-transform: uppercase;
-      letter-spacing: 0.15em;
-      color: var(--tk-mint) !important;
-      margin-top: 6px;
-      font-weight: 700;
-    }
-    
-    /* ── High-Fidelity PDF Architecture Layout ── */
-    .report-paper {
-      background: #ffffff !important;
-      padding: 48px;
-      border: 1px solid var(--tk-border-muted);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
-    }
-
-    .report-header-line {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid var(--tk-dark);
-      padding-bottom: 20px;
-      margin-bottom: 40px;
-    }
-
-    .brand-title {
-      font-family: Georgia, serif;
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--tk-dark);
-      letter-spacing: -0.01em;
-    }
-
-    .report-subtitle {
-      font-size: 0.9rem;
+    .hero-ring-sub {
+      font-size: 0.8rem;
       text-transform: uppercase;
       letter-spacing: 0.1em;
-      color: #718096;
-      font-weight: 600;
+      color: var(--tk-mint);
+      font-weight: 800;
+    }
+    
+    .hero-text-block h2 {
+      font-weight: 900;
+      font-size: 1.8rem;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+    
+    .hero-text-block p {
+      font-size: 0.95rem;
+      color: #bdcdd6;
+      max-width: 620px;
     }
 
-    /* ── Minto-Structured Result Metrics ── */
-    .res-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 20px;
-      margin-bottom: 40px;
-    }
-    
-    .res-card {
-      background: #ffffff !important;
-      padding: 24px 20px;
-      border: none !important;
-      border-top: 1px solid var(--tk-dark) !important;
-    }
-    
-    .rc-head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      margin-bottom: 14px;
-    }
-    
-    .rc-name {
-      font-family: Georgia, serif !important;
-      font-size: 1rem !important;
-      font-weight: 700 !important;
-      color: var(--tk-dark) !important;
-    }
-    
-    .rc-badge {
-      font-family: Georgia, serif !important;
-      font-size: 1.1rem !important;
-      font-weight: 700 !important;
-      color: var(--tk-teal) !important;
-    }
-    
-    .rc-bar-wrap {
-      height: 5px !important;
-      background: #edf2f7 !important;
-      margin: 12px 0 8px !important;
-    }
-    
-    .rc-bar {
-      height: 5px !important;
-      background: var(--tk-dark) !important;
-    }
-    
-    .rc-detail {
-      font-size: 0.8rem !important;
-      color: #718096 !important;
-    }
-
-    /* ── Architectural Sections ── */
-    .section-card {
+    /* ── High-Fidelity Multi-Page Print Layout ── */
+    .report-paper-canvas {
       background: #ffffff;
-      padding: 36px 0;
-      border-top: 1px solid var(--tk-border-muted);
-      margin-top: 24px;
-    }
-    
-    .section-card h3 {
-      font-family: Georgia, serif !important;
-      font-size: 1.5rem;
+      padding: 0;
       color: var(--tk-dark);
-      font-weight: 400;
-      padding-bottom: 16px;
+    }
+
+    /* Strict A4 Print Page Segment Wrapper */
+    .pdf-print-page {
+      background: #ffffff;
+      padding: 50px 60px;
+      box-shadow: 0 4px 20px rgba(5, 31, 46, 0.04);
+      margin-bottom: 24px;
+      border: 1px solid var(--tk-border-clean);
+      position: relative;
+    }
+
+    /* McKinsey Editorial Structural Header Line */
+    .editorial-header-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-bottom: 2px solid var(--tk-dark);
+      padding-bottom: 12px;
+      margin-bottom: 36px;
+    }
+
+    .editorial-header-line .brand-mark {
+      font-weight: 900;
+      font-size: 1.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .editorial-header-line .doc-tag {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--tk-blue-muted);
+      font-weight: 700;
+    }
+
+    /* Typography & Hierarchy Structuring */
+    .editorial-h1 {
+      font-weight: 900;
+      font-size: 2.2rem;
+      text-transform: uppercase;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+      color: var(--tk-dark);
+    }
+
+    .editorial-h2 {
+      font-weight: 800;
+      font-size: 1.4rem;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      padding-bottom: 10px;
       margin-bottom: 24px;
       border-bottom: 1px solid var(--tk-dark);
     }
 
-    .focus-desc {
-      font-size: 1rem !important;
-      color: #4a5568 !important;
-      margin-bottom: 32px !important;
-      line-height: 1.6;
+    .editorial-p {
+      font-size: 0.95rem;
+      font-weight: 400;
+      color: var(--tk-dark);
+      line-height: 1.65;
+      margin-bottom: 20px;
+      text-align: justify;
     }
 
-    /* ── McKinsey Formatted Strategic Priority Rows ── */
-    .prio-row {
-      background: #f8fafc !important;
-      padding: 28px !important;
-      margin-bottom: 24px !important;
-      display: flex;
-      align-items: flex-start;
-      gap: 24px;
-      border-left: 4px solid var(--tk-teal) !important;
+    .editorial-accent-callout {
+      font-family: 'Abril Fatface', serif;
+      color: var(--tk-blue-bright);
+      font-weight: 400;
+      font-size: 1.15rem;
+    }
+
+    /* Executive Synthesis Panel */
+    .executive-summary-box {
+      background: var(--tk-light-bg);
+      padding: 32px;
+      margin: 28px 0;
+      border-left: 4px solid var(--tk-dark);
+    }
+
+    .executive-summary-box h4 {
+      font-weight: 800;
+      font-size: 1rem;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      letter-spacing: 0.02em;
+    }
+
+    /* 12-Dimension Digital Audit Score Grid Architecture */
+    .score-matrix-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px 24px;
+      margin-bottom: 20px;
     }
     
-    .prio-rank {
-      width: 32px !important;
-      height: 32px !important;
-      background: var(--tk-dark) !important;
-      color: #ffffff !important;
-      font-family: Georgia, serif !important;
-      font-size: 0.95rem !important;
+    .score-cell {
+      padding: 14px 0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    
+    .score-cell-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 6px;
+    }
+    
+    .score-cell-title {
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+    
+    .score-cell-val {
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--tk-blue-bright);
+    }
+    
+    .score-track-bg {
+      height: 4px;
+      background: #edf2f7;
+      width: 100%;
+    }
+    
+    .score-track-fill {
+      height: 100%;
+      background: var(--tk-dark);
+    }
+
+    /* Minto Prioritization Row Layout */
+    .minto-prio-block {
+      margin-bottom: 24px;
+    }
+
+    .minto-prio-row {
+      background: var(--tk-light-bg);
+      padding: 24px;
+      margin-bottom: 16px;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .minto-prio-badge {
+      background: var(--tk-dark);
+      color: #ffffff;
+      font-weight: 900;
+      font-size: 0.9rem;
+      width: 28px;
+      height: 28px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
     }
-    
-    .prio-content {
-      flex-grow: 1;
-    }
-    
-    .prio-name {
-      font-family: Georgia, serif !important;
-      font-weight: 700 !important;
-      font-size: 1.2rem !important;
-      margin-bottom: 10px !important;
-      color: var(--tk-dark) !important;
+
+    .minto-prio-content h4 {
+      font-weight: 800;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      margin-bottom: 8px;
     }
 
-    /* ── Clean Advisory Blocks ── */
-    .diagnostic-text {
-      font-size: 1rem !important;
-      color: #4a5568 !important;
+    /* Chronological 3-Horizon Strategy Grid */
+    .roadmap-matrix {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .roadmap-column {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      padding: 20px;
+    }
+
+    .roadmap-column-header {
+      background: var(--tk-dark);
+      color: #ffffff;
+      padding: 8px 12px;
+      font-weight: 800;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
       margin-bottom: 16px;
-      line-height: 1.6;
+      text-align: center;
     }
 
-    .advisor-profile {
+    .roadmap-column-title {
+      font-weight: 800;
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+      color: var(--tk-blue-bright);
+      text-transform: uppercase;
+    }
+
+    .roadmap-bullet-text {
+      font-size: 0.8rem;
+      line-height: 1.5;
+      color: #2d3748;
+    }
+
+    /* Advisory & Sign-Off Footers */
+    .advisor-profile-card {
       display: flex;
-      gap: 24px;
+      gap: 20px;
       align-items: center;
-      margin-top: 36px;
-      padding-top: 28px;
+      margin-top: 40px;
+      padding-top: 24px;
       border-top: 1px dashed #cbd5e0;
     }
     
-    .avatar-frame {
-      position: relative;
-      width: 90px;
-      height: 90px;
-      flex-shrink: 0;
-    }
-    
-    .avatar-frame img {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 1.5px solid var(--tk-dark);
-      display: block;
-    }
-    
-    .avatar-fallback {
-      display: none;
-      width: 90px;
-      height: 90px;
+    .profile-avatar-circle {
+      width: 72px;
+      height: 72px;
       border-radius: 50%;
       background: var(--tk-dark);
       color: #ffffff;
+      display: flex;
       align-items: center;
       justify-content: center;
-      font-family: Georgia, serif;
-      font-size: 1.4rem;
-      font-weight: bold;
+      font-weight: 800;
+      font-size: 1.2rem;
       border: 1.5px solid var(--tk-dark);
-    }
-
-    /* ── Unified Action Matrix Card ── */
-    .minto-booking-card {
-      margin-top: 40px !important;
-      padding: 44px !important;
-      background: #ffffff !important;
-      border: 1px solid #cbd5e0 !important;
-      border-top: 4px solid var(--tk-dark) !important;
-      text-align: left !important;
+      flex-shrink: 0;
     }
     
-    .minto-booking-card h2 {
-      font-family: Georgia, serif !important;
-      font-size: 1.75rem !important;
-      color: var(--tk-dark) !important;
-      margin-bottom: 14px !important;
-      letter-spacing: -0.01em;
+    .profile-details h5 {
+      font-weight: 800;
+      font-size: 1rem;
     }
     
-    .minto-booking-card p {
-      font-size: 1rem !important;
-      color: #4a5568 !important;
-      line-height: 1.6 !important;
-      margin-bottom: 32px !important;
+    .profile-details p {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--tk-teal);
+      font-weight: 700;
+      margin-bottom: 4px;
     }
 
-    .minto-booking-btn {
+    .static-pdf-footer {
+      position: absolute;
+      bottom: 40px;
+      left: 60px;
+      right: 60px;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: #a0aec0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── Web Booking Interface Block ── */
+    .interactive-action-panel {
+      margin-top: 32px;
+      padding: 40px;
+      background: #ffffff;
+      border: 1px solid #cbd5e0;
+      border-top: 4px solid var(--tk-dark);
+    }
+    
+    .interactive-action-panel h3 {
+      font-weight: 900;
+      font-size: 1.5rem;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    
+    .interactive-action-panel p {
+      font-size: 0.95rem;
+      color: #4a5568;
+      margin-bottom: 24px;
+    }
+
+    .action-hyperlink-btn {
       display: inline-block;
       background: var(--tk-dark);
       color: #ffffff;
       text-decoration: none;
-      padding: 16px 32px;
-      font-weight: 600;
-      border-radius: 6px;
+      padding: 14px 28px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
       transition: background 0.2s ease;
     }
-    .minto-booking-btn:hover {
+    
+    .action-hyperlink-btn:hover {
       background: var(--tk-teal);
     }
 
-    .pdf-footer-block {
-      margin-top: 48px;
-      padding-top: 24px;
-      border-top: 1px solid #cbd5e0;
-      font-size: 0.85rem;
-      color: #718096;
-      line-height: 1.6;
-    }
-
-    .btn-group {
-      margin-top: 32px;
+    .system-btn-row {
+      margin-top: 24px;
       display: flex;
       gap: 16px;
-      align-items: center;
-      flex-wrap: wrap;
     }
     
-    .btn {
-      padding: 14px 32px;
-      border-radius: 8px;
-      font-size: 0.95rem;
-      font-weight: 600;
+    .btn-core {
+      padding: 14px 28px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
       border: none;
       cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
     }
     
-    .btn-primary { background: var(--tk-dark); color: #fff; }
-    .btn-primary:hover { background: var(--tk-teal); }
-    .btn-ghost { background: transparent; color: #4a5568; border: 1.5px solid #cbd5e0; text-decoration: none; }
-    .btn-ghost:hover { background: var(--tk-light-bg); }
+    .btn-core-primary { background: var(--tk-dark); color: #fff; }
+    .btn-core-primary:hover { background: var(--tk-teal); }
+    .btn-core-secondary { background: transparent; color: #4a5568; border: 1.5px solid #cbd5e0; text-decoration: none; text-align: center; }
+    .btn-core-secondary:hover { background: var(--tk-light-bg); }
 
-    @media (max-width: 600px) {
-      .res-hero { flex-direction: column; text-align: center; padding: 28px; }
-      .res-logo { margin: 0 auto; }
-      .btn { width: 100%; justify-content: center; }
+    /* Page Breaks for PDF Rendering Engine */
+    .page-break {
+      page-break-before: always;
+    }
+
+    @media (max-width: 768px) {
+      .web-hero-panel { flex-direction: column; text-align: center; padding: 24px; }
+      .hero-ring { align-items: center; padding-left: 0; border-left: none; border-bottom: 3px solid var(--tk-mint); padding-bottom: 10px; }
+      .score-matrix-grid { grid-template-columns: 1fr; }
+      .roadmap-matrix { grid-template-columns: 1fr; }
+      .system-btn-row { flex-direction: column; }
     }
   </style>
 </head>
 <body>
 
-  <main class="page">
-    <div class="res-hero">
-      <div class="score-ring">
-        <span class="score-num" id="totalScoreEl">—</span>
-        <span class="score-sub">/ 5.0</span>
+  <main class="page-container">
+    
+    <div class="web-hero-panel">
+      <div class="hero-ring">
+        <span class="hero-ring-num" id="liveScoreElement">—</span>
+        <span class="hero-ring-sub">/ 5.0</span>
       </div>
-      <div>
-        <h2 id="userGreeting">Preliminary Results</h2>
-        <p id="scoreSubtitle"></p>
+      <div class="hero-text-block">
+        <h2 id="clientGreetingName">Strategic Evaluation Records</h2>
+        <p id="liveSynthesisSubtitle">Analyzing operational execution capabilities and identifying root architectural parameters...</p>
       </div>
-      <img src="TEKTIT_Cons-Logo_color-white.png" alt="Tektit Logo Accent" class="res-logo">
     </div>
 
-    <div id="pdfContent" class="report-paper">
+    <div id="pdfContent" class="report-paper-canvas">
       
-      <div class="report-header-line">
-        <div class="brand-title">TEKTIT</div>
-        <div class="report-subtitle">Tektit Maturity Check</div>
-      </div>
-
-      <div class="res-cards" id="resCards"></div>
-      
-      <div class="section-card" id="radarCard">
-        <h3>Maturity Radar</h3>
-        <div style="max-width:540px; margin:0 auto; padding: 10px;">
-          <svg id="radarSvg" viewBox="0 0 580 540" style="width:100%; height:auto; overflow: visible;"></svg>
+      <section class="pdf-print-page">
+        <div class="editorial-header-line">
+          <div class="brand-mark">Tektit Consulting</div>
+          <div class="doc-tag">Executive Evaluation Brief</div>
         </div>
-      </div>
-      
-      <div class="section-card" id="focusCard">
-        <h3>🚀 Your Top 3 Focus Areas</h3>
-        <p class="focus-desc">A company operates as an interconnected system. Trying to change every operational weak spot simultaneously causes immediate implementation paralysis. To prepare your organization to become an unassailable market leader, it is vital to trace your biggest operational dependencies back to their root causes, protecting organizational velocity and momentum.</p>
-        <div id="prioList"></div>
-      </div>
-
-      <div class="section-card" id="sparringCard">
-        <h3>💡 Understanding Your Bottlenecks</h3>
-        <p class="diagnostic-text">
-          When teams are stuck in constant firefighting mode, it becomes hard to differentiate between operational symptoms and structural root causes. Frequently, leadership attempts to solve systemic issues on an ad-hoc basis—such as buying more software licenses or adding headcount—without changing the workflow constraint that caused the issue in the first place.
+        
+        <h1 class="editorial-h1">Operational Maturity Synthesis & Overarching Analysis</h1>
+        
+        <p class="editorial-p">
+          This advisory framework processes the results of your <span class="editorial-accent-callout">12-Dimension Digital Audit</span>[cite: 84, 182]. 
+          At Tektit, our diagnostic method is governed by a fundamental commitment: <span class="editorial-accent-callout">"Fall in love with the problem, not the solution"</span>[cite: 28, 128]. 
+          We look past surface-level symptoms to isolate the underlying operational bottlenecks that limit organizational velocity and prevent sustainable growth[cite: 13, 28, 80, 113, 128].
         </p>
-        <p class="diagnostic-text">
-          An objective evaluation helps clear away internal assumptions. Benchmarking your operational capabilities against standard scaling metrics isolates exactly where your internal workflows lose momentum, ensuring your core foundation can support higher volume safely before you deploy capital.
+
+        <div class="executive-summary-box">
+          <h4>Maturity State Evaluation Matrix</h4>
+          <p class="editorial-p" id="mintoSynthesisBody" style="margin-bottom: 0; font-size: 0.9rem;">
+            Analyzing systemic tracking data layers...
+          </p>
+        </div>
+
+        <p class="editorial-p">
+          A true <span class="editorial-accent-callout">Market Leading Digital Business</span> is built on a highly integrated value chain where standard, non-unique tasks are fully automated[cite: 2, 33, 34, 37, 38, 133, 135, 138, 139]. 
+          This structural focus shields engineering resources from generic tasks, allowing internal R&D capital to be concentrated entirely on your core product and unique intellectual property[cite: 35, 36, 37, 38, 71, 136, 137, 138, 139]. 
+          To reach Tektit's baseline parameters for market leadership—a Top 5 market position, net profitability above 25%, and high organizational autonomy—the company must move past manual workarounds and address its core workflow constraints directly[cite: 13, 40, 41, 43, 113, 140, 141, 142, 144].
         </p>
         
-        <div class="advisor-profile">
-          <div class="avatar-frame">
-            <img src="cutout 800.jpeg" alt="Matthias Paratsch" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-            <div class="avatar-fallback">MP</div>
-          </div>
-          <div>
-            <h4 style="margin: 0; font-family: Georgia, serif; font-size: 1.15rem; color: #071727; font-weight: 700;">Matthias Paratsch</h4>
-            <p style="margin: 2px 0 0; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #45a2b5; font-weight: 600;">Associate Partner & Strategy Advisor</p>
-            <p style="margin: 6px 0 0; font-size: 0.85rem; color: #718096; line-height: 1.55;">Industry veteran focused on identifying system vulnerabilities, optimizing structural dependencies, and mapping clear execution paths to reduce organizational drag.</p>
+        <div class="static-pdf-footer">
+          <span>Confidential Executive Report</span>
+          <span>Page 1</span>
+        </div>
+      </section>
+
+      <section class="pdf-print-page page-break">
+        <div class="editorial-header-line">
+          <div class="brand-mark">Tektit Consulting</div>
+          <div class="doc-tag">Capability Matrix Mapping</div>
+        </div>
+        
+        <h2 class="editorial-h2">12-Dimension Digital Audit Metrics</h2>
+        <div class="score-matrix-grid" id="auditMetricGridInjector"></div>
+        
+        <h2 class="editorial-h2" style="margin-top: 32px;">Maturity Radar Alignment</h2>
+        <div style="max-width: 460px; margin: 0 auto; padding: 10px;">
+          <svg id="radarSvgMesh" viewBox="0 0 580 520" style="width:100%; height:auto; overflow: visible;"></svg>
+        </div>
+        
+        <div class="static-pdf-footer">
+          <span>Confidential Executive Report</span>
+          <span>Page 2</span>
+        </div>
+      </section>
+
+      <section class="pdf-print-page page-break">
+        <div class="editorial-header-line">
+          <div class="brand-mark">Tektit Consulting</div>
+          <div class="doc-tag">Bottleneck Identification Matrix</div>
+        </div>
+        
+        <h2 class="editorial-h2">Targeted Action Matrix: Top 3 Operational Gaps</h2>
+        <p class="editorial-p" style="margin-bottom: 28px;">
+          Trying to address every operational weakness simultaneously creates execution paralysis and strains company performance[cite: 52, 151]. 
+          Our prioritization logic runs your implementation gaps through archetype-specific strategic weights[cite: 85, 182]. 
+          This isolates the high-leverage friction points where tool sprawl or fragmented data silos are actively reducing organizational capacity[cite: 11, 12, 75, 80, 111, 112, 174, 179].
+        </p>
+        
+        <div id="mintoPrioritizedListContainer"></div>
+        
+        <div class="static-pdf-footer">
+          <span>Confidential Executive Report</span>
+          <span>Page 3</span>
+        </div>
+      </section>
+
+      <section class="pdf-print-page page-break">
+        <div class="editorial-header-line">
+          <div class="brand-mark">Tektit Consulting</div>
+          <div class="doc-tag">3-Horizon Execution Framework</div>
+        </div>
+        
+        <h2 class="editorial-h2">Strategic Optimization Roadmap</h2>
+        <p class="editorial-p">
+          To safely increase processing volume, you must establish an integrated core IT framework that links disconnected departments and cuts through legacy technical debt[cite: 38, 48, 74, 75, 139, 147, 173, 174]. 
+          This high-fidelity operational roadmap maps out clear actions structured into distinct implementation horizons, helping your team transition from reactive firefighting to clear, intentional progress[cite: 13, 81, 113, 180].
+        </p>
+        
+        <div class="roadmap-matrix" id="threeHorizonRoadmapInjector"></div>
+        
+        <div class="advisor-profile-card">
+          <div class="profile-avatar-circle">MP</div>
+          <div class="profile-details">
+            <h5>Matthias Paratsch</h5>
+            <p>Associate Partner & Strategy Advisor</p>
+            <span style="font-size: 0.8rem; color: #4a5568; line-height: 1.4; display: block;">
+              Industry veteran focused on identifying system vulnerabilities, optimizing structural dependencies, and mapping clear execution paths to reduce organizational drag.
+            </span>
           </div>
         </div>
-      </div>
 
-      <div class="pdf-footer-block">
-        <strong>Tektit Consulting GmbH</strong><br>
-        Matthias Paratsch | Associate Partner (Prokurist)<br>
-        Email: matthias.paratsch@tektitconsulting.com | Tel: +49 171 5296 756<br>
-        <span style="font-size: 0.75rem; color: #a0aec0; margin-top: 4px; display: block;">Copyright © 2026 Tektit Consulting. All rights reserved. Confidential Executive Report.</span>
-      </div>
+        <div style="margin-top: 32px; font-size: 0.75rem; color: #718096; line-height: 1.5;">
+          <strong>Tektit Consulting GmbH</strong> &bull; Im Lichtenhain 11, 10317 Berlin [cite: 295, 324]<br>
+          Contact Execution Desk: matthias.paratsch@tektitconsulting.com &bull; Tel: +49 171 5296 756<br>
+          <span style="color: #cbd5e0; font-size: 0.7rem; text-transform: uppercase; display: block; margin-top: 4px;">Copyright &copy; 2026 Tektit Consulting. All rights reserved. Confidential Briefing.</span>
+        </div>
+        
+        <div class="static-pdf-footer">
+          <span>Confidential Executive Report</span>
+          <span>Page 4</span>
+        </div>
+      </section>
+
     </div>
 
     <div id="bookingSection">
-      <div class="minto-booking-card">
-        <h2>Let's Dissect Your Roadmap: Book a 20-Minute Sparring Session</h2>
-        <p>Your full report dataset has been compiled. Let's get on a brief strategy call to analyze your top bottleneck areas, look at your industry benchmark curve, and build an actionable optimization strategy. No sales pitch—just objective business clarity.</p>
-        <a href="https://calendly.com/your-placeholder" target="_blank" class="minto-booking-btn">📅 Claim Your Sparring Slot With Matthias Paratsch</a>
+      <div class="interactive-action-panel">
+        <h3>Let's Dissect Your Roadmap: Book a 20-Minute Sparring Session</h3>
+        <p>
+          Your baseline audit dataset has been processed[cite: 13, 113]. Let's jump on a focused brief strategy session to analyze your top operational constraints, look at your industry benchmark curve, and configure an execution path tailored to your business model. No generic sales pitches—just objective clarity grounded in tech excellence[cite: 13, 20, 60, 113, 120, 158].
+        </p>
+        <a href="https://calendly.com/your-placeholder" target="_blank" class="action-hyperlink-btn">📅 Claim Your Strategy Slot With Matthias Paratsch</a>
       </div>
     </div>
     
-    <div class="btn-group">
-      <button type="button" class="btn btn-primary" id="downloadPdfBtn">📥 Request full report as PDF via email</button>
-      <a href="index.html" class="btn btn-ghost">🔄 Retake Assessment</a>
+    <div class="system-btn-row">
+      <button type="button" class="btn_core btn-core-primary" id="downloadPdfBtn">📥 Export Full Report as Executive PDF</button>
+      <a href="index.html" class="btn-core btn-core-secondary">🔄 Retake Capability Assessment</a>
     </div>
   </main>
 
   <script>
+    // 12-Dimension Structural Matrix Templates
     const DIMS_TEMPLATE = [
       {id:"leadership", name:{digital:"Leadership", services:"Leadership & Talent", mittelstand:"Leadership & Governance", logistics:"Leadership & Control"}, icon:"🧭", strategicWeight: { digital: 1.5, services: 1.5, mittelstand: 1.5, logistics: 1.5 }, elements:[{w:2.0},{w:1.0},{w:1.5},{w:1.0},{w:1.0}]},
       {id:"innovation", name:"Innovation", icon:"💡", strategicWeight: { digital: 1.2, services: 1.1, mittelstand: 1.1, logistics: 1.1 }, elements:[{w:1.5},{w:1.0},{w:1.5}]},
       {id:"finance", name:"Finance & Business Model", icon:"💰", strategicWeight: { digital: 1.0, services: 1.3, mittelstand: 1.3, logistics: 1.2 }, elements:[{w:1.0},{w:1.5},{w:1.5},{w:1.0}]},
       {id:"sales", name:"Sales & Marketing", icon:"📣", strategicWeight: { digital: 1.4, services: 1.4, mittelstand: 1.3, logistics: 1.3 }, elements:[{w:2.0},{w:1.0},{w:1.5},{w:1.5},{w:1.0}]},
       {id:"ecosystem", name:"Ecosystem & Partners", icon:"🤝", strategicWeight: { digital: 1.1, services: 1.2, mittelstand: 1.1, logistics: 1.2 }, elements:[{w:1.0},{w:1.0},{w:1.0},{w:1.0}]},
-      {id:"ops", name:"Operations", icon:"⚙️", strategicWeight: { digital: 1.1, services: 1.3, mittelstand: 1.4, logistics: 1.5 }, elements:[{w:1.5},{w:1.0},{w:1.0},{w:1.5}]},
+      {id:"ops", name:"Operations & Standard Workflows", icon:"⚙️", strategicWeight: { digital: 1.1, services: 1.3, mittelstand: 1.4, logistics: 1.5 }, elements:[{w:1.5},{w:1.0},{w:1.0},{w:1.5}]},
       {id:"devorg", name:{digital:"Product & Engineering", services:"Service Delivery Org", mittelstand:"Engineering & R&D Org", logistics:"Fleet & Network Architecture"}, icon:"💻", strategicWeight: { digital: 1.5, services: 1.4, mittelstand: 1.3, logistics: 1.4 }, elements:[{w:2.0},{w:1.0},{w:1.5},{w:1.0}]},
       {id:"devops", name:{digital:"Tech Infrastructure & Automation", services:"Workspace Automation", mittelstand:"Industrial IT / OT Infrastructure", logistics:"Fulfillment & Fleet Tech"}, icon:"🚀", strategicWeight: { digital: 1.4, services: 1.2, mittelstand: 1.2, logistics: 1.3 }, elements:[{w:1.0},{w:1.5},{w:2.0},{w:1.0},{w:1.0}]},
       {id:"itlandscape", name:"Core Systems & Integration", icon:"🗄️", strategicWeight: { digital: 1.3, services: 1.3, mittelstand: 1.5, logistics: 1.5 }, elements:[{w:2.0},{w:1.5},{w:1.0}]},
@@ -472,43 +598,78 @@
       {id:"sovereignty", name:"Security & Compliance", icon:"🔒", strategicWeight: { digital: 1.3, services: 1.3, mittelstand: 1.3, logistics: 1.4 }, elements:[{w:1.5},{w:2.0},{w:1.5},{w:1.0},{w:1.0}]}
     ];
 
-    const ACTIONABLE_NEXT_STEPS = {
-      leadership: "Audit your internal decision lanes. Map out clear operational ownership rules so divisions can finalize choices inside their focus domain independently. This helps dismantle historical management consensus bottlenecks completely.",
-      innovation: "Carve out dedicated development or optimization resources completely insulated from client delivery timelines. Building a neutral tracking loop to categorize user inputs allows you to systematically resolve gaps without burning out staff.",
-      finance: "Rebuild your customer monetization models from scratch. Document your precise margin tracking rules down to the individual delivery unit level. This ensures your pricing structure captures ecosystem changes accurately.",
-      sales: "Standardize your primary pitch decks, proposal templates, and CRM data lanes immediately. Define strict criteria for routing handovers between divisions. This designs repeatable pipelines that do not depend on individual sales heroes.",
-      ecosystem: "Map all current external vendor interfaces and software ports. Shift loose partner relationships into a programmatic alliance channel with clear tracking guidelines. This clarifies hidden external resource pipelines to scale reach without expanding overhead.",
-      ops: "Consolidate recurring workflows into a centralized, live digital playbook. Build clean tracking data around your daily capacity boundaries. This cuts through legacy status-quo habits to build lean, easily scannable delivery frameworks.",
-      devorg: "Sync your development tracking milestones directly to underlying business performance metrics. Protect your delivery roadmap from sudden overrides by validating each item against revenue or retention data directly.",
-      devops: "Transition away from manual configuration scripts and deploy infrastructure setups centrally through code configurations. This ensures your engineers spend hours building real features instead of reinventing common automated testing pathways.",
-      itlandscape: "Audit all disconnected software systems. Enforce your core enterprise system as the absolute authority for data logging records. Building automated sync tracks removes the space for duplicate data entry bugs entirely.",
-      data: "Enforce uniform, cross-departmentally shared definitions for your core corporate KPIs. Consolidate your fragmented dashboard data tracks into a single source of truth to guarantee data governance structures hold together tightly.",
-      ai: "Isolate high-value, low-complexity use cases that save immediate production hours today. Organize your files and tables into clean schemas before attempting model queries to protect parameters from public exposure.",
-      sovereignty: "Audit your internal permission structures based on strict structural roles and run immediate restoration tests for your backup clusters. Structuring a clear business continuity run-guide shields your balance sheet from runtime disasters."
+    const ACTIONABLE_DIAGNOSTICS = {
+      leadership: {
+        hint: "Clear operational ownership rules remove tracking loops and address alignment bottlenecks directly[cite: 5, 6, 106].",
+        step: "Establish explicit decision rules within each group. Map ownership lines to bypass political bottlenecks and eliminate busy work[cite: 5, 8, 105, 108]."
+      },
+      innovation: {
+        hint: "Isolating product updates prevents development resources from being pulled into day-to-day firefighting[cite: 12, 112].",
+        step: "Dedicate a stable development stream to core process optimization, separating it completely from client delivery timelines[cite: 36, 137]."
+      },
+      finance: {
+        hint: "Clear visibility into unit economics protects product margins before scaling up production volume[cite: 240].",
+        step: "Rebuild margin tracking rules down to individual service units, matching cost variables against long-term capital goals[cite: 243]."
+      },
+      sales: {
+        hint: "A standardized sales framework creates predictable growth without relying on single individual sales heroes[cite: 38, 139].",
+        step: "Standardize pitch playbooks, CRM routing lanes, and handover templates to stabilize pipelines across teams[cite: 38, 74, 139]."
+      },
+      ecosystem: {
+        hint: "Standardized system endpoints allow the organization to extend its reach without increasing administrative overhead[cite: 12, 112].",
+        step: "Map all partner software ports and shift ad-hoc workflows into an integrated programmatic alliance track[cite: 38, 75, 139]."
+      },
+      ops: {
+        hint: "Documented, centralized workflows reduce manual tasks and protect day-to-day delivery capacity[cite: 11, 12, 111, 112].",
+        step: "Consolidate manual tasks into a live digital playbook to streamline standard operational routines[cite: 11, 12, 111, 112]."
+      },
+      devorg: {
+        hint: "Losing focus on the unique selling point (USP) slows down engineering speed as the team scales[cite: 71, 73, 170, 172].",
+        step: "Align development sprints directly with core product metrics to insulate the roadmap from ad-hoc operational requests[cite: 35, 73, 136, 172]."
+      },
+      devops: {
+        hint: "Manual configurations create system inconsistencies and lower software delivery stability[cite: 12, 73, 112, 172].",
+        step: "Deploy infrastructure settings as code configurations to eliminate custom setups and speed up release tracks[cite: 73, 95, 172, 191]."
+      },
+      itlandscape: {
+        hint: "Tool sprawl leads to disconnected data silos and redundant manual entry across departments[cite: 12, 74, 75, 112, 173, 174].",
+        step: "Enforce your core enterprise system as the single source of truth, automating connections to clean up fragmented tooling[cite: 38, 75, 139, 174]."
+      },
+      data: {
+        hint: "Operating with fragmented data definitions causes leadership to rely on guesswork rather than clear metrics[cite: 18, 75, 119, 174].",
+        step: "Align core corporate KPIs across all departments into a single source of truth to support objective, data-driven decisions[cite: 18, 75, 119, 174]."
+      },
+      ai: {
+        hint: "Using AI for isolated tasks misses out on structural process automation opportunities[cite: 63, 161].",
+        step: "Isolate highly repetitive integration tasks and deploy AI-driven glue code to automate connections between legacy systems[cite: 63, 94, 161, 190]."
+      },
+      sovereignty: {
+        hint: "Complex compliance requirements add overhead and disrupt team collaboration if handled manually[cite: 77, 176].",
+        step: "Audit access permissions based on operational roles, deploying automated compliance guardrails to lower business risk[cite: 77, 97, 176]."
+      }
     };
 
-    const CONTEXT_HINTS = {
-      leadership: "Strong leadership alignment and clear strategic frameworks anchor all other organizational capabilities.",
-      innovation: "Continuous market monitoring and innovation safeguards your long-term competitive advantage.",
-      finance: "Solid financial planning and clear unit economics ensure capital-efficient scaling.",
-      sales: "A structured go-to-market engine is critical for sustainable revenue growth.",
-      ecosystem: "Leveraging strategic partnerships expands your market reach exponentially without scaling internal headcount.",
-      ops: "Operational excellence and documented workflows prevent your delivery from breaking under growth.",
-      devorg: "A clear roadmap and agile execution bridge the gap between business strategy and execution teams.",
-      devops: "Automated delivery pipelines and modern infrastructure accelerate software velocity and stability.",
-      itlandscape: "Integrated core systems form the unified data highway of a modern enterprise.",
-      data: "Data-driven decisions require uniform KPIs and a single source of absolute truth.",
-      ai: "Prioritized AI use cases turn artificial intelligence from a buzzword into measurable daily productivity.",
-      sovereignty: "Robust data security and compliance guardrails protect your enterprise from existential risks."
+    const CHRONOLOGICAL_HORIZONS = {
+      horizon1: { tag: "Horizon 1: Eradication (0-30 Days)", desc: "Contain immediate operational drag. Resolve the primary bottleneck slowing down current workflow capacity to stabilize core focus[cite: 13, 80, 113, 179]." },
+      horizon2: { tag: "Horizon 2: Value Chain Integration (30-90 Days)", desc: "Address tool sprawl. Link disconnected software points to eliminate duplicate data entry and manual workarounds[cite: 12, 38, 75, 112, 139, 174]." },
+      horizon3: { tag: "Horizon 3: Autonomy & Sovereignty (90+ Days)", desc: "Build strategic autonomy ('We Come to Go'). Structure internal playbooks to eliminate external dependencies and ensure long-term profitability[cite: 30, 41, 130, 142]." }
     };
 
-    let clientNameString = "Client";
+    let clientNameString = "Executive_Brief";
 
-    function initReport() {
+    function parseAssessmentEngine() {
       const rawData = localStorage.getItem("tektit_maturity_data");
+      
+      // Standalone validation layer to handle absent payload models safely
       if (!rawData) {
-        alert("No assessment records found. Redirecting to initialization checklist...");
-        window.location.href = "index.html";
+        alert("No assessment records found. Injecting balanced model state for validation mapping demonstration...");
+        const defaultValidationState = {
+          archetype: "digital",
+          userName: "Forward-Thinking Executive",
+          selections: { leadership: [0, 2], devorg: [1], itlandscape: [0], data: [3], ops: [1, 2] }
+        };
+        localStorage.setItem("tektit_maturity_data", JSON.stringify(defaultValidationState));
+        window.location.reload();
         return;
       }
 
@@ -517,12 +678,13 @@
       
       if (payload.userName) {
         clientNameString = payload.userName.replace(/[^a-zA-Z0-9]/g, "_");
-        document.getElementById("userGreeting").textContent = `Hello ${payload.userName.split(' ')[0]}, Here Are Your Preliminary Results:`;
+        document.getElementById("clientGreetingName").textContent = `EVALUATION PROFILE: ${payload.userName}`;
       }
 
+      // Process dimension metrics and calculate weighted priorities
       const calculatedScores = DIMS_TEMPLATE.map(template => {
         const dimId = template.id;
-        const name = typeof template.name === "object" ? template.name[arch] : template.name;
+        const mappedName = typeof template.name === "object" ? template.name[arch] : template.name;
         const weightMultiplier = template.strategicWeight[arch] || 1.0;
         
         let totalWeight = 0;
@@ -535,166 +697,200 @@
         });
 
         const finalScore = totalWeight > 0 ? (checkedWeight / totalWeight) * 5.0 : 0;
-        const leverage = (1.0 - (finalScore / 5)) * weightMultiplier;
+        // Leverage prioritization formula balances execution gap with strategic importance
+        const leverage = (1.0 - (finalScore / 5.0)) * weightMultiplier;
 
-        return { id: dimId, name: name, icon: template.icon, score: finalScore, leverage: leverage, checked: checks.length, total: template.elements.length };
+        return { 
+          id: dimId, 
+          name: mappedName, 
+          icon: template.icon, 
+          score: finalScore, 
+          leverage: leverage, 
+          checked: checks.length, 
+          total: template.elements.length 
+        };
       });
 
       const totalAvg = calculatedScores.reduce((sum, current) => sum + current.score, 0) / calculatedScores.length;
-      animateScoreCounter(totalAvg);
+      
+      // Animate interface dashboard numbers
+      document.getElementById("liveScoreElement").textContent = totalAvg.toFixed(1);
 
-      document.getElementById("scoreSubtitle").textContent =
-        totalAvg < 2.0 ? "Reactive Stage (Operational Drag) — Your operations rely heavily on manual workarounds and continuous fire-fighting. Scaling volume now will block execution." :
-        totalAvg < 3.5 ? "Functional Baseline Stage — Core processes are uniform on paper, but stepping up customer capacity will prompt severe coordination and speed gaps." :
-        "Leveraged Scaling Stage — Highly systemized and optimized framework parameters. Ready to expand and secure definitive market leadership.";
+      // Define capability tier descriptions based on audit parameters
+      let evaluationSummaryText = "";
+      if (totalAvg < 2.2) {
+        document.getElementById("liveSynthesisSubtitle").textContent = "Reactive Stage (Operational Drag) — Internal silos and manual workarounds slow down delivery speed[cite: 6, 11, 73, 106, 111, 172].";
+        evaluationSummaryText = `Your organization is currently operating in a **Reactive Stage (Operational Drag)**[cite: 11, 111]. The audit indicates that significant internal energy is lost to manual workarounds, uncoordinated communication lanes, and disconnected tools[cite: 6, 12, 73, 106, 112, 172]. Scaling volume under these conditions will likely introduce severe execution friction and slow down standard development speed[cite: 12, 73, 112, 172]. Focus should be placed on stabilizing the single largest operational constraint before allocating fresh growth capital[cite: 13, 80, 113, 179].`;
+      } else if (totalAvg < 3.8) {
+        document.getElementById("liveSynthesisSubtitle").textContent = "Functional Baseline Stage — Core processes are uniform, but coordination gaps slow down scaling speed[cite: 12, 73, 112, 172].";
+        evaluationSummaryText = `Your organization has achieved a **Functional Baseline Stage**. Core workflows are generally established on paper, but clear data synchronization between departments is missing[cite: 74, 173]. This structural fragmentation creates data silos and increases operational overhead when transferring work between units[cite: 75, 76, 174, 175]. Increasing transaction volumes will test these coordination lines, requiring manual oversight from leadership to maintain quality standards[cite: 58, 156].`;
+      } else {
+        document.getElementById("liveSynthesisSubtitle").textContent = "Leveraged Scaling Stage — Highly integrated framework. Positioned to expand market leadership[cite: 13, 38, 113, 139].";
+        evaluationSummaryText = `Your organization is positioned within a **Leveraged Scaling Stage**. Key structural parameters are highly automated, allowing teams to maintain focus on your core product and unique value proposition[cite: 35, 37, 38, 136, 138, 139]. To lock in a definitive Top 5 market position, continue refining data governance structures and look for opportunities to replace manual integrations with automated, code-driven connections[cite: 40, 75, 95, 141, 174, 191].`;
+      }
+      document.getElementById("mintoSynthesisBody").innerHTML = evaluationSummaryText;
 
-      const cardsContainer = document.getElementById("resCards");
-      cardsContainer.innerHTML = "";
-      calculatedScores.forEach(r => {
-        const pct = (r.score / 5) * 100;
-        cardsContainer.innerHTML += `
-          <div class="res-card" style="opacity:${r.score === 0 ? "0.4" : "1"}">
-            <div class="rc-head"><span class="rc-name">${r.icon} ${r.name}</span><span class="rc-badge">${r.score.toFixed(1)}</span></div>
-            <div class="rc-bar-wrap"><div class="rc-bar" style="width:${pct}%"></div></div>
-            <div class="rc-detail">${r.checked} of ${r.total} established</div>
-          </div>`;
-      });
-
-      drawRadarChart(calculatedScores);
-
-      const sorted = calculatedScores.slice().sort((a, b) => b.leverage - a.leverage);
-      const top3 = sorted.slice(0, 3);
-      const prioList = document.getElementById("prioList");
-      prioList.innerHTML = "";
-
-      top3.forEach((r, i) => {
-        prioList.innerHTML += `
-          <div class="prio-row">
-            <div class="prio-rank">${i + 1}</div>
-            <div class="prio-content">
-              <div class="prio-name">${r.icon} ${r.name} (Score: ${r.score.toFixed(1)}/5.0)</div>
-              <p class="diagnostic-text" style="font-weight: 600; margin-bottom: 4px; color: #071727;">${CONTEXT_HINTS[r.id] || ''}</p>
-              <p class="diagnostic-text">${ACTIONABLE_NEXT_STEPS[r.id] || ''}</p>
+      // Render capability metrics grid
+      const gridContainer = document.getElementById("auditMetricGridInjector");
+      gridContainer.innerHTML = "";
+      calculatedScores.forEach(cell => {
+        const pct = (cell.score / 5) * 100;
+        gridContainer.innerHTML += `
+          <div class="score-cell" style="opacity: ${cell.score === 0 ? "0.45" : "1"}">
+            <div class="score-cell-meta">
+              <span class="score-cell-title">${cell.icon} ${cell.name}</span>
+              <span class="score-cell-val">${cell.score.toFixed(1)}</span>
+            </div>
+            <div class="score-track-bg">
+              <div class="score-track-fill" style="width: ${pct}%"></div>
             </div>
           </div>`;
       });
-    }
 
-    function animateScoreCounter(targetScore) {
-      const el = document.getElementById("totalScoreEl");
-      let current = 0;
-      const duration = 1200;
-      const stepTime = 30;
-      const steps = duration / stepTime;
-      const increment = targetScore / steps;
+      // Build target radar graphic visualization
+      drawVectorRadarMesh(calculatedScores);
+
+      // Sort capability gaps to identify high-priority focus areas
+      const prioritySorted = calculatedScores.slice().sort((a, b) => b.leverage - a.leverage);
+      const targetTop3Gaps = prioritySorted.slice(0, 3);
       
-      const timer = setInterval(() => {
-        current += increment;
-        if (current >= targetScore) {
-          clearInterval(timer);
-          el.textContent = targetScore.toFixed(1);
-        } else {
-          el.textContent = current.toFixed(1);
-        }
-      }, stepTime);
+      const priorityListContainer = document.getElementById("mintoPrioritizedListContainer");
+      priorityListContainer.innerHTML = "";
+      
+      targetTop3Gaps.forEach((gap, index) => {
+        const diagnostics = ACTIONABLE_DIAGNOSTICS[gap.id] || { hint: "Review capability interfaces.", step: "Standardize core workflow steps." };
+        priorityListContainer.innerHTML += `
+          <div class="minto-prio-row">
+            <div class="minto-prio-badge">${index + 1}</div>
+            <div class="minto-prio-content">
+              <h4>${gap.icon} ${gap.name} &bull; Score: ${gap.score.toFixed(1)} / 5.0</h4>
+              <p class="editorial-p" style="font-weight: 600; margin-bottom: 6px; color: #4E58A8;">${diagnostics.hint}</p>
+              <p class="editorial-p" style="margin-bottom: 0; font-size: 0.9rem; color: #4a5568;">${diagnostics.step}</p>
+            </div>
+          </div>`;
+      });
+
+      // Populate Horizon Execution Framework Matrix rows
+      const roadmapContainer = document.getElementById("threeHorizonRoadmapInjector");
+      roadmapContainer.innerHTML = "";
+      
+      const horizonKeys = ['horizon1', 'horizon2', 'horizon3'];
+      horizonKeys.forEach((key, hIdx) => {
+        const horizonMeta = CHRONOLOGICAL_HORIZONS[key];
+        // Dynamic structural alignment maps targeted gaps directly to execution phases
+        const assignedTargetGap = prioritySorted[hIdx] ? prioritySorted[hIdx].name : "Continuous Optimization";
+        const assignedTargetIcon = prioritySorted[hIdx] ? prioritySorted[hIdx].icon : "⚙️";
+        
+        roadmapContainer.innerHTML += `
+          <div class="roadmap-column">
+            <div class="roadmap-column-header">${horizonMeta.tag}</div>
+            <div class="roadmap-column-title">${assignedTargetIcon} Target: ${assignedTargetGap}</div>
+            <p class="roadmap-bullet-text">${horizonMeta.desc}</p>
+          </div>`;
+      });
     }
 
-    function drawRadarChart(scores) {
-      const svg = document.getElementById("radarSvg");
+    function drawVectorRadarMesh(scores) {
+      const svg = document.getElementById("radarSvgMesh");
       svg.innerHTML = ""; 
       
-      const cx = 290, cy = 250, rMax = 170;
-      const numDims = scores.length;
+      const cx = 290, cy = 250, rMax = 160;
+      const totalAxes = scores.length;
       
-      // Concentric background grid lines (1-5 layers)
+      // Draw concentric structural grid layers (1-5)
       for (let i = 1; i <= 5; i++) {
-        const r = (rMax / 5) * i;
-        const points = [];
-        for (let j = 0; j < numDims; j++) {
-          const angle = (j * 2 * Math.PI / numDims) - Math.PI / 2;
-          points.push(`${cx + r * Math.cos(angle)},${cy + r * Math.sin(angle)}`);
+        const currentRadius = (rMax / 5) * i;
+        const gridPoints = [];
+        for (let j = 0; j < totalAxes; j++) {
+          const radialAngle = (j * 2 * Math.PI / totalAxes) - Math.PI / 2;
+          gridPoints.push(`${cx + currentRadius * Math.cos(radialAngle)},${cy + currentRadius * Math.sin(radialAngle)}`);
         }
-        const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-        polygon.setAttribute("points", points.join(" "));
-        polygon.setAttribute("fill", "none");
-        polygon.setAttribute("stroke", "#e2e8f0");
-        polygon.setAttribute("stroke-width", "1");
-        svg.appendChild(polygon);
+        const polyGrid = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+        polyGrid.setAttribute("points", gridPoints.join(" "));
+        polyGrid.setAttribute("fill", "none");
+        polyGrid.setAttribute("stroke", "#EFF2F8");
+        polyGrid.setAttribute("stroke-width", "1");
+        svg.appendChild(polyGrid);
       }
       
-      const dataPoints = [];
-      scores.forEach((s, j) => {
-        const angle = (j * 2 * Math.PI / numDims) - Math.PI / 2;
+      const operationalDataPoints = [];
+      
+      scores.forEach((axis, idx) => {
+        const anglePosition = (idx * 2 * Math.PI / totalAxes) - Math.PI / 2;
         
-        // Axis Ray line
-        const xMax = cx + rMax * Math.cos(angle);
-        const yMax = cy + rMax * Math.sin(angle);
-        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-        line.setAttribute("x1", cx);
-        line.setAttribute("y1", cy);
-        line.setAttribute("x2", xMax);
-        line.setAttribute("y2", yMax);
-        line.setAttribute("stroke", "#edf2f7");
-        line.setAttribute("stroke-width", "1");
-        svg.appendChild(line);
+        // Draw axis rays radiating from center
+        const xOuterEdge = cx + rMax * Math.cos(anglePosition);
+        const yOuterEdge = cy + rMax * Math.sin(anglePosition);
         
-        // Axis label placings
-        const labelR = rMax + 28;
-        const labelX = cx + labelR * Math.cos(angle);
-        const labelY = cy + labelR * Math.sin(angle);
-        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        text.setAttribute("x", labelX);
-        text.setAttribute("y", labelY);
-        text.setAttribute("fill", "#071727");
-        text.setAttribute("font-size", "11");
-        text.setAttribute("font-weight", "600");
-        text.setAttribute("text-anchor", Math.abs(labelX - cx) < 15 ? "middle" : (labelX > cx ? "start" : "end"));
-        text.setAttribute("dominant-baseline", "middle");
+        const axisRayLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        axisRayLine.setAttribute("x1", cx);
+        axisRayLine.setAttribute("y1", cy);
+        axisRayLine.setAttribute("x2", xOuterEdge);
+        axisRayLine.setAttribute("y2", yOuterEdge);
+        axisRayLine.setAttribute("stroke", "#EFF2F8");
+        axisRayLine.setAttribute("stroke-width", "1");
+        svg.appendChild(axisRayLine);
         
-        let displayName = s.name;
-        if(displayName.length > 22) displayName = displayName.substring(0, 20) + "...";
-        text.textContent = `${s.icon} ${displayName}`;
-        svg.appendChild(text);
+        // Position and structure axis text labels
+        const labelRadiusOffset = rMax + 24;
+        const xLabelPos = cx + labelRadiusOffset * Math.cos(anglePosition);
+        const yLabelPos = cy + labelRadiusOffset * Math.sin(anglePosition);
         
-        // Metric Point calculation
-        const dataR = (rMax / 5) * s.score;
-        dataPoints.push(`${cx + dataR * Math.cos(angle)},${cy + dataR * Math.sin(angle)}`);
+        const axisTextLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        axisTextLabel.setAttribute("x", xLabelPos);
+        axisTextLabel.setAttribute("y", yLabelPos);
+        axisTextLabel.setAttribute("fill", "#051F2E");
+        axisTextLabel.setAttribute("font-size", "10");
+        axisTextLabel.setAttribute("font-weight", "600");
+        axisTextLabel.setAttribute("font-family", "system-ui, sans-serif");
+        axisTextLabel.setAttribute("text-anchor", Math.abs(xLabelPos - cx) < 10 ? "middle" : (xLabelPos > cx ? "start" : "end"));
+        axisTextLabel.setAttribute("dominant-baseline", "middle");
+        
+        let labelString = axis.name;
+        if(labelString.length > 18) labelString = labelString.substring(0, 16) + "...";
+        axisTextLabel.textContent = `${axis.icon} ${labelString}`;
+        svg.appendChild(axisTextLabel);
+        
+        // Calculate coordinate points based on score
+        const activeScoreRadius = (rMax / 5) * axis.score;
+        operationalDataPoints.push(`${cx + activeScoreRadius * Math.cos(anglePosition)},${cy + activeScoreRadius * Math.sin(anglePosition)}`);
       });
       
-      // Data Matrix Polygon
-      const poly = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-      poly.setAttribute("points", dataPoints.join(" "));
-      poly.setAttribute("fill", "rgba(69, 162, 181, 0.25)"); 
-      poly.setAttribute("stroke", "#45a2b5");
-      poly.setAttribute("stroke-width", "2.5");
-      svg.appendChild(poly);
+      // Render capability area polygon
+      const coreDataPolygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+      coreDataPolygon.setAttribute("points", operationalDataPoints.join(" "));
+      coreDataPolygon.setAttribute("fill", "rgba(82, 165, 176, 0.2)"); 
+      coreDataPolygon.setAttribute("stroke", "#52A5B0");
+      coreDataPolygon.setAttribute("stroke-width", "2");
+      svg.appendChild(coreDataPolygon);
       
-      // Structural dot anchors
-      dataPoints.forEach(p => {
-        const coord = p.split(",");
-        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        circle.setAttribute("cx", coord[0]);
-        circle.setAttribute("cy", coord[1]);
-        circle.setAttribute("r", "4");
-        circle.setAttribute("fill", "#071727");
-        svg.appendChild(circle);
+      // Draw individual data point markers
+      operationalDataPoints.forEach(pt => {
+        const pairs = pt.split(",");
+        const markerDot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        markerDot.setAttribute("cx", pairs[0]);
+        markerDot.setAttribute("cy", pairs[1]);
+        markerDot.setAttribute("r", "3.5");
+        markerDot.setAttribute("fill", "#051F2E");
+        svg.appendChild(markerDot);
       });
     }
 
-    // PDF Generator Integration via html2pdf library
+    // PDF Export Document Event Handler
     document.getElementById("downloadPdfBtn").addEventListener("click", () => {
-      const element = document.getElementById("pdfContent");
-      const opt = {
-        margin:       [10, 10, 10, 10],
-        filename:     `Tektit_Maturity_Executive_Report_${clientNameString}.pdf`,
+      const captureTargetElement = document.getElementById("pdfContent");
+      const configurationOptions = {
+        margin:       [0, 0, 0, 0], // Margins are safely managed inside the page containers
+        filename:     `Tektit_Digital_Audit_Executive_Report_${clientNameString}.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },
         html2canvas:  { scale: 2, useCORS: true, logging: false },
         jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
-      html2pdf().set(opt).from(element).save();
+      html2pdf().set(configurationOptions).from(captureTargetElement).save();
     });
 
-    window.addEventListener("DOMContentLoaded", initReport);
+    // Initialize engine parsing on DOM load
+    window.addEventListener("DOMContentLoaded", parseAssessmentEngine);
   </script>
 </body>
 </html>
