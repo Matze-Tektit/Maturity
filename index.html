@@ -18,7 +18,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Gothic+A1:wght@400;600;800;900&display=swap" rel="stylesheet">
   
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   
   <style>
     /* ── Reset & Core Base Variables ── */
@@ -1023,7 +1022,9 @@
       <p>This tool serves as your strategic blueprint to move your organization from reactive chaos to intentional growth and true market leadership. In under 10 minutes, you'll see exactly where you're strong, where you're losing leverage, and what to fix first.</p>
       <p>No fluff. No consultant-speak. Just clarity.</p>
       
-  
+      <p style="font-size: 0.85rem; color: var(--tk-text-muted); margin-top: 12px; font-style: italic;">
+        Note: This evaluation engine is explicitly optimized for digital-first and service-oriented organizations.
+      </p>
 
       <details class="usage-accordion">
         <summary>How to use this tool</summary>
@@ -1187,8 +1188,7 @@
       </div>
 
       <div class="btn-group" id="resultsActionButtonGroup" style="margin-top:24px;">
-        <button type="button" class="btn btn-primary" id="downloadPdfBtn">⬇️ Download PDF report</button>
-        <button type="button" class="btn btn-ghost" id="requestFullReportBtn">📧 Email me the report</button>
+        <button type="button" class="btn btn-primary" id="requestFullReportBtn">📧 Email me the report</button>
         <button type="button" class="btn btn-ghost" id="backBtn">⬆️ Edit selections</button>
       </div>
 
@@ -1518,6 +1518,11 @@
         submissionId: SUBMISSION_ID,
         timestamp: new Date().toISOString(),
         archetype: selectedArchetype,
+        // Flat fields — same names as the original payload, so existing
+        // Make scenario mappings (userEmail / userName / companyName) keep working
+        userEmail: lead.email || "",
+        userName: lead.name || "",
+        companyName: lead.company || "",
         lead: {
           name: lead.name || "",
           email: lead.email || "",
@@ -1548,6 +1553,9 @@
         headers: { "Content-Type": "application/json" },
         keepalive: true,                          // completes even if the tab is closed
         body: JSON.stringify(payload)
+      }).then(function(res) {
+        console.log("Webhook response:", res.status, res.statusText);
+        return res;
       });
     }
     let currentStep = 0;
@@ -2207,8 +2215,14 @@
       });
     }
 
+    function setEmailButtonsState(html, disabled) {
+      ["requestFullReportBtn", "stickyEmailBtn"].forEach(function(id) {
+        const b = document.getElementById(id);
+        if (b) { b.innerHTML = html; b.disabled = disabled; }
+      });
+    }
+
     function requestEmailedReport() {
-      const btn = document.getElementById("requestFullReportBtn");
       const raw = localStorage.getItem("tektit_maturity_data");
       if (!raw) { alert("Please unlock your results first."); return; }
 
@@ -2224,62 +2238,24 @@
         consentTimestamp: lead.consentTimestamp
       });
 
-      const original = btn.innerHTML;
-      btn.innerHTML = "⏳ Sending...";
-      btn.disabled = true;
+      const mainBtn = document.getElementById("requestFullReportBtn");
+      const original = mainBtn ? mainBtn.innerHTML : "📧 Email me the report";
+      setEmailButtonsState("⏳ Sending...", true);
 
       postToWebhook(payload)
         .then(function(res){
           if (!res.ok) throw new Error("bad status " + res.status);
           alert("Thanks! Your report and a strategy-call invite are on their way to your inbox.");
-          btn.innerHTML = "✅ Sent to your inbox";
+          setEmailButtonsState("✅ Sent to your inbox", true);
         })
         .catch(function(err){
           console.error("Report send failed:", err);
-          alert("Something went wrong sending the email — but your data is saved. You can also download the PDF directly, or contact us if it doesn't arrive.");
-          btn.innerHTML = original;
-          btn.disabled = false;
+          alert("Something went wrong sending the email — but your data is saved. Please try again in a moment, or contact us if it doesn't arrive.");
+          setEmailButtonsState(original, false);
         });
     }
 
     document.getElementById("requestFullReportBtn").addEventListener("click", requestEmailedReport);
-
-    function downloadReportPdf(btn) {
-      const el = document.getElementById("pdfContent");
-      if (typeof html2pdf === "undefined") {
-        alert("PDF export is still loading — please try again in a moment.");
-        return;
-      }
-      let company = "report";
-      try {
-        const saved = JSON.parse(localStorage.getItem("tektit_maturity_data"));
-        const c = saved && saved.lead && saved.lead.company;
-        if (c) company = c.replace(/[^a-z0-9]+/gi, "-").toLowerCase();
-      } catch (e) {}
-
-      const original = btn.innerHTML;
-      btn.innerHTML = "⏳ Building PDF...";
-      btn.disabled = true;
-
-      html2pdf().set({
-        margin: 8,
-        filename: `Tektit-Maturity-Check-${company}.pdf`,
-        image: { type: "jpeg", quality: 0.95 },
-        html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff" },
-        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-        pagebreak: { mode: ["css", "legacy"] }
-      }).from(el).save().then(() => {
-        btn.innerHTML = original;
-        btn.disabled = false;
-      }).catch(() => {
-        btn.innerHTML = original;
-        btn.disabled = false;
-      });
-    }
-
-    document.getElementById("downloadPdfBtn").addEventListener("click", function() {
-      downloadReportPdf(this);
-    });
 
     /* ── Sticky results conversion bar ── */
     let stickyObserver = null;
@@ -2291,13 +2267,14 @@
         bar.setAttribute("role", "region");
 
         // Reuse the EXACT existing control labels — no new copy introduced
-        const dlSource = document.getElementById("downloadPdfBtn");
-        const dlBtn = document.createElement("button");
-        dlBtn.type = "button";
-        dlBtn.id = "stickyDownloadBtn";
-        dlBtn.className = "btn sticky-ghost";
-        dlBtn.textContent = dlSource ? dlSource.textContent : "Download";
-        dlBtn.addEventListener("click", function() { downloadReportPdf(this); });
+        const emailSource = document.getElementById("requestFullReportBtn");
+        const emailBtn = document.createElement("button");
+        emailBtn.type = "button";
+        emailBtn.id = "stickyEmailBtn";
+        emailBtn.className = "btn sticky-ghost";
+        emailBtn.innerHTML = emailSource ? emailSource.innerHTML : "📧 Email me the report";
+        emailBtn.disabled = emailSource ? emailSource.disabled : false;
+        emailBtn.addEventListener("click", requestEmailedReport);
 
         const bookBtn = document.createElement("button");
         bookBtn.type = "button";
@@ -2308,9 +2285,17 @@
           if (a) a.click();
         });
 
-        bar.appendChild(dlBtn);
+        bar.appendChild(emailBtn);
         bar.appendChild(bookBtn);
         document.body.appendChild(bar);
+      }
+
+      // Keep the sticky email button in step with the main one
+      const emailSource = document.getElementById("requestFullReportBtn");
+      const stickyEmail = document.getElementById("stickyEmailBtn");
+      if (emailSource && stickyEmail) {
+        stickyEmail.innerHTML = emailSource.innerHTML;
+        stickyEmail.disabled = emailSource.disabled;
       }
 
       // (Re)sync the booking label from the freshly rendered booking button
