@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -155,7 +156,7 @@
       font-size: 1rem;
       color: #2d3748;
       max-width: 840px;
-      text-align: justify;
+      text-align: left;
     }
     
     .intro h2 {
@@ -392,6 +393,7 @@
       background: #fafbfc;
       cursor: pointer;
       position: relative;
+      transition: border-color var(--transition-fast), background var(--transition-fast);
     }
     .el-label:hover {
       border-color: var(--tk-teal);
@@ -420,10 +422,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
     }
     .el-label input:checked ~ .el-box {
       background: var(--tk-teal);
       border-color: var(--tk-teal);
+      transform: scale(1.08);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .el-box, .header-progress-fill, .step-pane { transition: none !important; }
     }
     .el-label input:checked ~ .el-box::after {
       content: '';
@@ -488,9 +495,21 @@
       border-style: solid;
       border-color: var(--tk-dark) transparent transparent transparent;
     }
-    .tt-wrap:hover .tt-text {
+    .tt-wrap:hover .tt-text,
+    .tt-wrap:focus .tt-text,
+    .tt-wrap:focus-within .tt-text {
       visibility: visible;
       opacity: 1;
+    }
+    .tt-wrap:focus-visible {
+      outline: 2px solid var(--tk-teal);
+      outline-offset: 2px;
+      border-radius: 50%;
+    }
+    @media (max-width: 600px) {
+      .tt-text {
+        width: min(240px, 70vw);
+      }
     }
 
     /* ── Controls Core Buttons ── */
@@ -567,6 +586,29 @@
       width: 100%;
       outline: none;
     }
+    .lead-consent {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      text-align: left;
+      font-size: 0.78rem;
+      color: #4a5568;
+      line-height: 1.45;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+    .lead-consent input {
+      width: 16px;
+      height: 16px;
+      margin-top: 2px;
+      flex-shrink: 0;
+      accent-color: var(--tk-teal);
+      cursor: pointer;
+    }
+    .lead-consent a {
+      color: var(--tk-blue-bright);
+      text-decoration: underline;
+    }
 
     /* ── Faded Locked Preview System ── */
     .locked-preview {
@@ -581,6 +623,10 @@
     .results-section {
       display: none;
       margin-top: 40px;
+      scroll-margin-top: 96px;
+    }
+    @media (max-width: 720px) {
+      .results-section { scroll-margin-top: 124px; }
     }
     
     .res-hero {
@@ -614,27 +660,57 @@
       opacity: 0.95;
     }
     .score-ring {
-      width: 130px;
-      height: 130px;
-      border-left: 3px solid var(--tk-mint);
+      position: relative;
+      width: 150px;
+      height: 150px;
+      flex-shrink: 0;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
       justify-content: center;
-      padding-left: 24px;
+    }
+    .score-ring svg {
+      position: absolute;
+      inset: 0;
+      width: 150px;
+      height: 150px;
+      transform: rotate(-90deg);
+    }
+    .score-ring .ring-track {
+      fill: none;
+      stroke: rgba(255,255,255,0.14);
+      stroke-width: 7;
+    }
+    .score-ring .ring-fill {
+      fill: none;
+      stroke: url(#ringGradient);
+      stroke-width: 7;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1s cubic-bezier(0.4,0,0.2,1);
+    }
+    .score-ring .score-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 96px;
     }
     .score-num {
       font-weight: 900 !important;
-      font-size: 3.4rem !important;
+      font-size: 2.8rem !important;
       color: #ffffff !important;
       line-height: 1;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
     }
     .score-sub {
-      font-size: 0.85rem !important;
+      font-size: 0.72rem !important;
       text-transform: uppercase;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.14em;
       color: var(--tk-mint) !important;
-      margin-top: 6px;
+      margin-top: 5px;
       font-weight: 800;
     }
     
@@ -870,6 +946,56 @@
       .wizard-steps { flex-direction: column; width: 100%; }
       #resetBtn { margin-left: 0; width: 100%; }
     }
+    @media (max-width: 720px) {
+      .top-bar { flex-wrap: wrap; row-gap: 8px; padding: 12px 16px; }
+      .top-bar-left { gap: 10px; min-width: 0; }
+      .top-bar-left img { height: 34px; }
+      .top-bar h1 { font-size: 0.95rem; letter-spacing: 0.03em; }
+      .top-bar-right { gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+      .header-status-text { display: none; }
+      .progress-pill { padding: 5px 11px; font-size: 0.72rem; }
+    }
+    @media (max-width: 380px) {
+      .top-bar h1 { display: none; }
+    }
+
+    /* Sticky results conversion bar */
+    #stickyActionBar {
+      position: fixed;
+      left: 0; right: 0; bottom: 0;
+      z-index: 90;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+      padding: 10px 16px;
+      background: rgba(5, 31, 46, 0.97);
+      box-shadow: 0 -4px 20px rgba(5, 31, 46, 0.28);
+      transform: translateY(130%);
+      transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    #stickyActionBar.visible { transform: translateY(0); }
+    #stickyActionBar .btn { margin: 0; }
+    #stickyActionBar .sticky-ghost {
+      background: transparent;
+      color: #ffffff;
+      border: 1.5px solid rgba(255, 255, 255, 0.55);
+    }
+    #stickyActionBar .sticky-ghost:hover { background: rgba(255,255,255,0.1); }
+    #stickyBookBtn {
+      max-width: 360px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    @media (max-width: 600px) {
+      #stickyActionBar { padding: 8px 10px; gap: 8px; }
+      #stickyActionBar .btn { flex: 1; font-size: 0.85rem; padding: 12px 8px; }
+      #stickyBookBtn { max-width: none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #stickyActionBar { transition: none; }
+    }
   </style>
 </head>
 <body>
@@ -881,6 +1007,7 @@
     </div>
     <div class="top-bar-right">
       <div class="header-status-text" id="progText">0 of 12 dimensions reviewed</div>
+      <div class="progress-pill" id="liveScorePill" style="display:none;">Live score: <span id="liveScoreVal">0.0</span></div>
       <div class="progress-pill">Selected: <span id="headerCount">0</span></div>
     </div>
     <div class="header-progress-track">
@@ -910,10 +1037,10 @@
             <strong>2. How to select checkboxes:</strong> Mark a checkbox <strong>only</strong> if that item is completely and <strong>firmly</strong> established as a uniform standard across your organization. Leave it unchecked if it is practiced inconsistently, ad-hoc, or is still a work-in-progress.
           </div>
           <div class="accordion-item">
-            <strong>3. How the score is calculated:</strong> Each checked dimension calculates an automated maturity rating from 0.0 to 5.0. Foundational components carry a higher strategic weighting multiplier than experimental or secondary capabilities.
+            <strong>3. How the score is calculated:</strong> Each dimension gets a maturity score from 0.0 to 5.0 based on what you've established. Foundational items count for more than secondary ones, so your overall score reflects what actually matters most.
           </div>
           <div class="accordion-item">
-            <strong>4. Focus areas interpretation:</strong> Your priority highlights don't merely represent your lowest absolute numerical scores. The ranking operates via a composite optimization leverage algorithm that weights execution gaps against core revenue and scalability dependencies.
+            <strong>4. Focus areas interpretation:</strong> Your top focus areas aren't just your lowest scores. We combine how big each gap is with how much that area drives your growth — so you fix the bottleneck with the most leverage first, not just the lowest number.
           </div>
         </div>
       </details>
@@ -934,8 +1061,8 @@
       <div class="wizard-steps" id="wizardStepsNav">
         <div class="wiz-step" data-step-idx="0">1. Strategy & Leadership</div>
         <div class="wiz-step" data-step-idx="1">2. Go-To-Market</div>
-        <div class="wiz-step" data-step-idx="2">3. Operations</div>
-        <div class="wiz-step" data-step-idx="3">4. Tech & Data</div>
+        <div class="wiz-step" data-step-idx="2">3. Delivery & Operations</div>
+        <div class="wiz-step" data-step-idx="3">4. Technology & Data</div>
       </div>
     </div>
 
@@ -951,12 +1078,25 @@
     <section id="results" class="results-section">
       <div class="res-hero">
         <div class="score-ring">
-          <span class="score-num" id="totalScoreEl">—</span>
-          <span class="score-sub">/ 5.0</span>
+          <svg viewBox="0 0 130 130" aria-hidden="true">
+            <defs>
+              <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#52A5B0"></stop>
+                <stop offset="100%" stop-color="#52F2B0"></stop>
+              </linearGradient>
+            </defs>
+            <circle class="ring-track" cx="65" cy="65" r="58"></circle>
+            <circle class="ring-fill" id="scoreRingFill" cx="65" cy="65" r="58"
+                    stroke-dasharray="364.4" stroke-dashoffset="364.4"></circle>
+          </svg>
+          <div class="score-inner">
+            <span class="score-num" id="totalScoreEl">—</span>
+            <span class="score-sub">/ 5.0</span>
+          </div>
         </div>
         <div>
           <h2 id="userGreeting">Your Results</h2>
-          <p id="scoreSubtitle"></p>
+          <p id="scoreSubtitle" aria-live="polite"></p>
         </div>
         <img src="TEKTIT_Cons-Logo_color-white.png" alt="Tektit Logo Accent" class="res-logo" loading="lazy">
       </div>
@@ -964,21 +1104,26 @@
       <section id="leadGate" class="lead-gate">
         <img src="Tektit Consulting Bildmarke square.png" alt="Tektit Consulting" class="lead-logo" loading="lazy">
         <h2>Unlock Your Custom Execution Roadmap</h2>
-        <p>Enter your details below to remove the blur filter, display your interactive <strong>Maturity Radar Chart</strong>, and prepare your comprehensive roadmap dataset archive.</p>
+        <p>Enter your details below to unlock your full report: your interactive <strong>Maturity Radar</strong>, your top 3 focus areas, and clear recommended next steps.</p>
         
         <div class="lead-form">
           <div>
             <label for="leadName" class="sr-only">Your name</label>
-            <input type="text" id="leadName" placeholder="Your name" required>
+            <input type="text" id="leadName" placeholder="Your name" autocomplete="name" required>
           </div>
           <div>
             <label for="leadCompany" class="sr-only">Company Name</label>
-            <input type="text" id="leadCompany" placeholder="Your company name" required>
+            <input type="text" id="leadCompany" placeholder="Your company name" autocomplete="organization" required>
           </div>
           <div>
             <label for="leadEmail" class="sr-only">Your email address</label>
-            <input type="email" id="leadEmail" placeholder="Your work email address" required>
+            <input type="email" id="leadEmail" placeholder="Your work email address" autocomplete="email" inputmode="email" required>
           </div>
+          <input type="text" id="leadWebsite" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px; top:-9999px; width:1px; height:1px; opacity:0;">
+          <label class="lead-consent" for="leadConsent">
+            <input type="checkbox" id="leadConsent" required>
+            <span>By submitting this form you are giving consent to be contacted by Tektit Consulting GmbH and to have your assessment data processed to generate and send your report. You can withdraw your consent at any time. See our <a href="https://www.tektitconsulting.com/datenschutz" target="_blank" rel="noopener noreferrer">Data Privacy</a> notice.</span>
+          </label>
           <button type="button" class="btn btn-primary" id="unlockResultsBtn">Unlock Full Performance Analysis 📊</button>
         </div>
       </section>
@@ -1007,7 +1152,7 @@
             </p>
             <div id="prioList"></div>
             <p style="font-size: 0.75rem; color: #718096; margin-top: 14px; font-style: italic; line-height: 1.4;">
-              * Note: Focus areas are ranked based on calculated optimization leverage (combining your current implementation gap with the dimension's strategic business impact weight), not strictly by raw score.
+              * Note: Focus areas are ranked by leverage — how big each gap is combined with how much that area drives your growth — not strictly by raw score.
             </p>
           </div>
 
@@ -1043,12 +1188,13 @@
         </div>
       </div>
 
-      <div id="bookingSection"></div>
-      
       <div class="btn-group" id="resultsActionButtonGroup" style="margin-top:24px;">
-        <button type="button" class="btn btn-primary" id="requestFullReportBtn">📥 Request Full Report</button>
-        <button type="button" class="btn btn-ghost" id="backBtn">⬆️ Edit Selections</button>
+        <button type="button" class="btn btn-primary" id="downloadPdfBtn">⬇️ Download PDF report</button>
+        <button type="button" class="btn btn-ghost" id="requestFullReportBtn">📧 Email me the report</button>
+        <button type="button" class="btn btn-ghost" id="backBtn">⬆️ Edit selections</button>
       </div>
+
+      <div id="bookingSection"></div>
     </section>
   </main>
 
@@ -1183,8 +1329,8 @@
       ]},
 
       /* Cluster 4: Technology & Data */
-      {id:"devorg", name:{digital:"Product & Engineering", services:"Service Delivery Org", mittelstand:"Engineering & R&D Org", logistics:"Fleet & Network Architecture"}, icon:"💻", cluster:"Technology & Data", strategicWeight: 1.4, elements:[
-        {t:"Our development team focuses engineering hours mostly on our unique selling point (USP) and core intellectual property.", w: 2.0, desc:"Ensuring your execution teams know exactly how their current day-to-day work maps back to long-term company goals."},
+      {id:"devorg", name:{digital:"Product & Engineering", services:"Service Delivery Org", mittelstand:"Engineering & R&D Org", logistics:"Fleet & Network Architecture"}, icon:"💻", cluster:"Delivery & Operations", strategicWeight: 1.4, elements:[
+        {t:"Our development team focuses engineering hours mostly on our unique selling point (USP) and core intellectual property.", w: 2.0, desc:"Spending most of your engineering time on what makes you different, not on generic plumbing anyone could buy off the shelf."},
         {t:{
           digital:"Our development teams work in structured, iterative cycles (e.g. Scrum or Kanban).",
           services:"We use clear phase-tracking and milestone rules to keep complex client projects on time.",
@@ -1197,17 +1343,17 @@
           mittelstand:"Our team follows strict engineering design guidelines and clear component specification baselines.",
           logistics:"We enforce uniform terminal processing guidelines and clear packaging standard rules across the network."
          }, w: 1.5, desc:"Enforcing strict, documented quality baselines so your final deliverables or outputs stay perfectly consistent."},
-        {t:"We avoid wasting development speed on building standard software components that could easily be integrated from fit-for-purpose tools.", w: 1.0, desc:"Making priority investments based on hard business metrics—like margins, utilization, or retention—instead of gut feeling or loud requests."}
+        {t:"We avoid wasting development speed on building standard software components that could easily be integrated from fit-for-purpose tools.", w: 1.0, desc:"Plugging in ready-made tools for common needs instead of hand-building them, so your team's time goes to your core product."}
       ]},
-      {id:"devops", name:{digital:"Tech Infrastructure & Automation", services:"Workspace Automation", mittelstand:"Industrial IT / OT Infrastructure", logistics:"Fulfillment & Fleet Tech"}, icon:"🚀", cluster:"Technology & Data", strategicWeight: 1.3, elements:[
+      {id:"devops", name:{digital:"Tech Infrastructure & Automation", services:"Workspace Automation", mittelstand:"Industrial IT / OT Infrastructure", logistics:"Fulfillment & Fleet Tech"}, icon:"🚀", cluster:"Delivery & Operations", strategicWeight: 1.3, elements:[
         {t:{
           digital:"Routine setup tasks (servers, environments) run via automated scripts — not manual steps.",
           services:"Setting up client workspaces, directories, and internal profiles is automated via scripts.",
           mittelstand:"Our plant communication systems utilize secure, automated scripts to push routine firmware updates.",
           logistics:"Fulfillment hardware profiles and automated sorting rules run via pre-configured scripts."
          }, w: 1.0, desc:"Automating highly repetitive environment setups or device configurations to eliminate human delay."},
-        {t:"We actively manage tech debt and legacy systems, treating them as solvable problems rather than monsters under the bed.", w: 1.5, desc:"Managing your infrastructure centrally and systematically, ensuring it can be duplicated or recovered instantly."},
-        {t:"We resolve known infrastructure vulnerabilities systematically using curated standards and AI-driven workflows.", w: 2.0, desc:"Using system-driven logic to execute key workflows and updates smoothly without causing downtime or manual friction."},
+        {t:"We actively manage tech debt and legacy systems, treating them as solvable problems rather than monsters under the bed.", w: 1.5, desc:"Setting aside regular time to clean up old code and ageing systems, instead of letting them quietly slow everything down."},
+        {t:"We resolve known infrastructure vulnerabilities systematically using curated standards and AI-driven workflows.", w: 2.0, desc:"Fixing known security gaps on a set schedule using standard checklists and automation, not only when something breaks."},
         {t:{
           digital:"Our system configurations are version-controlled so changes are tracked and reversible.",
           services:"Our master operational playbooks, templates, and frameworks are managed centrally through version tracking.",
@@ -1217,7 +1363,7 @@
         {t:"We have monitoring in place that alerts us to infrastructure issues before they cause outages.", w: 1.0, desc:"System monitors that ping the tech team on Slack or PagerDuty before users notice the site is down."}
       ]},
       {id:"itlandscape", name:"Core Systems & Integration", icon:"🗄️", cluster:"Technology & Data", strategicWeight: 1.4, elements:[
-        {t:"Our core systems are integrated cleanly to prevent tool sprawl, data silos, and broken workflows.", w: 2.0, desc:"Making sure every department and tool treats your primary enterprise platform as the absolute authority on business facts."},
+        {t:"Our core systems are integrated cleanly to prevent tool sprawl, data silos, and broken workflows.", w: 2.0, desc:"Connecting your main tools so data flows between them automatically, instead of living in disconnected islands."},
         {t:"We use fit-for-purpose tools for standard tasks (like Sales, Accounting, and Controlling) so we don't waste energy reinventing the wheel.", w: 1.5, desc:"Using standard integrations for non-unique areas so you can protect your focus."},
         {t:"Workflows that span multiple systems run automatically without manual handoffs.", w: 1.0, desc:"Triggering background actions automatically—like sending an invoice the moment a CRM deal closes."}
       ]},
@@ -1299,7 +1445,115 @@
       "Delivery & Operations",
       "Technology & Data"
     ];
+    // Four consecutive Tektit palette swatches — mirrors the four-facet Bildmarke
+    const PILLAR_COLORS = {
+      "Strategy & Leadership": "#3D4585",
+      "Go-To-Market":          "#4E58A8",
+      "Delivery & Operations": "#52A5B0",
+      "Technology & Data":     "#52D0B0"
+    };
+    function pillarColor(cluster) { return PILLAR_COLORS[cluster] || "#3D4585"; }
+    // Darker, contrast-safe variants for text/numbers on white
+    const PILLAR_TEXT = {
+      "Strategy & Leadership": "#3D4585",
+      "Go-To-Market":          "#4E58A8",
+      "Delivery & Operations": "#2C7A86",
+      "Technology & Data":     "#17876B"
+    };
+    function pillarText(cluster) { return PILLAR_TEXT[cluster] || "#3D4585"; }
+
+    /* ── Benchmarking / capture layer ── */
+    const TOOL_VERSION = "1.1.0";
+    const BENCHMARK_SCHEMA_VERSION = 2;
+    const WEBHOOK_ENDPOINT = "https://hook.eu2.make.com/vpylwdo85cf86nhulcbe8ju55ygxc5wo";
+    const CONSENT_VERSION = "2025-07-31";
+    const CONSENT_TEXT = "By submitting this form you are giving consent to be contacted by Tektit Consulting GmbH and to have your assessment data processed to generate and send your report.";
+    const SESSION_START = Date.now();
+    let SUBMISSION_ID = null;
+
+    function makeId() {
+      try { if (window.crypto && crypto.randomUUID) return crypto.randomUUID(); } catch (e) {}
+      return "sub-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10);
+    }
+
+    function maturityBand(avg) {
+      if (avg < 2.0) return "Survival Mode";
+      if (avg < 3.5) return "Functional Baseline";
+      return "Proactive Progress";
+    }
+
+    // Assembles one clean, analysis-ready benchmark record from current state.
+    function buildBenchmarkPayload(eventName, lead) {
+      const dims = DIMS.map(function(d) {
+        const els = d.elements.map(function(el, idx) {
+          const cb = document.getElementById(`cb-${d.id}-${idx}`);
+          return { index: idx, weight: (el.w || 1.0), checked: !!(cb && cb.checked) };
+        });
+        return {
+          id: d.id,
+          name: d.name,
+          cluster: d.cluster,
+          strategicWeight: (d.strategicWeight || 1.0),
+          score: calcScore(d.id),
+          checked: els.filter(function(e){ return e.checked; }).length,
+          total: d.elements.length,
+          elements: els
+        };
+      });
+
+      const overallWeighted = weightedOverall(dims);
+      const overallSimple = parseFloat((dims.reduce(function(s,r){ return s + r.score; }, 0) / (dims.length || 1)).toFixed(2));
+
+      const pillarScores = {};
+      CLUSTERS.forEach(function(c) {
+        const inC = dims.filter(function(d){ return d.cluster === c; });
+        pillarScores[c] = inC.length ? parseFloat((inC.reduce(function(s,r){ return s + r.score; }, 0) / inC.length).toFixed(2)) : 0;
+      });
+
+      if (!SUBMISSION_ID) SUBMISSION_ID = makeId();
+      lead = lead || {};
+
+      return {
+        event: eventName,                         // "lead_unlock" | "report_request"
+        schemaVersion: BENCHMARK_SCHEMA_VERSION,
+        toolVersion: TOOL_VERSION,
+        submissionId: SUBMISSION_ID,
+        timestamp: new Date().toISOString(),
+        archetype: selectedArchetype,
+        lead: {
+          name: lead.name || "",
+          email: lead.email || "",
+          company: lead.company || "",
+          consent: !!lead.consent,
+          consentText: CONSENT_TEXT,
+          consentVersion: CONSENT_VERSION,
+          consentTimestamp: lead.consentTimestamp || null
+        },
+        overallScore: overallWeighted,
+        overallScoreUnweighted: overallSimple,
+        maturityBand: maturityBand(overallWeighted),
+        pillarScores: pillarScores,
+        dimensions: dims,
+        meta: {
+          userAgent: navigator.userAgent,
+          language: navigator.language,
+          referrer: document.referrer || "",
+          screen: (window.screen ? (window.screen.width + "x" + window.screen.height) : ""),
+          durationSeconds: Math.round((Date.now() - SESSION_START) / 1000)
+        }
+      };
+    }
+
+    function postToWebhook(payload) {
+      return fetch(WEBHOOK_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        keepalive: true,                          // completes even if the tab is closed
+        body: JSON.stringify(payload)
+      });
+    }
     let currentStep = 0;
+    let isTransitioning = false;
 
     function compileArchetypeData() {
       DIMS = DIMS_TEMPLATE.map(template => {
@@ -1355,10 +1609,12 @@
                       </label>`;
           });
           
+          const pc = pillarColor(dim.cluster);
+          card.style.borderLeft = `3px solid ${pc}`;
           card.innerHTML = `
             <div class="dim-head">
               <div class="dim-title">
-                <div class="dim-icon">${dim.icon}</div>
+                <div class="dim-icon" style="background:${pc}1f;">${dim.icon}</div>
                 <span class="dim-name">${dim.name}</span>
               </div>
               <div class="dim-badge" id="db-${dim.id}">0 / ${dim.elements.length}</div>
@@ -1404,6 +1660,10 @@
     }
 
     function moveWizardStep(direction) {
+      if (isTransitioning) return;
+      const clamped = Math.min(3, Math.max(0, currentStep + direction));
+      if (clamped === currentStep) return;
+      isTransitioning = true;
       const oldPane = document.getElementById(`stepPane-${currentStep}`);
       oldPane.style.opacity = "0";
       oldPane.style.transform = "translateY(8px)";
@@ -1426,6 +1686,7 @@
         syncWizardButtonsState();
         updateGlobalProgress();
         document.getElementById("wizardStepsNav").scrollIntoView({behavior: "smooth", block: "start"});
+        isTransitioning = false;
       }, 150);
     }
 
@@ -1483,23 +1744,86 @@
         }
       });
 
-      // Synchronize horizontal filling tracker
+      // Honest progress: reflect dimensions the user has actually engaged with
+      // (at least one element selected), not just steps clicked past.
       let assessedCount = 0;
-      CLUSTERS.forEach((clusterName, idx) => {
-        if (idx <= currentStep) {
-          const clusterDims = DIMS.filter(d => d.cluster === clusterName);
-          assessedCount += clusterDims.length;
-        }
+      DIMS.forEach(d => {
+        if (document.querySelectorAll(`#dc-${d.id} .dim-cb:checked`).length > 0) assessedCount++;
       });
 
       document.getElementById("progFill").style.width = (assessedCount / DIMS.length * 100) + "%";
       document.getElementById("progText").textContent = assessedCount + " of " + DIMS.length + " dimensions reviewed";
       document.getElementById("headerCount").textContent = totalChecked;
       document.getElementById("showLeadBtn").disabled = totalChecked === 0;
+
+      updateLiveScore();
+      persistProgress();
+    }
+
+    function updateLiveScore() {
+      const total = document.querySelectorAll(".dim-cb:checked").length;
+      const pill = document.getElementById("liveScorePill");
+      const val = document.getElementById("liveScoreVal");
+      if (!pill || !val) return;
+      if (total > 0) {
+        const scores = DIMS.map(function(d) {
+          return { score: calcScore(d.id), strategicWeight: (d.strategicWeight || 1.0) };
+        });
+        pill.style.display = "";
+        val.textContent = weightedOverall(scores).toFixed(1);
+      } else {
+        pill.style.display = "none";
+      }
+    }
+
+    const PROGRESS_KEY = "tektit_progress_v1";
+    function persistProgress() {
+      try {
+        const selections = {};
+        DIMS.forEach(function(d) {
+          const idxs = [];
+          document.querySelectorAll(`#dc-${d.id} .dim-cb`).forEach(function(cb, idx) {
+            if (cb.checked) idxs.push(idx);
+          });
+          if (idxs.length) selections[d.id] = idxs;
+        });
+        localStorage.setItem(PROGRESS_KEY, JSON.stringify({ archetype: selectedArchetype, selections: selections }));
+      } catch (e) { /* storage unavailable (private mode) — fail silently */ }
+    }
+
+    function restoreProgress() {
+      let saved;
+      try { saved = JSON.parse(localStorage.getItem(PROGRESS_KEY)); } catch (e) { return; }
+      if (!saved || !saved.selections) return;
+
+      if (saved.archetype && saved.archetype !== selectedArchetype) {
+        selectedArchetype = saved.archetype;
+        document.querySelectorAll(".arch-btn").forEach(function(b) {
+          b.classList.toggle("active", b.dataset.arch === selectedArchetype);
+        });
+        compileArchetypeData();
+        buildUI();
+      }
+
+      let restoredAny = false;
+      Object.keys(saved.selections).forEach(function(dimId) {
+        saved.selections[dimId].forEach(function(idx) {
+          const cb = document.getElementById(`cb-${dimId}-${idx}`);
+          if (cb) {
+            cb.checked = true;
+            const label = cb.closest(".el-label");
+            if (label) label.classList.add("is-checked");
+            restoredAny = true;
+          }
+        });
+        updateDimCard(dimId);
+      });
+      if (restoredAny) updateGlobalProgress();
     }
 
     function resetAll() {
       if (!confirm("Clear all selections and start over?")) return;
+      try { localStorage.removeItem(PROGRESS_KEY); } catch (e) {}
       document.querySelectorAll(".dim-cb").forEach(cb => {
         cb.checked = false;
         cb.closest('.el-label').classList.remove('is-checked');
@@ -1558,6 +1882,7 @@
       document.getElementById("resetBtn").addEventListener("click", resetAll);
       document.getElementById("backBtn").addEventListener("click", function() {
         document.getElementById("results").style.display = "none";
+        teardownStickyBar();
         window.scrollTo({top: 0, behavior: "smooth"});
       });
 
@@ -1569,36 +1894,52 @@
         const emailInput = document.getElementById("leadEmail");
         const nameInput = document.getElementById("leadName");
         const companyInput = document.getElementById("leadCompany");
-        
-        if (!emailInput.checkValidity() || !emailInput.value) {
-          alert("Please enter a valid work email address to map your architecture values.");
+        const consentInput = document.getElementById("leadConsent");
+        const honeypot = document.getElementById("leadWebsite");
+
+        // Silent bot trap: real users never fill this hidden field
+        if (honeypot && honeypot.value.trim() !== "") { return; }
+
+        const emailVal = (emailInput.value || "").trim();
+        const nameVal = (nameInput.value || "").trim();
+        const companyVal = (companyInput.value || "").trim();
+
+        if (!emailInput.checkValidity() || !emailVal) {
+          alert("Please enter a valid work email address so we can send you your report.");
+          emailInput.focus();
           return;
         }
-        if (!companyInput.value) {
+        if (!companyVal) {
           alert("Please enter your company name.");
+          companyInput.focus();
           return;
         }
-        
-        const userStatePayload = {
-          archetype: selectedArchetype,
-          userName: nameInput.value || "Forward-Thinking Executive",
-          userEmail: emailInput.value,
-          companyName: companyInput.value,
-          selections: {}
+        if (!consentInput.checked) {
+          alert("Please tick the consent box so we can process your data and send your report.");
+          consentInput.focus();
+          return;
+        }
+
+        const lead = {
+          name: nameVal,
+          email: emailVal,
+          company: companyVal,
+          consent: true,
+          consentTimestamp: new Date().toISOString()
         };
-        DIMS.forEach(d => {
-          const checkedIndices = [];
-          document.querySelectorAll(`#dc-${d.id} .dim-cb`).forEach((cb, idx) => {
-            if(cb.checked) checkedIndices.push(idx);
-          });
-          userStatePayload.selections[d.id] = checkedIndices;
-        });
-        localStorage.setItem("tektit_maturity_data", JSON.stringify(userStatePayload));
-        
-        const name = nameInput.value;
-        document.getElementById("userGreeting").textContent = name ? `Hello ${name.split(' ')[0]}, Here Are Your Results:` : "Your Results:";
+
+        // Build the full benchmark record and capture the lead RIGHT NOW —
+        // no second click required. Make stores the row and can email the report.
+        const payload = buildBenchmarkPayload("lead_unlock", lead);
+        try { localStorage.setItem("tektit_maturity_data", JSON.stringify(payload)); } catch (e) {}
+        postToWebhook(payload).catch(function(err){ console.error("Early capture failed:", err); });
+
+        document.getElementById("userGreeting").textContent = nameVal ? `Hello ${nameVal.split(' ')[0]}, Here Are Your Results:` : "Your Results:";
         evaluate(false); 
       });
+
+      // Restore any in-progress answers from a previous (unfinished) session
+      restoreProgress();
 
       // Synchronize starting navigation values explicitly on application boot
       syncWizardButtonsState();
@@ -1622,18 +1963,46 @@
       return totalWeight === 0 ? 0 : parseFloat((checkedWeight / totalWeight * 5).toFixed(2));
     }
 
+    // Weighted overall score: matches the stated methodology (foundational dimensions
+    // carry a higher strategic weighting than secondary ones).
+    function weightedOverall(scores) {
+      let wSum = 0, wTot = 0;
+      scores.forEach(function(r) {
+        const sw = r.strategicWeight || 1.0;
+        wSum += r.score * sw;
+        wTot += sw;
+      });
+      return wTot === 0 ? 0 : parseFloat((wSum / wTot).toFixed(2));
+    }
+
+    const RING_CIRCUMFERENCE = 2 * Math.PI * 58; // r=58 in the SVG
+    function drawScoreRing(score) {
+      const ring = document.getElementById("scoreRingFill");
+      if (!ring) return;
+      const pct = Math.max(0, Math.min(1, score / 5));
+      ring.style.strokeDashoffset = (RING_CIRCUMFERENCE * (1 - pct)).toFixed(1);
+    }
+
+    let scoreTimer = null;
     function animateScoreCounter(targetScore) {
       const el = document.getElementById("totalScoreEl");
+      if (scoreTimer) clearInterval(scoreTimer);
       let current = 0;
       const duration = 1000;
       const stepTime = 25;
       const steps = duration / stepTime;
       const increment = targetScore / steps;
-      
-      const timer = setInterval(() => {
+
+      if (targetScore <= 0 || !isFinite(increment)) {
+        el.textContent = (targetScore || 0).toFixed(1);
+        return;
+      }
+
+      scoreTimer = setInterval(() => {
         current += increment;
         if (current >= targetScore) {
-          clearInterval(timer);
+          clearInterval(scoreTimer);
+          scoreTimer = null;
           el.textContent = targetScore.toFixed(1);
         } else {
           el.textContent = current.toFixed(1);
@@ -1652,15 +2021,18 @@
           id: d.id, 
           name: d.name, 
           icon: d.icon, 
+          cluster: d.cluster,
           score: finalScore, 
           leverage: leverage,
+          strategicWeight: (d.strategicWeight || 1.0),
           checked: chkCount, 
           total: d.elements.length
         };
       });
       
-      const avg = scores.reduce(function(s, r) { return s + r.score; }, 0) / scores.length;
+      const avg = weightedOverall(scores);
       animateScoreCounter(avg);
+      drawScoreRing(avg);
       
       document.getElementById("scoreSubtitle").textContent =
         avg < 2.0 ? "Survival Mode — Operations rely heavily on manual workarounds and firefighting. Increasing your workload volume right now will block execution." :
@@ -1668,15 +2040,17 @@
         "Proactive Progress — Highly integrated value chain metrics. Your foundation is optimized to scale smoothly and secure clear market leadership.";
 
       const cards = document.getElementById("resCards");
-      cards.innerHTML = "";
+      let cardsHtml = "";
       scores.forEach(function(r) {
         const pct = r.score / 5 * 100;
-        cards.innerHTML += `<div class="res-card" style="opacity:${r.score === 0 ? "0.45" : "1"}">
-          <div class="rc-head"><span class="rc-name">${r.icon} ${r.name}</span><span class="rc-badge">${r.score.toFixed(1)}</span></div>
-          <div class="rc-bar-wrap"><div class="rc-bar" style="width:${pct}%"></div></div>
+        const pc = pillarColor(r.cluster);
+        cardsHtml += `<div class="res-card" style="opacity:${r.score === 0 ? "0.45" : "1"}; border-top-color:${pc} !important;">
+          <div class="rc-head"><span class="rc-name">${r.icon} ${r.name}</span><span class="rc-badge" style="color:${pillarText(r.cluster)} !important;">${r.score.toFixed(1)}</span></div>
+          <div class="rc-bar-wrap"><div class="rc-bar" style="width:${pct}%; background:${pc} !important;"></div></div>
           <div class="rc-detail">${r.checked} of ${r.total} elements established</div>
           </div>`;
       });
+      cards.innerHTML = cardsHtml;
 
       drawRadarChart(scores);
 
@@ -1725,13 +2099,14 @@
           <div class="minto-booking-card">
             <h2>Let's Dissect Your Roadmap: Book a 20-Minute Strategy Call</h2>
             <p>
-              Your full report dataset has been compiled. Let's hop on a brief strategy call to look at your primary bottleneck areas, review your operational maturity, and map out a clear plan. No sales pitches or consulting fluff—just objective business clarity.
+              Your report is ready. Let's hop on a short call to look at your biggest bottlenecks, review your maturity, and map out a clear plan. No sales pitch, no consulting fluff — just objective business clarity.
             </p>
-            <a href="https://calendly.com/your-placeholder" target="_blank" class="minto-booking-btn">📅 Book Your Strategy Slot With Matthias Paratsch</a>
+            <a href="https://calendly.com/your-placeholder" target="_blank" rel="noopener noreferrer" class="minto-booking-btn">📅 Book Your Strategy Slot With Matthias Paratsch</a>
           </div>`;
         bookingSec.style.display = "block";
         
         resultsSection.scrollIntoView({behavior: "smooth", block: "start"});
+        setupStickyBar();
       }
     }
 
@@ -1758,8 +2133,10 @@
       }
       
       const dataPoints = [];
+      const dotColors = [];
       scores.forEach((s, j) => {
         const angle = (j * 2 * Math.PI / numDims) - Math.PI / 2;
+        const pc = pillarColor(s.cluster);
         
         const xMax = cx + rMax * Math.cos(angle);
         const yMax = cy + rMax * Math.sin(angle);
@@ -1768,29 +2145,48 @@
         line.setAttribute("y1", cy);
         line.setAttribute("x2", xMax);
         line.setAttribute("y2", yMax);
-        line.setAttribute("stroke", "#edf2f7");
+        line.setAttribute("stroke", pc);
+        line.setAttribute("stroke-opacity", "0.35");
         line.setAttribute("stroke-width", "1");
         svg.appendChild(line);
         
-        const labelR = rMax + 26;
+        const labelR = rMax + 24;
         const labelX = cx + labelR * Math.cos(angle);
         const labelY = cy + labelR * Math.sin(angle);
         const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
         text.setAttribute("x", labelX);
-        text.setAttribute("y", labelY);
         text.setAttribute("fill", "#051F2E");
-        text.setAttribute("font-size", "10");
+        text.setAttribute("font-size", "12");
         text.setAttribute("font-weight", "600");
         text.setAttribute("text-anchor", Math.abs(labelX - cx) < 15 ? "middle" : (labelX > cx ? "start" : "end"));
+
+        // Word-wrap the label onto at most two lines (keeps the full name)
+        const words = (s.icon + " " + s.name).split(" ");
+        const lines = [];
+        let cur = "";
+        words.forEach(function(w) {
+          if ((cur + " " + w).trim().length <= 14) { cur = (cur + " " + w).trim(); }
+          else { if (cur) lines.push(cur); cur = w; }
+        });
+        if (cur) lines.push(cur);
+        if (lines.length > 2) { lines[1] = lines.slice(1).join(" "); lines.length = 2; }
+
+        const lineH = 12.5;
+        const yStart = labelY - (lines.length - 1) * lineH / 2;
+        text.setAttribute("y", yStart);
         text.setAttribute("dominant-baseline", "middle");
-        
-        let displayName = s.name;
-        if(displayName.length > 22) displayName = displayName.substring(0, 20) + "...";
-        text.textContent = `${s.icon} ${displayName}`;
+        lines.forEach(function(ln, li) {
+          const tspan = document.createElementNS("http://www.w3.org/2000/svg", "tspan");
+          tspan.setAttribute("x", labelX);
+          tspan.setAttribute("dy", li === 0 ? 0 : lineH);
+          tspan.textContent = ln;
+          text.appendChild(tspan);
+        });
         svg.appendChild(text);
         
         const dataR = (rMax / 5) * s.score;
         dataPoints.push(`${cx + dataR * Math.cos(angle)},${cy + dataR * Math.sin(angle)}`);
+        dotColors.push(pc);
       });
       
       const poly = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
@@ -1800,58 +2196,153 @@
       poly.setAttribute("stroke-width", "2");
       svg.appendChild(poly);
       
-      dataPoints.forEach(p => {
+      dataPoints.forEach((p, i) => {
         const coord = p.split(",");
         const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
         circle.setAttribute("cx", coord[0]);
         circle.setAttribute("cy", coord[1]);
-        circle.setAttribute("r", "3.5");
-        circle.setAttribute("fill", "#051F2E");
+        circle.setAttribute("r", "4");
+        circle.setAttribute("fill", dotColors[i] || "#051F2E");
+        circle.setAttribute("stroke", "#ffffff");
+        circle.setAttribute("stroke-width", "1.5");
         svg.appendChild(circle);
       });
     }
 
-    function triggerHiddenReportWorkflow(payload) {
-      console.log("Initiating asynchronous background fulfillment workflow...", payload);
-      
-      const WEBHOOK_ENDPOINT = "https://hook.eu2.make.com/vpylwdo85cf86nhulcbe8ju55ygxc5wo";
-      
+    function requestEmailedReport() {
       const btn = document.getElementById("requestFullReportBtn");
-      const originalText = btn.innerHTML;
-      btn.innerHTML = "⏳ Processing...";
+      const raw = localStorage.getItem("tektit_maturity_data");
+      if (!raw) { alert("Please unlock your results first."); return; }
+
+      let base;
+      try { base = JSON.parse(raw); } catch (e) { alert("Please unlock your results first."); return; }
+      const lead = base.lead || {};
+
+      const payload = buildBenchmarkPayload("report_request", {
+        name: lead.name,
+        email: lead.email,
+        company: lead.company,
+        consent: lead.consent,
+        consentTimestamp: lead.consentTimestamp
+      });
+
+      const original = btn.innerHTML;
+      btn.innerHTML = "⏳ Sending...";
       btn.disabled = true;
 
-      fetch(WEBHOOK_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          timestamp: new Date().toISOString(),
-          auditData: payload,
-          userEmail: payload.userEmail || "", 
-          userName: payload.userName || "Executive",
-          companyName: payload.companyName || ""
+      postToWebhook(payload)
+        .then(function(res){
+          if (!res.ok) throw new Error("bad status " + res.status);
+          alert("Thanks! Your report and a strategy-call invite are on their way to your inbox.");
+          btn.innerHTML = "✅ Sent to your inbox";
         })
-      })
-      .then(response => {
-        if (response.ok) {
-          alert("Thank you! Your extensive evaluation data is being processed. An in-depth report and a strategy call invite are on their way to your inbox.");
-          btn.innerHTML = "✅ Sent to Inbox";
-        } else {
-          throw new Error("Network response error");
-        }
-      })
-      .catch(err => {
-        console.error("Fulfillment error:", err);
-        alert("Something went wrong on our end, but don't worry! We have saved your progress. Please contact support if your report doesn't arrive.");
-        btn.innerHTML = originalText;
+        .catch(function(err){
+          console.error("Report send failed:", err);
+          alert("Something went wrong sending the email — but your data is saved. You can also download the PDF directly, or contact us if it doesn't arrive.");
+          btn.innerHTML = original;
+          btn.disabled = false;
+        });
+    }
+
+    document.getElementById("requestFullReportBtn").addEventListener("click", requestEmailedReport);
+
+    function downloadReportPdf(btn) {
+      const el = document.getElementById("pdfContent");
+      if (typeof html2pdf === "undefined") {
+        alert("PDF export is still loading — please try again in a moment.");
+        return;
+      }
+      let company = "report";
+      try {
+        const saved = JSON.parse(localStorage.getItem("tektit_maturity_data"));
+        const c = saved && saved.lead && saved.lead.company;
+        if (c) company = c.replace(/[^a-z0-9]+/gi, "-").toLowerCase();
+      } catch (e) {}
+
+      const original = btn.innerHTML;
+      btn.innerHTML = "⏳ Building PDF...";
+      btn.disabled = true;
+
+      html2pdf().set({
+        margin: 8,
+        filename: `Tektit-Maturity-Check-${company}.pdf`,
+        image: { type: "jpeg", quality: 0.95 },
+        html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff" },
+        jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
+        pagebreak: { mode: ["css", "legacy"] }
+      }).from(el).save().then(() => {
+        btn.innerHTML = original;
+        btn.disabled = false;
+      }).catch(() => {
+        btn.innerHTML = original;
         btn.disabled = false;
       });
     }
 
-    document.getElementById("requestFullReportBtn").addEventListener("click", () => {
-      const activeSavedRecords = JSON.parse(localStorage.getItem("tektit_maturity_data"));
-      triggerHiddenReportWorkflow(activeSavedRecords);
+    document.getElementById("downloadPdfBtn").addEventListener("click", function() {
+      downloadReportPdf(this);
     });
+
+    /* ── Sticky results conversion bar ── */
+    let stickyObserver = null;
+    function setupStickyBar() {
+      let bar = document.getElementById("stickyActionBar");
+      if (!bar) {
+        bar = document.createElement("div");
+        bar.id = "stickyActionBar";
+        bar.setAttribute("role", "region");
+
+        // Reuse the EXACT existing control labels — no new copy introduced
+        const dlSource = document.getElementById("downloadPdfBtn");
+        const dlBtn = document.createElement("button");
+        dlBtn.type = "button";
+        dlBtn.id = "stickyDownloadBtn";
+        dlBtn.className = "btn sticky-ghost";
+        dlBtn.textContent = dlSource ? dlSource.textContent : "Download";
+        dlBtn.addEventListener("click", function() { downloadReportPdf(this); });
+
+        const bookBtn = document.createElement("button");
+        bookBtn.type = "button";
+        bookBtn.id = "stickyBookBtn";
+        bookBtn.className = "btn btn-primary";
+        bookBtn.addEventListener("click", function() {
+          const a = document.querySelector(".minto-booking-btn");
+          if (a) a.click();
+        });
+
+        bar.appendChild(dlBtn);
+        bar.appendChild(bookBtn);
+        document.body.appendChild(bar);
+      }
+
+      // (Re)sync the booking label from the freshly rendered booking button
+      const bookSource = document.querySelector(".minto-booking-btn");
+      const bookBtn = document.getElementById("stickyBookBtn");
+      if (bookSource && bookBtn) {
+        bookBtn.textContent = bookSource.textContent;
+        bookBtn.setAttribute("title", bookSource.textContent);
+      }
+
+      // Show the sticky bar only while the real action row is off-screen
+      const anchor = document.getElementById("resultsActionButtonGroup");
+      if (stickyObserver) stickyObserver.disconnect();
+      if ("IntersectionObserver" in window && anchor) {
+        stickyObserver = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            bar.classList.toggle("visible", !entry.isIntersecting);
+          });
+        }, { threshold: 0 });
+        stickyObserver.observe(anchor);
+      } else {
+        bar.classList.add("visible");
+      }
+    }
+
+    function teardownStickyBar() {
+      const bar = document.getElementById("stickyActionBar");
+      if (bar) bar.classList.remove("visible");
+      if (stickyObserver) { stickyObserver.disconnect(); stickyObserver = null; }
+    }
 
     initGlobalApp();
   </script>
