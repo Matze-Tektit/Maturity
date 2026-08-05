@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tektit Maturity Check</title>
   
-  <meta name="description" content="Assess your organization's digital and operational maturity across 12 key dimensions. Get an instant PDF report and actionable focus areas.">
+  <meta name="description" content="Assess your organization's digital and operational maturity across 12 key dimensions. Get your report by email plus actionable focus areas.">
   <meta property="og:title" content="Tektit Maturity Check">
   <meta property="og:description" content="Assess your organization's digital and operational maturity across 12 key dimensions.">
   <meta property="og:type" content="website">
@@ -15,7 +15,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Gothic+A1:wght@400;600;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Gothic+A1:wght@400;600;800;900&display=swap" rel="stylesheet">
   
   <link rel="preconnect" href="https://cdnjs.cloudflare.com">
   
@@ -91,7 +91,7 @@
     
     .top-bar h1 {
       font-size: 1.2rem;
-      font-weight: 900;
+      font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
@@ -160,17 +160,12 @@
     
     .intro h2 {
       font-size: 1.5rem;
-      font-weight: 900;
+      font-weight: 800;
       text-transform: uppercase;
+      letter-spacing: 0.05em;
       color: var(--tk-dark);
       margin-bottom: 16px;
       line-height: 1.3;
-    }
-
-    .tektit-brand-accent {
-      font-family: 'Abril Fatface', serif;
-      font-weight: 400;
-      color: var(--tk-blue-bright);
     }
 
     .usage-accordion {
@@ -192,6 +187,7 @@
       font-size: 0.95rem;
       font-weight: 800;
       text-transform: uppercase;
+      letter-spacing: 0.08em;
       outline: none;
     }
     .accordion-content {
@@ -260,44 +256,97 @@
       box-shadow: inset 0 0 0 1px var(--tk-blue-bright);
     }
 
-    /* ── Wizard Flow Navigation Grid ── */
-    .wizard-header {
-      background: #fff;
-      border-radius: 8px;
-      padding: 16px 20px;
-      margin-bottom: 24px;
-      border: 1px solid var(--tk-border);
-      display: flex;
+    /* ── Wizard progress stepper ──
+       Deliberately NOT styled like the archetype chips above: no filled boxes,
+       no card. It reads as structure (a progress rail), not as a control you
+       are expected to pick from. State is carried by the dot and a check mark,
+       not by colour alone. */
+    .wizard-nav {
+      margin-bottom: 30px;
+    }
+    .wizard-nav-caption {
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--tk-text-muted);
+      margin-bottom: 14px;
     }
     .wizard-steps {
       display: flex;
-      gap: 8px;
-      flex-grow: 1;
+      list-style: none;
     }
     .wiz-step {
       flex: 1;
-      padding: 10px 12px;
-      border-radius: 4px;
-      background: var(--tk-light);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 9px;
+      cursor: pointer;
+      text-align: center;
+      background: none;
+      padding: 0;
+    }
+    /* connecting rail between the dots */
+    .wiz-step:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      top: 13px;
+      left: calc(50% + 17px);
+      right: calc(-50% + 17px);
+      height: 2px;
+      background: var(--tk-border);
+    }
+    .wiz-step.completed::after { background: var(--tk-teal); }
+    .wiz-dot {
+      position: relative;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #cbd5e0;
+      background: #fff;
       color: #718096;
-      font-size: 0.75rem;
+      font-size: 0.78rem;
+      font-weight: 800;
+      z-index: 1;
+      transition: background var(--transition-fast), border-color var(--transition-fast);
+    }
+    .wiz-label {
+      font-size: 0.68rem;
       font-weight: 800;
       text-transform: uppercase;
-      text-align: center;
-      cursor: pointer;
-      transition: all var(--transition-fast);
+      letter-spacing: 0.08em;
+      color: #718096;
+      line-height: 1.35;
+      max-width: 13ch;
     }
-    .wiz-step:hover {
-      background: #e2e8f0;
+    .wiz-step:hover .wiz-label { text-decoration: underline; }
+    .wiz-step:hover .wiz-dot { border-color: var(--tk-teal); }
+    /* answered: check mark replaces the number */
+    .wiz-step.completed .wiz-dot {
+      background: var(--tk-teal);
+      border-color: var(--tk-teal);
+      color: transparent;
     }
-    .wiz-step.completed {
-      background: #e6fffa;
-      color: #0d9488;
+    .wiz-step.completed .wiz-dot::after {
+      content: "\2713";
+      position: absolute;
+      color: #fff;
+      font-size: 0.9rem;
+      line-height: 1;
     }
-    .wiz-step.active {
-      background: var(--tk-blue-bright) !important;
-      color: #fff !important;
+    .wiz-step.completed .wiz-label { color: var(--tk-dark); }
+    /* current step */
+    .wiz-step.active .wiz-dot {
+      background: var(--tk-blue-bright);
+      border-color: var(--tk-blue-bright);
+      color: #fff;
     }
+    .wiz-step.active .wiz-label { color: var(--tk-dark); }
 
     .step-pane {
       display: none;
@@ -312,8 +361,9 @@
     }
     .pane-title {
       font-size: 1.3rem;
-      font-weight: 900;
+      font-weight: 800;
       text-transform: uppercase;
+      letter-spacing: 0.05em;
       color: var(--tk-dark);
       border-bottom: 2px solid var(--tk-blue-bright);
       padding-bottom: 8px;
@@ -352,6 +402,7 @@
     .dim-name {
       font-weight: 800;
       text-transform: uppercase;
+      letter-spacing: 0.08em;
       font-size: 0.95rem;
       color: var(--tk-dark);
     }
@@ -525,7 +576,7 @@
       font-size: 0.85rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.06em;
       border-radius: 4px;
       cursor: pointer;
       border: none;
@@ -555,8 +606,9 @@
     .lead-gate h2 {
       color: var(--tk-dark);
       margin-bottom: 12px;
-      font-weight: 900;
+      font-weight: 800;
       text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
     .lead-gate p {
       font-size: 0.95rem;
@@ -585,22 +637,23 @@
       width: 100%;
       outline: none;
     }
+    /* Grid keeps the box optically centred on the first line and gives the
+       wrapped text one clean left edge, whatever the line height. */
     .lead-consent {
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      column-gap: 10px;
       text-align: left;
-      font-size: 0.78rem;
+      font-size: 0.8rem;
       color: #4a5568;
-      line-height: 1.45;
+      line-height: 1.5;
       cursor: pointer;
       margin-top: 4px;
     }
     .lead-consent input {
       width: 16px;
       height: 16px;
-      margin-top: 2px;
-      flex-shrink: 0;
+      margin: calc((1.5em - 16px) / 2) 0 0 0;
       accent-color: var(--tk-teal);
       cursor: pointer;
     }
@@ -642,7 +695,7 @@
       font-weight: 900 !important;
       font-size: 1.8rem !important;
       color: #ffffff !important;
-      letter-spacing: -0.01em;
+      letter-spacing: 0.04em;
       line-height: 1.2;
       text-transform: uppercase !important;
     }
@@ -728,7 +781,7 @@
       margin-bottom: 40px;
     }
     .brand-title {
-      font-weight: 900;
+      font-weight: 800;
       font-size: 1.6rem;
       color: var(--tk-dark);
       text-transform: uppercase;
@@ -791,14 +844,15 @@
       margin-top: 24px;
     }
     .section-card h3 {
-      font-weight: 900 !important;
-      font-size: 1.4rem;
+      font-weight: 800 !important;
+      font-size: 1.3rem;
+      line-height: 1.35;
       color: var(--tk-dark);
       padding-bottom: 16px;
       margin-bottom: 24px;
       border-bottom: 1px solid var(--tk-dark);
       text-transform: uppercase;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.05em;
     }
 
     .focus-desc {
@@ -807,9 +861,10 @@
       margin-bottom: 32px !important;
       line-height: 1.6;
     }
+    /* Inline emphasis: body typeface at a heavier weight keeps the brand colour
+       legible at text size, where a high-contrast display serif loses its hairlines. */
     .tektit-keyword-accent {
-      font-family: 'Abril Fatface', serif;
-      font-weight: 400;
+      font-weight: 800;
       color: var(--tk-blue-bright);
       text-transform: none !important;
     }
@@ -844,6 +899,7 @@
       margin-bottom: 10px !important;
       color: var(--tk-dark) !important;
       text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
     .diagnostic-text {
@@ -904,7 +960,7 @@
       color: var(--tk-dark) !important;
       margin-bottom: 14px !important;
       text-transform: uppercase;
-      letter-spacing: -0.01em;
+      letter-spacing: 0.04em;
     }
     .minto-booking-card p {
       font-size: 1rem !important;
@@ -921,7 +977,7 @@
       font-weight: 700 !important;
       font-size: 0.9rem !important;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
       transition: background 0.2s ease !important;
       border-radius: 4px !important;
     }
@@ -942,7 +998,8 @@
       .elements { grid-template-columns: 1fr; }
       .res-hero { flex-direction: column; text-align: center; padding: 24px; }
       .res-logo { margin: 0 auto; }
-      .wizard-steps { flex-direction: column; width: 100%; }
+      .wiz-label { display: none; }
+      .wizard-steps { padding-bottom: 2px; }
       #resetBtn { margin-left: 0; width: 100%; }
     }
     @media (max-width: 720px) {
@@ -956,6 +1013,136 @@
     }
     @media (max-width: 380px) {
       .top-bar h1 { display: none; }
+    }
+
+    /* ── Early link capture ── */
+    .early-link {
+      background: #fff;
+      border: 1px solid var(--tk-border);
+      border-left: 3px solid var(--tk-teal);
+      border-radius: 4px;
+      padding: 18px 20px;
+      margin-top: 24px;
+      max-width: 840px;
+    }
+    .early-link-text { font-size: 0.9rem; color: #2d3748; margin-bottom: 12px; }
+    .early-link-form { display: flex; gap: 10px; flex-wrap: wrap; }
+    .early-link-form input {
+      flex: 1 1 240px;
+      min-width: 0;
+      padding: 11px 12px;
+      border: 1px solid #cbd5e0;
+      border-radius: 4px;
+      font-size: 0.95rem;
+      outline: none;
+    }
+    .early-link-form input:focus { border-color: var(--tk-teal); box-shadow: 0 0 0 2px rgba(82,165,176,0.18); }
+    .early-consent {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      column-gap: 10px;
+      font-size: 0.8rem; color: #4a5568; line-height: 1.5;
+      margin-top: 12px; cursor: pointer;
+    }
+    .early-consent input {
+      width: 16px; height: 16px;
+      margin: calc((1.5em - 16px) / 2) 0 0 0;
+      accent-color: var(--tk-teal); cursor: pointer;
+    }
+    .early-consent a { color: var(--tk-blue-bright); text-decoration: underline; }
+    .early-msg { font-size: 0.82rem; margin-top: 10px; font-weight: 600; }
+    .early-msg.err { color: #c53030; }
+    .early-msg.ok { color: #0d9488; }
+
+    /* ── Scope dialog ── */
+    .modal-backdrop {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(5, 31, 46, 0.62);
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+    }
+    .modal-box {
+      background: #fff;
+      border-radius: 8px;
+      border-top: 4px solid var(--tk-teal);
+      padding: 30px;
+      max-width: 520px;
+      width: 100%;
+      max-height: 88vh;
+      overflow-y: auto;
+      box-shadow: 0 18px 50px rgba(5, 31, 46, 0.3);
+    }
+    .modal-box h3 {
+      font-size: 1.15rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;
+      color: var(--tk-dark); margin-bottom: 12px;
+    }
+    .modal-box > p { font-size: 0.92rem; color: #4a5568; line-height: 1.5; }
+    .scope-list {
+      list-style: none;
+      margin: 14px 0 4px;
+      padding: 12px 14px;
+      background: var(--tk-light);
+      border-radius: 4px;
+      font-size: 0.85rem;
+      color: var(--tk-dark);
+      max-height: 190px;
+      overflow-y: auto;
+    }
+    .scope-list li { padding: 3px 0; font-weight: 600; }
+    .modal-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+    .modal-actions .btn { width: 100%; justify-content: center; text-align: center; }
+    .modal-back {
+      display: block; margin: 14px auto 0;
+      background: none; border: none; cursor: pointer;
+      font-size: 0.82rem; color: var(--tk-blue-bright); font-weight: 700;
+    }
+    .modal-hint {
+      font-size: 0.75rem; color: #718096; line-height: 1.45;
+      margin-top: 12px; text-align: center; font-style: italic;
+    }
+
+    /* ── Assessment basis / radar note / skipped cards ── */
+    .assessment-basis {
+      font-size: 0.82rem; color: #718096; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 20px;
+    }
+    .radar-note {
+      font-size: 0.75rem; color: #718096; font-style: italic;
+      text-align: center; margin-top: 10px; line-height: 1.45;
+    }
+    .res-card-skipped { opacity: 0.55; }
+
+    /* ── Report confirmation + send status ── */
+    .report-confirm {
+      margin-top: 20px;
+      padding: 16px 20px;
+      background: #e6fffa;
+      border-left: 4px solid #0d9488;
+      font-size: 0.92rem;
+      color: #05403a;
+      line-height: 1.5;
+    }
+    .send-status {
+      margin-top: 14px;
+      padding: 16px 20px;
+      background: #fffaf0;
+      border-left: 4px solid #dd6b20;
+      font-size: 0.9rem;
+      color: #7b341e;
+      line-height: 1.5;
+    }
+    .send-status button {
+      margin-top: 10px;
+      padding: 9px 16px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      background: var(--tk-dark);
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
     }
 
     /* Sticky results conversion bar */
@@ -975,22 +1162,16 @@
     }
     #stickyActionBar.visible { transform: translateY(0); }
     #stickyActionBar .btn { margin: 0; }
-    #stickyActionBar .sticky-ghost {
-      background: transparent;
-      color: #ffffff;
-      border: 1.5px solid rgba(255, 255, 255, 0.55);
-    }
-    #stickyActionBar .sticky-ghost:hover { background: rgba(255,255,255,0.1); }
+    /* text-overflow never applied here: .btn is a flex container, so the old
+       max-width simply cut the label off. A short dedicated label instead. */
     #stickyBookBtn {
-      max-width: 360px;
-      overflow: hidden;
-      text-overflow: ellipsis;
       white-space: nowrap;
+      flex-shrink: 0;
     }
     @media (max-width: 600px) {
       #stickyActionBar { padding: 8px 10px; gap: 8px; }
       #stickyActionBar .btn { flex: 1; font-size: 0.85rem; padding: 12px 8px; }
-      #stickyBookBtn { max-width: none; }
+      #stickyBookBtn { white-space: normal; }
     }
     @media (prefers-reduced-motion: reduce) {
       #stickyActionBar { transition: none; }
@@ -1017,14 +1198,26 @@
   <main class="page">
     <section class="intro">
       <h2>Most companies don't know where they actually stand.</h2>
-      <p>They invest in tools, hire talent, and run initiatives — yet growth stalls, decisions slow down, and companies lose up to 80% of their energy to internal silos, politicking, and reinventing the wheel. The reason is a combination of hidden bottlenecks and a toxic build-up of daily busy work.</p>
-      <p>At Tektit, we build market leaders. Not as a tagline — as a track record. As industry veterans, we've lived inside high-performing organizations, learned what separates the best from the rest, and distilled that experience into a proven approach. We've applied it successfully with 40+ companies. Now we're putting it in your hands.</p>
-      <p>This tool serves as your strategic blueprint to move your organization from reactive chaos to intentional growth and true market leadership. In under 10 minutes, you'll see exactly where you're strong, where you're losing leverage, and what to fix first.</p>
+      <p>They invest in tools, hire talent, and run initiatives, yet growth stalls and decisions slow down. Across more than 40 projects we have seen the same causes again and again: internal silos, endless alignment loops, and teams reinventing the same wheel: a combination of hidden bottlenecks and a toxic build-up of daily busy work.</p>
+      <p>At Tektit, we build market leaders. Not as a tagline, but as a track record. As industry veterans, we've lived inside high-performing organizations, learned what separates the best from the rest, and distilled that experience into a proven approach. We've applied it successfully with 40+ companies. Now we're putting it in your hands.</p>
+      <p>This tool serves as your strategic blueprint to move your organization from reactive chaos to intentional growth and true market leadership. In under ten minutes, you'll see exactly where you're strong, where you're losing leverage, and what to fix first.</p>
       <p>No fluff. No consultant-speak. Just clarity.</p>
       
-      <p style="font-size: 0.85rem; color: var(--tk-text-muted); margin-top: 12px; font-style: italic;">
-        Note: This evaluation engine is explicitly optimized for digital-first and service-oriented organizations.
-      </p>
+      <section class="early-link" id="earlyLink">
+        <div class="early-link-text">
+          <strong>Short on time?</strong> We'll email you the link; complete the check later, for example on your way home.
+        </div>
+        <div class="early-link-form" id="earlyLinkForm">
+          <label for="earlyEmail" class="sr-only">Your email address</label>
+          <input type="email" id="earlyEmail" placeholder="your.name@company.com" autocomplete="email" inputmode="email">
+          <button type="button" class="btn btn-primary" id="earlyLinkBtn">Send me the link</button>
+        </div>
+        <label class="early-consent" for="earlyConsent" id="earlyConsentRow">
+          <input type="checkbox" id="earlyConsent">
+          <span>I agree to be contacted by Tektit Consulting GmbH and to receive the link and my report by email. See our <a href="https://www.tektitconsulting.com/datenschutz" target="_blank" rel="noopener noreferrer">Data Privacy</a> notice.</span>
+        </label>
+        <div class="early-msg" id="earlyMsg" role="status" aria-live="polite"></div>
+      </section>
 
       <details class="usage-accordion">
         <summary>How to use this tool</summary>
@@ -1033,13 +1226,16 @@
             <strong>1. What the tool assesses:</strong> It reviews your organization across 4 strategic pillars and 12 distinct functional dimensions to benchmark internal infrastructure, operational capacity, growth mechanics, and technical governance.
           </div>
           <div class="accordion-item">
-            <strong>2. How to select checkboxes:</strong> Mark a checkbox <strong>only</strong> if that item is completely and <strong>firmly</strong> established as a uniform standard across your organization. Leave it unchecked if it is practiced inconsistently, ad-hoc, or is still a work-in-progress.
+            <strong>2. How to select checkboxes:</strong> Mark a checkbox if that item is <strong>broadly established and lived in day-to-day work</strong>; it does not have to be perfect in every corner. Leave it unchecked if it only happens occasionally, depends on individual people, or has not really started yet.
           </div>
           <div class="accordion-item">
-            <strong>3. How the score is calculated:</strong> Each dimension gets a maturity score from 0.0 to 5.0 based on what you've established. Foundational items count for more than secondary ones, so your overall score reflects what actually matters most.
+            <strong>3. Why each item matters:</strong> Every item has a ? icon next to it. It explains what the item looks like in practice and why it matters; worth a look even where you already know your answer.
           </div>
           <div class="accordion-item">
-            <strong>4. Focus areas interpretation:</strong> Your top focus areas aren't just your lowest scores. We combine how big each gap is with how much that area drives your growth — so you fix the bottleneck with the most leverage first, not just the lowest number.
+            <strong>4. How the score is calculated:</strong> Each dimension gets a maturity score from 0.0 to 5.0 based on what you've established. Foundational items count for more than secondary ones, so your overall score reflects what actually matters most.
+          </div>
+          <div class="accordion-item">
+            <strong>5. Focus areas interpretation:</strong> Your top focus areas aren't just your lowest scores. We combine how big each gap is with how much that area drives your growth, so you fix the bottleneck with the most leverage first, not just the lowest number.
           </div>
         </div>
       </details>
@@ -1056,21 +1252,22 @@
       </div>
     </section>
     
-    <div class="wizard-header">
-      <div class="wizard-steps" id="wizardStepsNav">
-        <div class="wiz-step" data-step-idx="0">1. Strategy & Leadership</div>
-        <div class="wiz-step" data-step-idx="1">2. Go-To-Market</div>
-        <div class="wiz-step" data-step-idx="2">3. Delivery & Operations</div>
-        <div class="wiz-step" data-step-idx="3">4. Technology & Data</div>
-      </div>
-    </div>
+    <nav class="wizard-nav" aria-label="Assessment progress">
+      <div class="wizard-nav-caption">Step <span id="stepNow">1</span> of 4 &middot; tap a step to jump</div>
+      <ol class="wizard-steps" id="wizardStepsNav">
+        <li class="wiz-step" data-step-idx="0"><span class="wiz-dot">1</span><span class="wiz-label">Strategy &amp; Leadership</span></li>
+        <li class="wiz-step" data-step-idx="1"><span class="wiz-dot">2</span><span class="wiz-label">Go-To-Market</span></li>
+        <li class="wiz-step" data-step-idx="2"><span class="wiz-dot">3</span><span class="wiz-label">Delivery &amp; Engineering</span></li>
+        <li class="wiz-step" data-step-idx="3"><span class="wiz-dot">4</span><span class="wiz-label">Data, AI &amp; Compliance</span></li>
+      </ol>
+    </nav>
 
     <section id="dimsContainer" aria-label="Maturity Dimensions Wizard Checklist"></section>
 
     <div class="btn-group">
       <button type="button" class="btn btn-ghost" id="prevStepBtn" style="display: none;">⬅️ Previous Pillar</button>
       <button type="button" class="btn btn-primary" id="nextStepBtn">Next Pillar ➡️</button>
-      <button type="button" class="btn btn-primary" id="showLeadBtn" style="display: none;" disabled>📊 Generate analysis</button>
+      <button type="button" class="btn btn-primary" id="showLeadBtn" style="display: none;">📊 Generate analysis</button>
       <button type="button" class="btn btn-ghost" id="resetBtn">Reset All</button>
     </div>
 
@@ -1089,7 +1286,7 @@
                     stroke-dasharray="364.4" stroke-dashoffset="364.4"></circle>
           </svg>
           <div class="score-inner">
-            <span class="score-num" id="totalScoreEl">—</span>
+            <span class="score-num" id="totalScoreEl">0.0</span>
             <span class="score-sub">/ 5.0</span>
           </div>
         </div>
@@ -1102,8 +1299,8 @@
 
       <section id="leadGate" class="lead-gate">
         <img src="Tektit Consulting Bildmarke square.png" alt="Tektit Consulting" class="lead-logo" loading="lazy">
-        <h2>Unlock Your Custom Execution Roadmap</h2>
-        <p>Enter your details below to unlock your full report: your interactive <strong>Maturity Radar</strong>, your top 3 focus areas, and clear recommended next steps.</p>
+        <h2>Unlock Your Maturity Check Results</h2>
+        <p>Enter your details below to unlock your full report: your <strong>Maturity Radar</strong>, your top 3 focus areas, and clear recommended next steps. You'll also receive the report as a PDF by email.</p>
         
         <div class="lead-form">
           <div>
@@ -1123,7 +1320,7 @@
             <input type="checkbox" id="leadConsent" required>
             <span>By submitting this form you are giving consent to be contacted by Tektit Consulting GmbH and to have your assessment data processed to generate and send your report. You can withdraw your consent at any time. See our <a href="https://www.tektitconsulting.com/datenschutz" target="_blank" rel="noopener noreferrer">Data Privacy</a> notice.</span>
           </label>
-          <button type="button" class="btn btn-primary" id="unlockResultsBtn">Unlock Full Performance Analysis 📊</button>
+          <button type="button" class="btn btn-primary" id="unlockResultsBtn">Show My Results 📊</button>
         </div>
       </section>
 
@@ -1132,8 +1329,10 @@
           
           <div class="report-header-line">
             <div class="brand-title">TEKTIT</div>
-            <div class="report-subtitle">12-Dimension Digital Audit</div>
+            <div class="report-subtitle">Maturity Check · 12 Dimensions</div>
           </div>
+
+          <p class="assessment-basis" id="assessmentBasis"></p>
 
           <div class="res-cards" id="resCards"></div>
           
@@ -1142,26 +1341,27 @@
             <div style="max-width:540px; margin:0 auto; padding: 10px;">
               <svg id="radarSvg" viewBox="0 0 580 540" style="width:100%; height:auto; overflow: visible;"></svg>
             </div>
+            <p class="radar-note" id="radarNote"></p>
           </div>
           
           <div class="section-card" id="focusCard">
-            <h3>🚀 Your Top 3 Focus Areas</h3>
+            <h3>Your Top 3 Focus Areas</h3>
             <p class="focus-desc">
               <span class="tektit-keyword-accent">Focus creates progress.</span> Trying to change everything at once slows you and your organization down. We rank your results by matching your implementation gaps against strategic weights so you know exactly which bottleneck to solve first.
             </p>
             <div id="prioList"></div>
             <p style="font-size: 0.75rem; color: #718096; margin-top: 14px; font-style: italic; line-height: 1.4;">
-              * Note: Focus areas are ranked by leverage — how big each gap is combined with how much that area drives your growth — not strictly by raw score.
+              * Note: Focus areas are ranked by leverage: how big each gap is combined with how much that area drives your growth, not strictly by raw score.
             </p>
           </div>
 
           <div class="section-card" id="sparringCard">
-            <h3>💡 Understanding Your Bottlenecks</h3>
+            <h3>Understanding Your Bottlenecks</h3>
             <p class="diagnostic-text">
               Having worked with more than 40 clients since 2019, we find that most scaling businesses struggle with two main things: <span class="tektit-keyword-accent">losing focus on their value chain</span> and watching their <span class="tektit-keyword-accent">development speed slow down</span> as the company grows. Teams end up drowning in tool sprawl, disconnected tasks, and fragmented responsibilities. When that happens, the company enters survival mode.
             </p>
             <p class="diagnostic-text">
-              Our approach is governed by a core principle: <span class="tektit-keyword-accent">"Fall in love with the problem, not the solution".</span> Instead of jumping to quick-fix conclusions—like buying more software licenses or adding headcount—we isolate the actual root cause of the friction. This clears away internal guesswork and helps you build an integrated infrastructure that lets your team focus entirely on your core product and USP.
+              Our approach is governed by a core principle: <span class="tektit-keyword-accent">"Fall in love with the problem, not the solution".</span> Instead of jumping to quick-fix conclusions, like buying more software licenses or adding headcount, we isolate the actual root cause of the friction. This clears away internal guesswork and helps you build an integrated infrastructure that lets your team focus entirely on your core product and USP.
             </p>
             
             <div class="advisor-profile">
@@ -1187,14 +1387,31 @@
         </div>
       </div>
 
+      <div class="report-confirm" id="reportConfirm" style="display:none;"></div>
+      <div class="send-status" id="sendStatus" style="display:none;"></div>
+
       <div class="btn-group" id="resultsActionButtonGroup" style="margin-top:24px;">
-        <button type="button" class="btn btn-primary" id="requestFullReportBtn">📧 Email me the report</button>
         <button type="button" class="btn btn-ghost" id="backBtn">⬆️ Edit selections</button>
+        <button type="button" class="btn btn-primary" id="kioskResetBtn" style="display:none;">🔄 Start over for the next visitor</button>
       </div>
 
       <div id="bookingSection"></div>
     </section>
   </main>
+
+  <div class="modal-backdrop" id="scopeModal" role="dialog" aria-modal="true" aria-labelledby="scopeTitle" style="display:none;">
+    <div class="modal-box">
+      <h3 id="scopeTitle">Before we calculate your score</h3>
+      <p>You haven't marked anything in <strong><span id="scopeCount">0</span></strong> of the 12 dimensions. What does that mean?</p>
+      <ul class="scope-list" id="scopeList"></ul>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-primary" id="scopeApplies">That's accurate: nothing established there</button>
+        <button type="button" class="btn btn-ghost" id="scopeSkipped">I skipped those; leave them out</button>
+      </div>
+      <button type="button" class="modal-back" id="scopeBack">← Back to the check</button>
+      <p class="modal-hint">Skipped dimensions are excluded from your score and your focus areas, so your result stays meaningful.</p>
+    </div>
+  </div>
 
   <script>
     const DIMS_TEMPLATE = [
@@ -1206,7 +1423,7 @@
           mittelstand:"Everyone across our workforce knows our long-term market position and where the company is heading.",
           logistics:"Everyone in our company knows our network growth plans and our key operational priorities."
          }, w: 2.0, desc:"Making sure everyone works toward the same big-picture goals, not separate agendas."},
-        {t:"We actively invest in our culture — through rituals, leadership behavior, and how we handle failure.", w: 1.0, desc:"Liking your culture on paper isn't enough; it needs to guide daily habits and how mistakes are handled."},
+        {t:"We actively invest in our culture through rituals, leadership behavior, and how we handle failure.", w: 1.0, desc:"Liking your culture on paper isn't enough; it needs to guide daily habits and how mistakes are handled."},
         {t:{
           digital:"We use a structured goal system (e.g. OKRs) so every team knows what they're working toward.",
           services:"We use a structured tracking system to balance project goals with team utilization requirements.",
@@ -1224,7 +1441,7 @@
       {id:"innovation", name:"Innovation", icon:"💡", cluster:"Strategy & Leadership", strategicWeight: 1.2, elements:[
         {t:"We have a clear strategy for how we stay distinctly different from our competitors.", w: 1.5, desc:"Knowing exactly why a customer picks you over a cheaper or bigger competitor."},
         {t:{
-          digital:"We protect time and budget for testing new product ideas — separate from day-to-day delivery.",
+          digital:"We protect time and budget for testing new product ideas, separate from day-to-day delivery.",
           services:"We protect unbillable time for building internal templates, assets, or methodologies.",
           mittelstand:"We set aside explicit capital and engineering time for research and physical product experiments.",
           logistics:"We actively budget time to test new workflow improvements and transit route optimizations."
@@ -1245,7 +1462,7 @@
           logistics:"We know our exact fulfillment processing costs, fuel margins, and payload efficiencies."
          }, w: 1.5, desc:"Knowing your exact costs to win a customer and your precise margins for delivering to them."},
         {t:{
-          digital:"Our pricing reflects the value we deliver — not just our software costs or competitor rates.",
+          digital:"Our pricing reflects the value we deliver, not just our software costs or competitor rates.",
           services:"We use standardized pricing models (like retainers or value pricing) instead of just billing loose hours.",
           mittelstand:"Our pricing systematically accounts for volume breaks, raw material shifts, and machinery cost.",
           logistics:"Our tariff rates adjust dynamically to changes in shipping volume, warehouse load spikes, and regional costs."
@@ -1260,7 +1477,7 @@
 
       /* Cluster 2: Go-To-Market */
       {id:"sales", name:"Sales & Marketing", icon:"📣", cluster:"Go-To-Market", strategicWeight: 1.4, elements:[
-        {t:"Our value proposition is clear and consistent — across website, sales calls, and proposals.", w: 2.0, desc:"Eliminating mixed messages so a pitch deck, website copy, and sales call all say the exact same thing."},
+        {t:"Our value proposition is clear and consistent across website, sales calls, and proposals.", w: 2.0, desc:"Eliminating mixed messages so a pitch deck, website copy, and sales call all say the exact same thing."},
         {t:{
           digital:"We use a central CRM to track all software sales leads and interactions in one place.",
           services:"We use a central pipeline matrix to track consulting proposals and contract stages.",
@@ -1295,7 +1512,7 @@
           logistics:"We use standard API connectors to plug external e-commerce shops directly into our dispatch systems."
          }, w: 1.0, desc:"Letting external partners or tools securely plug into your software without manual file sharing."},
         {t:{
-          digital:"We actively onboard, enable, and review our channel partners — not just sign contracts.",
+          digital:"We actively onboard, enable, and review our channel partners, not just sign contracts.",
           services:"We have a standardized process to source, vet, and check compliance for external contractors.",
           mittelstand:"We systematically enforce quality review metrics and procurement standards for all suppliers.",
           logistics:"We continuously monitor sub-carrier safety records and performance standards."
@@ -1308,10 +1525,10 @@
          }, w: 1.0, desc:"Nurturing a reliable secondary network that steps in to protect your capacity, refer business, or handle local service needs."}
       ]},
 
-      /* Cluster 3: Delivery & Operations */
-      {id:"ops", name:"Operations", icon:"⚙️", cluster:"Delivery & Operations", strategicWeight: 1.2, elements:[
+      /* Cluster 3: Delivery & Engineering */
+      {id:"ops", name:"Operations", icon:"⚙️", cluster:"Delivery & Engineering", strategicWeight: 1.2, elements:[
         {t:"Our key recurring processes are documented digitally and regularly reviewed for improvement.", w: 1.5, desc:"Building a company playbook so anyone can run core tasks perfectly if someone goes on vacation."},
-        {t:"We make decisions based on data and clear responsibilities — not via endless escalation.", w: 1.0, desc:"Letting teams act on dashboards and rules instead of pausing work for executive sign-offs."},
+        {t:"We make decisions based on data and clear responsibilities, not via endless escalation.", w: 1.0, desc:"Letting teams act on dashboards and rules instead of pausing work for executive sign-offs."},
         {t:{
           digital:"We track team workload and proactively manage capacity to prevent engineering burnout.",
           services:"We actively project consulting schedules to match upcoming workloads and protect team bench metrics.",
@@ -1326,8 +1543,7 @@
          }, w: 1.5, desc:"Tracking real-time quality and delivery metrics so you fix operational errors before they destroy your reputation."}
       ]},
 
-      /* Cluster 4: Technology & Data */
-      {id:"devorg", name:{digital:"Product & Engineering", services:"Service Delivery Org", mittelstand:"Engineering & R&D Org", logistics:"Fleet & Network Architecture"}, icon:"💻", cluster:"Delivery & Operations", strategicWeight: 1.4, elements:[
+      {id:"devorg", name:{digital:"Product & Engineering", services:"Service Delivery Org", mittelstand:"Engineering & R&D Org", logistics:"Fleet & Network Architecture"}, icon:"💻", cluster:"Delivery & Engineering", strategicWeight: 1.4, elements:[
         {t:"Our development team focuses engineering hours mostly on our unique selling point (USP) and core intellectual property.", w: 2.0, desc:"Spending most of your engineering time on what makes you different, not on generic plumbing anyone could buy off the shelf."},
         {t:{
           digital:"Our development teams work in structured, iterative cycles (e.g. Scrum or Kanban).",
@@ -1343,9 +1559,9 @@
          }, w: 1.5, desc:"Enforcing strict, documented quality baselines so your final deliverables or outputs stay perfectly consistent."},
         {t:"We avoid wasting development speed on building standard software components that could easily be integrated from fit-for-purpose tools.", w: 1.0, desc:"Plugging in ready-made tools for common needs instead of hand-building them, so your team's time goes to your core product."}
       ]},
-      {id:"devops", name:{digital:"Tech Infrastructure & Automation", services:"Workspace Automation", mittelstand:"Industrial IT / OT Infrastructure", logistics:"Fulfillment & Fleet Tech"}, icon:"🚀", cluster:"Delivery & Operations", strategicWeight: 1.3, elements:[
+      {id:"devops", name:{digital:"Tech Infrastructure & Automation", services:"Workspace Automation", mittelstand:"Industrial IT / OT Infrastructure", logistics:"Fulfillment & Fleet Tech"}, icon:"🚀", cluster:"Delivery & Engineering", strategicWeight: 1.3, elements:[
         {t:{
-          digital:"Routine setup tasks (servers, environments) run via automated scripts — not manual steps.",
+          digital:"Routine setup tasks (servers, environments) run via automated scripts, not manual steps.",
           services:"Setting up client workspaces, directories, and internal profiles is automated via scripts.",
           mittelstand:"Our plant communication systems utilize secure, automated scripts to push routine firmware updates.",
           logistics:"Fulfillment hardware profiles and automated sorting rules run via pre-configured scripts."
@@ -1360,41 +1576,44 @@
          }, w: 1.0, desc:"Enforcing centralized version tracking over your configuration data so any change can be audited or reversed in seconds."},
         {t:"We have monitoring in place that alerts us to infrastructure issues before they cause outages.", w: 1.0, desc:"System monitors that ping the tech team on Slack or PagerDuty before users notice the site is down."}
       ]},
-      {id:"itlandscape", name:"Core Systems & Integration", icon:"🗄️", cluster:"Technology & Data", strategicWeight: 1.4, elements:[
-        {t:"Our core systems are integrated cleanly to prevent tool sprawl, data silos, and broken workflows.", w: 2.0, desc:"Connecting your main tools so data flows between them automatically, instead of living in disconnected islands."},
+      /* Cluster 4: Data, AI & Compliance */
+      {id:"itlandscape", name:"Core Systems & Integration", icon:"🗄️", cluster:"Data, AI & Compliance", strategicWeight: 1.4, elements:[
+        {t:"Our core systems are connected so data flows between them automatically, without manual re-entry.", w: 2.0, desc:"Connecting your main tools so data moves on its own, instead of living in disconnected islands."},
+        {t:"Our integrations follow a defined pattern (e.g. central middleware or documented interfaces) rather than ad-hoc point-to-point connections.", w: 1.5, desc:"This is the difference between a landscape that scales and one that tips over as soon as a single system changes."},
         {t:"We use fit-for-purpose tools for standard tasks (like Sales, Accounting, and Controlling) so we don't waste energy reinventing the wheel.", w: 1.5, desc:"Using standard integrations for non-unique areas so you can protect your focus."},
-        {t:"Workflows that span multiple systems run automatically without manual handoffs.", w: 1.0, desc:"Triggering background actions automatically—like sending an invoice the moment a CRM deal closes."}
+        {t:"Workflows that span multiple systems run automatically without manual handoffs.", w: 1.0, desc:"Triggering background actions automatically, like sending an invoice the moment a CRM deal closes."},
+        {t:"We maintain a current overview of our core systems: what each one is for and who owns it.", w: 1.0, desc:"A living inventory, so nobody has to guess which system is authoritative or who to ask about it."}
       ]},
-      {id:"data", name:"Data & Analytics", icon:"📊", cluster:"Technology & Data", strategicWeight: 1.2, elements:[
+      {id:"data", name:"Data & Analytics", icon:"📊", cluster:"Data, AI & Compliance", strategicWeight: 1.2, elements:[
         {t:"We have a clear data strategy defining what we collect, how we use it, and how we protect it.", w: 1.5, desc:"A set playbook on who owns data, where it is stored safely, and how it gets deleted securely."},
-        {t:"We use dashboards to make business decisions based on data — not gut feel or spreadsheets.", w: 1.5, desc:"Pulling your performance data into clean charts so leadership doesn't argue over broken Excel macros."},
-        {t:"Every team uses the same KPI definitions — Finance, Sales, and Ops all report the same numbers.", w: 2.0, desc:"Ensuring Marketing, Sales, and Finance define 'revenue' or 'active customer' exactly the same way."},
+        {t:"We use dashboards to make business decisions based on data, not gut feel or spreadsheets.", w: 1.5, desc:"Pulling your performance data into clean charts so leadership doesn't argue over broken Excel macros."},
+        {t:"Every team uses the same KPI definitions: Finance, Sales, and Ops all report the same numbers.", w: 2.0, desc:"Ensuring Marketing, Sales, and Finance define 'revenue' or 'active customer' exactly the same way."},
         {t:"We have automated checks to catch and clean bad data before it corrupts our reports.", w: 1.0, desc:"Setting up automatic traps to kill duplicate records or typos before they mess up your monthly dashboards."},
-        {t:"Our key reports and dashboards reflect live data — not yesterday's export.", w: 1.0, desc:"If sales close at 9 AM, leadership can see those exact revenue spikes on the main dashboard by 10 AM, not next Monday."},
-        {t:"All our business systems pull from a single source of truth — no contradictory numbers.", w: 1.5, desc:"Linking all software to one central data pool so you never get conflicting operational totals."}
+        {t:"Our key reports and dashboards reflect live data, not yesterday's export.", w: 1.0, desc:"If sales close at 9 AM, leadership can see those exact revenue spikes on the main dashboard by 10 AM, not next Monday."},
+        {t:"All our business systems pull from a single source of truth: no contradictory numbers.", w: 1.5, desc:"Linking all software to one central data pool so you never get conflicting operational totals."}
       ]},
-      {id:"ai", name:"Artificial Intelligence", icon:"🤖", cluster:"Technology & Data", strategicWeight: 1.2, elements:[
-        {t:"We have a clear AI strategy that identifies where AI creates the most value for us — and in what order we tackle it.", w: 1.5, desc:"Picking low-hanging AI use cases that save immediate hours rather than chasing expensive sci-fi pipe dreams."},
+      {id:"ai", name:"Artificial Intelligence", icon:"🤖", cluster:"Data, AI & Compliance", strategicWeight: 1.2, elements:[
+        {t:"We have a clear AI strategy that identifies where AI creates the most value for us, and in what order we tackle it.", w: 1.5, desc:"Picking low-hanging AI use cases that save immediate hours rather than chasing expensive sci-fi pipe dreams."},
         {t:{
           digital:"Our product data is structured and clean enough to actually power advanced AI models.",
           services:"Our case studies, delivery assets, and templates are indexed so internal AI models can query them.",
           mittelstand:"Our historical production logs and manufacturing metrics are clean enough to train predictive patterns.",
           logistics:"Our historical route records and warehouse volume archives are clean and structured for machine learning."
          }, w: 2.0, desc:"Formatting internal files and databases so an LLM or script can read them without throwing errors."},
-        {t:"We have clear rules for how AI tools are used — including data privacy, approvals, and risk.", w: 1.0, desc:"Creating explicit policies so employees don't paste sensitive client data or source code into public AI tools."},
+        {t:"We have clear rules for how AI tools are used, including data privacy, approvals, and risk.", w: 1.0, desc:"Creating explicit policies so employees don't paste sensitive client data or source code into public AI tools."},
         {t:{
           digital:"Our team is trained to use AI tools effectively and safely in their day-to-day work.",
           services:"Our consultants use generative AI tools safely to draft reports, run market analysis, and prepare briefs.",
           mittelstand:"Our engineering teams use AI models to run simulation models or optimize floor setups.",
           logistics:"Our dispatch and logistics coordinators use predictive AI models to optimize routes and payload margins."
          }, w: 1.5, desc:"Giving your staff concrete workflow training so AI moves past a buzzword and becomes a real day-to-day productivity booster."},
-        {t:"AI actively handles parts of our workflow — automating decisions, predictions, or repetitive analysis.", w: 1.0, desc:"Think automated triage: AI reads incoming customer emails, drafts the correct technical response, and queues it for your team to review."}
+        {t:"AI actively handles parts of our workflow: automating decisions, predictions, or repetitive analysis.", w: 1.0, desc:"Think automated triage: AI reads incoming customer emails, drafts the correct technical response, and queues it for your team to review."}
       ]},
-      {id:"sovereignty", name:"Security & Compliance", icon:"🔒", cluster:"Technology & Data", strategicWeight: 1.3, elements:[
+      {id:"sovereignty", name:"Security & Compliance", icon:"🔒", cluster:"Data, AI & Compliance", strategicWeight: 1.3, elements:[
         {t:"Our data storage and processing comply with applicable privacy regulations (e.g. GDPR).", w: 1.5, desc:"Protecting user data properly so you don't face massive regulatory fines or compliance audits."},
-        {t:"We have automated backups and a tested plan to recover from data loss or a system failure.", w: 2.0, desc:"Running regular backups and—crucially—testing that you can actually restore files from them."},
+        {t:"We have automated backups and a tested plan to recover from data loss or a system failure.", w: 2.0, desc:"Running regular backups and, crucially, testing that you can actually restore files from them."},
         {t:"We can restore full business operations within 24 hours of a major outage.", w: 1.5, desc:"A step-by-step crisis drill to keep the business alive and trading if a primary server crashes."},
-        {t:"Access to sensitive data is restricted by role — and these permissions are regularly reviewed.", w: 1.0, desc:"Locking down permissions so an intern can't access employee salaries or client master keys."},
+        {t:"Access to sensitive data is restricted by role, and these permissions are regularly reviewed.", w: 1.0, desc:"Locking down permissions so an intern can't access employee salaries or client master keys."},
         {t:{
           digital:"We hold recognized security certifications (e.g. ISO 27001, SOC 2) or are actively working toward them.",
           services:"We maintain official data isolation parameters and pass customer-mandated data security audits.",
@@ -1440,23 +1659,23 @@
     const CLUSTERS = [
       "Strategy & Leadership",
       "Go-To-Market",
-      "Delivery & Operations",
-      "Technology & Data"
+      "Delivery & Engineering",
+      "Data, AI & Compliance"
     ];
-    // Four consecutive Tektit palette swatches — mirrors the four-facet Bildmarke
+    // Four consecutive Tektit palette swatches, mirroring the four-facet Bildmarke
     const PILLAR_COLORS = {
       "Strategy & Leadership": "#3D4585",
       "Go-To-Market":          "#4E58A8",
-      "Delivery & Operations": "#52A5B0",
-      "Technology & Data":     "#52D0B0"
+      "Delivery & Engineering": "#52A5B0",
+      "Data, AI & Compliance":  "#52D0B0"
     };
     function pillarColor(cluster) { return PILLAR_COLORS[cluster] || "#3D4585"; }
     // Darker, contrast-safe variants for text/numbers on white
     const PILLAR_TEXT = {
       "Strategy & Leadership": "#3D4585",
       "Go-To-Market":          "#4E58A8",
-      "Delivery & Operations": "#2C7A86",
-      "Technology & Data":     "#17876B"
+      "Delivery & Engineering": "#2C7A86",
+      "Data, AI & Compliance":  "#17876B"
     };
     function pillarText(cluster) { return PILLAR_TEXT[cluster] || "#3D4585"; }
 
@@ -1475,9 +1694,9 @@
     }
 
     function maturityBand(avg) {
-      if (avg < 2.0) return "Survival Mode";
-      if (avg < 3.5) return "Functional Baseline";
-      return "Proactive Progress";
+      if (avg < 1.8) return "Foundation Stage";
+      if (avg < 3.2) return "Working Baseline";
+      return "Scale-Ready";
     }
 
     // Assembles one clean, analysis-ready benchmark record from current state.
@@ -1492,6 +1711,7 @@
           name: d.name,
           cluster: d.cluster,
           strategicWeight: (d.strategicWeight || 1.0),
+          assessed: isAssessed(d.id),
           score: calcScore(d.id),
           checked: els.filter(function(e){ return e.checked; }).length,
           total: d.elements.length,
@@ -1499,27 +1719,33 @@
         };
       });
 
-      const overallWeighted = weightedOverall(dims);
-      const overallSimple = parseFloat((dims.reduce(function(s,r){ return s + r.score; }, 0) / (dims.length || 1)).toFixed(2));
+      // Skipped dimensions are excluded; they would otherwise count as a zero
+      // and drag the score down for something the user never answered.
+      const scored = dims.filter(function(r){ return r.assessed; });
+      const overallWeighted = weightedOverall(scored);
+      const overallSimple = scored.length
+        ? parseFloat((scored.reduce(function(s,r){ return s + r.score; }, 0) / scored.length).toFixed(2))
+        : 0;
 
+      // Weighted per pillar, consistent with the overall score. null = not assessed.
       const pillarScores = {};
       CLUSTERS.forEach(function(c) {
-        const inC = dims.filter(function(d){ return d.cluster === c; });
-        pillarScores[c] = inC.length ? parseFloat((inC.reduce(function(s,r){ return s + r.score; }, 0) / inC.length).toFixed(2)) : 0;
+        const inC = scored.filter(function(d){ return d.cluster === c; });
+        pillarScores[c] = inC.length ? weightedOverall(inC) : null;
       });
 
       if (!SUBMISSION_ID) SUBMISSION_ID = makeId();
       lead = lead || {};
 
       return {
-        event: eventName,                         // "lead_unlock" | "report_request"
+        event: eventName,                         // "link_request" | "lead_unlock"
         schemaVersion: BENCHMARK_SCHEMA_VERSION,
         toolVersion: TOOL_VERSION,
         submissionId: SUBMISSION_ID,
         timestamp: new Date().toISOString(),
         archetype: selectedArchetype,
         suspectedBot: !!lead.suspectedBot,
-        // Flat fields — same names as the original payload, so existing
+        // Flat fields: same names as the original payload, so existing
         // Make scenario mappings (userEmail / userName / companyName) keep working
         userEmail: lead.email || "",
         userName: lead.name || "",
@@ -1535,6 +1761,9 @@
         },
         overallScore: overallWeighted,
         overallScoreUnweighted: overallSimple,
+        assessedDimensions: scored.length,
+        totalDimensions: dims.length,
+        skippedDimensions: dims.filter(function(r){ return !r.assessed; }).map(function(r){ return r.id; }),
         maturityBand: maturityBand(overallWeighted),
         pillarScores: pillarScores,
         dimensions: dims,
@@ -1548,19 +1777,135 @@
       };
     }
 
-    function postToWebhook(payload) {
+    /* ── Delivery layer: nothing may silently disappear ── */
+    const QUEUE_KEY = "tektit_send_queue_v1";
+    const MAX_ATTEMPTS = 3;
+
+    // A non-2xx answer is a failure; fetch() alone would swallow an HTTP 500.
+    function postOnce(payload) {
       return fetch(WEBHOOK_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         keepalive: true,                          // completes even if the tab is closed
         body: JSON.stringify(payload)
       }).then(function(res) {
-        console.log("Webhook response:", res.status, res.statusText);
+        if (!res.ok) throw new Error("HTTP " + res.status + " " + res.statusText);
         return res;
       });
     }
+
+    function wait(ms) { return new Promise(function(r) { setTimeout(r, ms); }); }
+
+    function sendWithRetry(payload, attempt) {
+      attempt = attempt || 1;
+      return postOnce(payload).catch(function(err) {
+        if (attempt >= MAX_ATTEMPTS) throw err;
+        return wait(attempt * 2000).then(function() {
+          return sendWithRetry(payload, attempt + 1);
+        });
+      });
+    }
+
+    function readQueue() {
+      try { return JSON.parse(localStorage.getItem(QUEUE_KEY)) || []; } catch (e) { return []; }
+    }
+    function writeQueue(q) {
+      try {
+        if (q.length) localStorage.setItem(QUEUE_KEY, JSON.stringify(q));
+        else localStorage.removeItem(QUEUE_KEY);
+      } catch (e) {}
+    }
+    function enqueue(payload) {
+      const q = readQueue();
+      if (!q.some(function(p) { return p.submissionId === payload.submissionId && p.event === payload.event; })) {
+        q.push(payload);
+        writeQueue(q);
+      }
+    }
+    function dequeue(payload) {
+      writeQueue(readQueue().filter(function(p) {
+        return !(p.submissionId === payload.submissionId && p.event === payload.event);
+      }));
+    }
+
+    // Retries anything still pending from an earlier (offline) attempt.
+    function flushQueue() {
+      const q = readQueue();
+      if (!q.length) return Promise.resolve();
+      return q.reduce(function(chain, p) {
+        return chain.then(function() {
+          return sendWithRetry(p).then(function() { dequeue(p); }).catch(function() {});
+        });
+      }, Promise.resolve()).then(function() {
+        if (!readQueue().length) hideSendStatus();
+      });
+    }
+
+    function showSendStatus(msg, withRetry) {
+      const el = document.getElementById("sendStatus");
+      if (!el) return;
+      el.textContent = msg;
+      if (withRetry) {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.textContent = "Try sending again";
+        b.addEventListener("click", function() {
+          el.textContent = "Sending…";
+          flushQueue().then(function() {
+            if (readQueue().length) {
+              showSendStatus("Still no connection. Your data is saved and will be sent automatically once you're back online, or please leave us a business card.", true);
+            }
+          });
+        });
+        el.appendChild(document.createElement("br"));
+        el.appendChild(b);
+      }
+      el.style.display = "block";
+    }
+    function hideSendStatus() {
+      const el = document.getElementById("sendStatus");
+      if (el) el.style.display = "none";
+    }
+
+    // Single entry point: try to send, otherwise keep it safe for later.
+    function deliver(payload) {
+      return sendWithRetry(payload)
+        .then(function() { dequeue(payload); hideSendStatus(); return true; })
+        .catch(function(err) {
+          console.error("Send failed, queued for retry:", err);
+          enqueue(payload);
+          showSendStatus("⚠️ We couldn't reach our server yet; the connection seems unstable. Your answers are saved and we'll retry automatically. Please tell us at the booth if this message stays.", true);
+          return false;
+        });
+    }
+
+    // Last resort when the tab is closed while something is still pending.
+    window.addEventListener("pagehide", function() {
+      const q = readQueue();
+      if (!q.length || !navigator.sendBeacon) return;
+      q.forEach(function(p) {
+        try {
+          navigator.sendBeacon(WEBHOOK_ENDPOINT, new Blob([JSON.stringify(p)], { type: "application/json" }));
+        } catch (e) {}
+      });
+    });
     let currentStep = 0;
     let isTransitioning = false;
+
+    /* ── Which dimensions did the user actually assess? ──
+       A dimension with zero ticks is ambiguous: it can mean "nothing is
+       established here" (a valid answer) or "I skipped this". Only the user
+       can tell us, so we ask once before calculating. */
+    let dimAssessment = {};            // dimId -> "assessed" | "skipped"
+    const KIOSK = /[?&]kiosk=1/.test(location.search);
+    let earlyLeadEmail = "";
+
+    function hasAnyCheck(dimId) {
+      return document.querySelectorAll("#dc-" + dimId + " .dim-cb:checked").length > 0;
+    }
+    function isAssessed(dimId) {
+      return hasAnyCheck(dimId) || dimAssessment[dimId] === "assessed";
+    }
 
     function compileArchetypeData() {
       DIMS = DIMS_TEMPLATE.map(template => {
@@ -1654,6 +1999,7 @@
         btn.classList.add("active");
         
         selectedArchetype = targetArch;
+        dimAssessment = {};
         
         compileArchetypeData();
         buildUI();
@@ -1708,15 +2054,16 @@
         document.getElementById("showLeadBtn").style.display = "none";
       }
 
+      const now = document.getElementById("stepNow");
+      if (now) now.textContent = currentStep + 1;
+
       CLUSTERS.forEach((_, idx) => {
         const ind = document.querySelector(`[data-step-idx="${idx}"]`);
-        if (ind) {
-          if (idx === currentStep) {
-            ind.classList.add("active");
-          } else {
-            ind.classList.remove("active");
-          }
-        }
+        if (!ind) return;
+        const isNow = idx === currentStep;
+        ind.classList.toggle("active", isNow);
+        if (isNow) ind.setAttribute("aria-current", "step");
+        else ind.removeAttribute("aria-current");
       });
     }
 
@@ -1739,16 +2086,14 @@
     function updateGlobalProgress() {
       const totalChecked = document.querySelectorAll(".dim-cb:checked").length;
       
-      // Sync completed step indicators
+      // A pillar counts as completed once every dimension in it has an answer,
+      // not merely because the user clicked past it.
       CLUSTERS.forEach((clusterName, idx) => {
         const stepIndicator = document.querySelector(`[data-step-idx="${idx}"]`);
-        if (stepIndicator) {
-          if (idx < currentStep) {
-            stepIndicator.classList.add("completed");
-          } else {
-            stepIndicator.classList.remove("completed");
-          }
-        }
+        if (!stepIndicator) return;
+        const dimsIn = DIMS.filter(function(d){ return d.cluster === clusterName; });
+        const done = dimsIn.length > 0 && dimsIn.every(function(d){ return hasAnyCheck(d.id); });
+        stepIndicator.classList.toggle("completed", done && idx !== currentStep);
       });
 
       // Honest progress: reflect dimensions the user has actually engaged with
@@ -1761,7 +2106,6 @@
       document.getElementById("progFill").style.width = (assessedCount / DIMS.length * 100) + "%";
       document.getElementById("progText").textContent = assessedCount + " of " + DIMS.length + " dimensions reviewed";
       document.getElementById("headerCount").textContent = totalChecked;
-      document.getElementById("showLeadBtn").disabled = totalChecked === 0;
 
       updateLiveScore();
       persistProgress();
@@ -1785,6 +2129,7 @@
 
     const PROGRESS_KEY = "tektit_progress_v1";
     function persistProgress() {
+      if (KIOSK) return;                 // shared booth device: keep nothing
       try {
         const selections = {};
         DIMS.forEach(function(d) {
@@ -1795,10 +2140,14 @@
           if (idxs.length) selections[d.id] = idxs;
         });
         localStorage.setItem(PROGRESS_KEY, JSON.stringify({ archetype: selectedArchetype, selections: selections }));
-      } catch (e) { /* storage unavailable (private mode) — fail silently */ }
+      } catch (e) { /* storage unavailable (private mode), fail silently */ }
     }
 
     function restoreProgress() {
+      if (KIOSK) {
+        try { localStorage.removeItem(PROGRESS_KEY); } catch (e) {}
+        return;
+      }
       let saved;
       try { saved = JSON.parse(localStorage.getItem(PROGRESS_KEY)); } catch (e) { return; }
       if (!saved || !saved.selections) return;
@@ -1831,6 +2180,7 @@
     function resetAll() {
       if (!confirm("Clear all selections and start over?")) return;
       try { localStorage.removeItem(PROGRESS_KEY); } catch (e) {}
+      dimAssessment = {};
       document.querySelectorAll(".dim-cb").forEach(cb => {
         cb.checked = false;
         cb.closest('.el-label').classList.remove('is-checked');
@@ -1894,8 +2244,34 @@
       });
 
       document.getElementById("showLeadBtn").addEventListener("click", () => {
-        evaluate(true); 
+        const open = DIMS.filter(function(d) {
+          return !hasAnyCheck(d.id) && !dimAssessment[d.id];
+        });
+        if (open.length) { openScopeDialog(open); return; }
+        proceedToGate();
       });
+
+      document.getElementById("scopeApplies").addEventListener("click", function() {
+        applyScopeChoice("assessed");
+      });
+      document.getElementById("scopeSkipped").addEventListener("click", function() {
+        applyScopeChoice("skipped");
+      });
+      document.getElementById("scopeBack").addEventListener("click", function() {
+        document.getElementById("scopeModal").style.display = "none";
+      });
+
+      if (KIOSK) {
+        const kb = document.getElementById("kioskResetBtn");
+        kb.style.display = "inline-flex";
+        kb.addEventListener("click", function() {
+          try { localStorage.removeItem(PROGRESS_KEY); } catch (e) {}
+          location.reload();
+        });
+      }
+
+      initEarlyLink();
+      flushQueue();
 
       document.getElementById("unlockResultsBtn").addEventListener("click", () => {
         const emailInput = document.getElementById("leadEmail");
@@ -1937,11 +2313,14 @@
           suspectedBot: suspectedBot
         };
 
-        // Build the full benchmark record and capture the lead RIGHT NOW —
-        // no second click required. Make stores the row and can email the report.
-        const payload = buildBenchmarkPayload("lead_unlock", lead);
-        try { localStorage.setItem("tektit_maturity_data", JSON.stringify(payload)); } catch (e) {}
-        postToWebhook(payload).catch(function(err){ console.error("Early capture failed:", err); });
+        // Capture the lead RIGHT NOW; no second click required. Make stores the
+        // row and emails the PDF report. Nothing containing personal data is
+        // written to this device unless a send actually failed (see deliver()).
+        deliver(buildBenchmarkPayload("lead_unlock", lead));
+
+        const confirm = document.getElementById("reportConfirm");
+        confirm.textContent = "📧 Your report is on its way to " + emailVal + ".";
+        confirm.style.display = "block";
 
         document.getElementById("userGreeting").textContent = nameVal ? `Hello ${nameVal.split(' ')[0]}, Here Are Your Results:` : "Your Results:";
         evaluate(false); 
@@ -1953,6 +2332,73 @@
       // Synchronize starting navigation values explicitly on application boot
       syncWizardButtonsState();
       updateGlobalProgress();
+    }
+
+    /* ── Early link capture: secures the lead even if the visitor leaves ── */
+    function initEarlyLink() {
+      const btn = document.getElementById("earlyLinkBtn");
+      if (!btn) return;
+      btn.addEventListener("click", function() {
+        const input = document.getElementById("earlyEmail");
+        const consent = document.getElementById("earlyConsent");
+        const msg = document.getElementById("earlyMsg");
+        const email = (input.value || "").trim();
+
+        if (!email || !input.checkValidity()) {
+          msg.className = "early-msg err";
+          msg.textContent = "Please enter a valid email address.";
+          input.focus();
+          return;
+        }
+        if (!consent.checked) {
+          msg.className = "early-msg err";
+          msg.textContent = "Please tick the consent box so we may email you the link.";
+          consent.focus();
+          return;
+        }
+
+        earlyLeadEmail = email;                    // prefills the gate later
+        deliver(buildBenchmarkPayload("link_request", {
+          email: email,
+          consent: true,
+          consentTimestamp: new Date().toISOString()
+        }));
+
+        document.getElementById("earlyLinkForm").style.display = "none";
+        document.getElementById("earlyConsentRow").style.display = "none";
+        msg.className = "early-msg ok";
+        msg.textContent = "✅ Link sent to " + email + "; you can also just start below.";
+      });
+    }
+
+    function openScopeDialog(open) {
+      const modal = document.getElementById("scopeModal");
+      document.getElementById("scopeCount").textContent = open.length;
+      document.getElementById("scopeList").innerHTML =
+        open.map(function(d) { return "<li>" + d.icon + " " + d.name + "</li>"; }).join("");
+      modal.dataset.ids = open.map(function(d) { return d.id; }).join(",");
+      modal.style.display = "flex";
+    }
+
+    function applyScopeChoice(choice) {
+      const modal = document.getElementById("scopeModal");
+      (modal.dataset.ids || "").split(",").filter(Boolean).forEach(function(id) {
+        dimAssessment[id] = choice;
+      });
+      modal.style.display = "none";
+      proceedToGate();
+    }
+
+    function proceedToGate() {
+      const assessed = DIMS.filter(function(d) { return isAssessed(d.id); });
+      if (!assessed.length) {
+        const modal = document.getElementById("scopeModal");
+        dimAssessment = {};
+        modal.style.display = "none";
+        alert("We need at least one dimension to work with. Please answer a few items, or mark a dimension as \"nothing established\" so we can score it.");
+        return;
+      }
+      evaluate(true);
     }
 
     function calcScore(dimId) {
@@ -2022,8 +2468,10 @@
     function evaluate(isLocked) {
       const scores = DIMS.map(function(d) {
         const finalScore = calcScore(d.id);
+        const assessed = isAssessed(d.id);
         const normScore = finalScore / 5;
-        const leverage = (1.0 - normScore) * (d.strategicWeight || 1.0);
+        // Skipped dimensions must never win a focus slot: -1 sorts them out.
+        const leverage = assessed ? (1.0 - normScore) * (d.strategicWeight || 1.0) : -1;
         const chkCount = document.querySelectorAll(`#dc-${d.id} .dim-cb:checked`).length;
         
         return {
@@ -2031,6 +2479,7 @@
           name: d.name, 
           icon: d.icon, 
           cluster: d.cluster,
+          assessed: assessed,
           score: finalScore, 
           leverage: leverage,
           strategicWeight: (d.strategicWeight || 1.0),
@@ -2038,19 +2487,35 @@
           total: d.elements.length
         };
       });
-      
-      const avg = weightedOverall(scores);
+
+      const scored = scores.filter(function(r){ return r.assessed; });
+      const skipped = scores.length - scored.length;
+      const avg = weightedOverall(scored);
+
+      document.getElementById("assessmentBasis").textContent =
+        "Basis: " + scored.length + " of " + scores.length + " dimensions assessed" +
+        (skipped ? " · " + skipped + " not assessed and excluded from the score" : "");
+      document.getElementById("radarNote").textContent =
+        skipped ? "Dimensions shown in grey were not assessed and are not part of your score." : "";
       animateScoreCounter(avg);
       drawScoreRing(avg);
       
       document.getElementById("scoreSubtitle").textContent =
-        avg < 2.0 ? "Survival Mode — Operations rely heavily on manual workarounds and firefighting. Increasing your workload volume right now will block execution." :
-        avg < 3.5 ? "Functional Baseline — Core processes work on paper, but stepping up transaction capacity will trigger severe coordination gaps and data silos across separate teams." :
-        "Proactive Progress — Highly integrated value chain metrics. Your foundation is optimized to scale smoothly and secure clear market leadership.";
+        avg < 1.8 ? "Foundation Stage: A lot currently runs on manual workarounds and personal commitment. That holds at a steady load, but becomes the bottleneck as soon as volume grows." :
+        avg < 3.2 ? "Working Baseline: Your core processes hold up. As volume grows, friction typically shows up at the handovers between teams and systems." :
+        "Scale-Ready: Your processes and systems mesh well. The leverage now lies less in cleaning up and more in targeted expansion.";
 
       const cards = document.getElementById("resCards");
       let cardsHtml = "";
       scores.forEach(function(r) {
+        if (!r.assessed) {
+          cardsHtml += `<div class="res-card res-card-skipped" style="border-top-color:#cbd5e0 !important;">
+            <div class="rc-head"><span class="rc-name">${r.icon} ${r.name}</span><span class="rc-badge" style="color:#a0aec0 !important;">–</span></div>
+            <div class="rc-bar-wrap"><div class="rc-bar" style="width:0%; background:#cbd5e0 !important;"></div></div>
+            <div class="rc-detail">Not assessed</div>
+            </div>`;
+          return;
+        }
         const pct = r.score / 5 * 100;
         const pc = pillarColor(r.cluster);
         cardsHtml += `<div class="res-card" style="opacity:${r.score === 0 ? "0.45" : "1"}; border-top-color:${pc} !important;">
@@ -2063,7 +2528,7 @@
 
       drawRadarChart(scores);
 
-      const sorted = scores.slice().sort(function(a, b) { return b.leverage - a.leverage; });
+      const sorted = scored.slice().sort(function(a, b) { return b.leverage - a.leverage; });
       const top3 = sorted.slice(0, 3);
       const pList = document.getElementById("prioList");
       pList.innerHTML = "";
@@ -2092,6 +2557,11 @@
 
       resultsSection.style.display = "block";
 
+      if (isLocked && earlyLeadEmail) {
+        const gateEmail = document.getElementById("leadEmail");
+        if (gateEmail && !gateEmail.value.trim()) gateEmail.value = earlyLeadEmail;
+      }
+
       if (isLocked) {
         previewWrapper.classList.add("locked-preview");
         actionButtons.classList.add("locked-preview");
@@ -2108,9 +2578,9 @@
           <div class="minto-booking-card">
             <h2>Let's Dissect Your Roadmap: Book a 20-Minute Strategy Call</h2>
             <p>
-              Your report is ready. Let's hop on a short call to look at your biggest bottlenecks, review your maturity, and map out a clear plan. No sales pitch, no consulting fluff — just objective business clarity.
+              Your report is ready. Let's hop on a short call to look at your biggest bottlenecks, review your maturity, and map out a clear plan. No sales pitch, no consulting fluff, just objective business clarity.
             </p>
-            <a href="https://calendly.com/your-placeholder" target="_blank" rel="noopener noreferrer" class="minto-booking-btn">📅 Book Your Strategy Slot With Matthias Paratsch</a>
+            <a href="https://calendar.app.google/D4xqjmvEALBMTgg47" target="_blank" rel="noopener noreferrer" class="minto-booking-btn">📅 Book Your Strategy Slot With Matthias Paratsch</a>
           </div>`;
         bookingSec.style.display = "block";
         
@@ -2145,7 +2615,7 @@
       const dotColors = [];
       scores.forEach((s, j) => {
         const angle = (j * 2 * Math.PI / numDims) - Math.PI / 2;
-        const pc = pillarColor(s.cluster);
+        const pc = s.assessed === false ? "#cbd5e0" : pillarColor(s.cluster);
         
         const xMax = cx + rMax * Math.cos(angle);
         const yMax = cy + rMax * Math.sin(angle);
@@ -2164,7 +2634,7 @@
         const labelY = cy + labelR * Math.sin(angle);
         const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
         text.setAttribute("x", labelX);
-        text.setAttribute("fill", "#051F2E");
+        text.setAttribute("fill", s.assessed === false ? "#a0aec0" : "#051F2E");
         text.setAttribute("font-size", "12");
         text.setAttribute("font-weight", "600");
         text.setAttribute("text-anchor", Math.abs(labelX - cx) < 15 ? "middle" : (labelX > cx ? "start" : "end"));
@@ -2212,53 +2682,12 @@
         circle.setAttribute("cy", coord[1]);
         circle.setAttribute("r", "4");
         circle.setAttribute("fill", dotColors[i] || "#051F2E");
+        if (dotColors[i] === "#cbd5e0") circle.setAttribute("fill", "#ffffff");
         circle.setAttribute("stroke", "#ffffff");
         circle.setAttribute("stroke-width", "1.5");
         svg.appendChild(circle);
       });
     }
-
-    function setEmailButtonsState(html, disabled) {
-      ["requestFullReportBtn", "stickyEmailBtn"].forEach(function(id) {
-        const b = document.getElementById(id);
-        if (b) { b.innerHTML = html; b.disabled = disabled; }
-      });
-    }
-
-    function requestEmailedReport() {
-      const raw = localStorage.getItem("tektit_maturity_data");
-      if (!raw) { alert("Please unlock your results first."); return; }
-
-      let base;
-      try { base = JSON.parse(raw); } catch (e) { alert("Please unlock your results first."); return; }
-      const lead = base.lead || {};
-
-      const payload = buildBenchmarkPayload("report_request", {
-        name: lead.name,
-        email: lead.email,
-        company: lead.company,
-        consent: lead.consent,
-        consentTimestamp: lead.consentTimestamp
-      });
-
-      const mainBtn = document.getElementById("requestFullReportBtn");
-      const original = mainBtn ? mainBtn.innerHTML : "📧 Email me the report";
-      setEmailButtonsState("⏳ Sending...", true);
-
-      postToWebhook(payload)
-        .then(function(res){
-          if (!res.ok) throw new Error("bad status " + res.status);
-          alert("Thanks! Your report and a strategy-call invite are on their way to your inbox.");
-          setEmailButtonsState("✅ Sent to your inbox", true);
-        })
-        .catch(function(err){
-          console.error("Report send failed:", err);
-          alert("Something went wrong sending the email — but your data is saved. Please try again in a moment, or contact us if it doesn't arrive.");
-          setEmailButtonsState(original, false);
-        });
-    }
-
-    document.getElementById("requestFullReportBtn").addEventListener("click", requestEmailedReport);
 
     /* ── Sticky results conversion bar ── */
     let stickyObserver = null;
@@ -2269,16 +2698,6 @@
         bar.id = "stickyActionBar";
         bar.setAttribute("role", "region");
 
-        // Reuse the EXACT existing control labels — no new copy introduced
-        const emailSource = document.getElementById("requestFullReportBtn");
-        const emailBtn = document.createElement("button");
-        emailBtn.type = "button";
-        emailBtn.id = "stickyEmailBtn";
-        emailBtn.className = "btn sticky-ghost";
-        emailBtn.innerHTML = emailSource ? emailSource.innerHTML : "📧 Email me the report";
-        emailBtn.disabled = emailSource ? emailSource.disabled : false;
-        emailBtn.addEventListener("click", requestEmailedReport);
-
         const bookBtn = document.createElement("button");
         bookBtn.type = "button";
         bookBtn.id = "stickyBookBtn";
@@ -2288,25 +2707,16 @@
           if (a) a.click();
         });
 
-        bar.appendChild(emailBtn);
         bar.appendChild(bookBtn);
         document.body.appendChild(bar);
       }
 
-      // Keep the sticky email button in step with the main one
-      const emailSource = document.getElementById("requestFullReportBtn");
-      const stickyEmail = document.getElementById("stickyEmailBtn");
-      if (emailSource && stickyEmail) {
-        stickyEmail.innerHTML = emailSource.innerHTML;
-        stickyEmail.disabled = emailSource.disabled;
-      }
-
-      // (Re)sync the booking label from the freshly rendered booking button
+      // Short dedicated label; the long one belongs on the full booking card.
       const bookSource = document.querySelector(".minto-booking-btn");
       const bookBtn = document.getElementById("stickyBookBtn");
-      if (bookSource && bookBtn) {
-        bookBtn.textContent = bookSource.textContent;
-        bookBtn.setAttribute("title", bookSource.textContent);
+      if (bookBtn) {
+        bookBtn.textContent = "📅 Book your strategy call";
+        if (bookSource) bookBtn.setAttribute("title", bookSource.textContent.trim());
       }
 
       // Show the sticky bar only while the real action row is off-screen
