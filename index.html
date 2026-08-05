@@ -40,6 +40,10 @@
       --transition-fast: 0.2s ease;
     }
 
+    html, body {
+      overflow-x: clip;
+    }
+
     body {
       font-family: 'Gothic A1', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: var(--tk-light);
@@ -67,6 +71,8 @@
       background: var(--tk-dark);
       color: #fff;
       padding: 14px 24px;
+      padding-left: max(24px, env(safe-area-inset-left));
+      padding-right: max(24px, env(safe-area-inset-right));
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -387,6 +393,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      min-width: 0;              /* let the name wrap instead of squeezing the badge */
     }
     
     .dim-icon {
@@ -414,6 +421,8 @@
       border-radius: 100px;
       background: var(--tk-light);
       color: #4a5568;
+      flex-shrink: 0;            /* "0 / 5" must never wrap */
+      white-space: nowrap;
     }
     .dim-badge.active {
       background: #f0f9fa;
@@ -519,7 +528,7 @@
     }
     .tt-text {
       visibility: hidden;
-      width: 240px;
+      width: min(240px, calc(100vw - 24px));
       background-color: var(--tk-dark);
       color: #fff;
       text-align: center;
@@ -556,11 +565,7 @@
       outline-offset: 2px;
       border-radius: 50%;
     }
-    @media (max-width: 600px) {
-      .tt-text {
-        width: min(240px, 70vw);
-      }
-    }
+
 
     /* ── Controls Core Buttons ── */
     .btn-group {
@@ -803,7 +808,7 @@
     }
     .res-card {
       background: #ffffff !important;
-      padding: 24px 20px;
+      padding: 20px 0 0;         /* flush with the rule above it */
       border: none !important;
       border-top: 2px solid var(--tk-dark) !important;
     }
@@ -871,24 +876,23 @@
 
     .prio-row {
       background: var(--tk-light) !important;
-      padding: 28px !important;
-      margin-bottom: 24px !important;
-      display: flex;
-      align-items: flex-start;
-      gap: 24px;
+      padding: 20px 22px !important;
+      margin-bottom: 18px !important;
+      display: block;
       border-left: 4px solid var(--tk-teal) !important;
     }
+    /* Rank as a small kicker above the title, so the heading starts flush
+       with the hint text and the next-steps box below it. */
     .prio-rank {
-      width: 32px !important;
-      height: 32px !important;
-      background: var(--tk-dark) !important;
-      color: #ffffff !important;
-      font-weight: 900 !important;
-      font-size: 0.95rem !important;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
+      display: block;
+      background: none !important;
+      color: var(--tk-teal) !important;
+      font-size: 0.68rem !important;
+      font-weight: 800 !important;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      line-height: 1.2;
+      margin-bottom: 6px;
     }
     .prio-content {
       flex-grow: 1;
@@ -1003,7 +1007,11 @@
       #resetBtn { margin-left: 0; width: 100%; }
     }
     @media (max-width: 720px) {
-      .top-bar { flex-wrap: wrap; row-gap: 8px; padding: 12px 16px; }
+      .top-bar {
+        flex-wrap: wrap; row-gap: 8px; padding: 12px 16px;
+        padding-left: max(16px, env(safe-area-inset-left));
+        padding-right: max(16px, env(safe-area-inset-right));
+      }
       .top-bar-left { gap: 10px; min-width: 0; }
       .top-bar-left img { height: 34px; }
       .top-bar h1 { font-size: 0.95rem; letter-spacing: 0.03em; }
@@ -1315,7 +1323,7 @@
             <label for="leadEmail" class="sr-only">Your email address</label>
             <input type="email" id="leadEmail" placeholder="Your work email address" autocomplete="email" inputmode="email" required>
           </div>
-          <input type="text" id="tk_hp_field" name="tk_hp_field" tabindex="-1" autocomplete="off" aria-hidden="true" readonly onfocus="this.removeAttribute('readonly');" style="position:absolute; left:-9999px; top:-9999px; width:1px; height:1px; opacity:0;">
+          <input type="text" id="tk_hp_field" name="tk_hp_field" tabindex="-1" autocomplete="off" aria-hidden="true" readonly onfocus="this.removeAttribute('readonly');" style="position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;">
           <label class="lead-consent" for="leadConsent">
             <input type="checkbox" id="leadConsent" required>
             <span>By submitting this form you are giving consent to be contacted by Tektit Consulting GmbH and to have your assessment data processed to generate and send your report. You can withdraw your consent at any time. See our <a href="https://www.tektitconsulting.com/datenschutz" target="_blank" rel="noopener noreferrer">Data Privacy</a> notice.</span>
@@ -1338,16 +1346,16 @@
           
           <div class="section-card" id="radarCard">
             <h3>Maturity Radar</h3>
-            <div style="max-width:540px; margin:0 auto; padding: 10px;">
-              <svg id="radarSvg" viewBox="0 0 580 540" style="width:100%; height:auto; overflow: visible;"></svg>
+            <div style="max-width:660px; margin:0 auto; padding: 10px;">
+              <svg id="radarSvg" viewBox="0 0 600 520" style="width:100%; height:auto; overflow: visible;"></svg>
             </div>
             <p class="radar-note" id="radarNote"></p>
           </div>
           
           <div class="section-card" id="focusCard">
-            <h3>Your Top 3 Focus Areas</h3>
+            <h3 id="focusHeading">Your Top 3 Focus Areas</h3>
             <p class="focus-desc">
-              <span class="tektit-keyword-accent">Focus creates progress.</span> Trying to change everything at once slows you and your organization down. We rank your results by matching your implementation gaps against strategic weights so you know exactly which bottleneck to solve first.
+              <span class="tektit-keyword-accent">Focus creates progress.</span> Changing everything at once slows you down. We weigh how big each gap is against how much that area affects your growth, so you know which one to take on first.
             </p>
             <div id="prioList"></div>
             <p style="font-size: 0.75rem; color: #718096; margin-top: 14px; font-style: italic; line-height: 1.4;">
@@ -1358,10 +1366,10 @@
           <div class="section-card" id="sparringCard">
             <h3>Understanding Your Bottlenecks</h3>
             <p class="diagnostic-text">
-              Having worked with more than 40 clients since 2019, we find that most scaling businesses struggle with two main things: <span class="tektit-keyword-accent">losing focus on their value chain</span> and watching their <span class="tektit-keyword-accent">development speed slow down</span> as the company grows. Teams end up drowning in tool sprawl, disconnected tasks, and fragmented responsibilities. When that happens, the company enters survival mode.
+              Having worked with more than 40 clients since 2019, we see the same two problems in growing companies: they <span class="tektit-keyword-accent">lose sight of what customers actually pay them for</span>, and <span class="tektit-keyword-accent">everything takes longer than it used to</span>. Teams end up with too many tools, work that does not connect, and nobody clearly responsible. From then on, the days go into reacting.
             </p>
             <p class="diagnostic-text">
-              Our approach is governed by a core principle: <span class="tektit-keyword-accent">"Fall in love with the problem, not the solution".</span> Instead of jumping to quick-fix conclusions, like buying more software licenses or adding headcount, we isolate the actual root cause of the friction. This clears away internal guesswork and helps you build an integrated infrastructure that lets your team focus entirely on your core product and USP.
+              We work by one rule: <span class="tektit-keyword-accent">"Fall in love with the problem, not the solution".</span> Instead of reaching for the quick fix, another licence or another hire, we find out what is actually causing the friction. That is usually cheaper than the quick fix, and it lets your team spend its time on the product itself.
             </p>
             
             <div class="advisor-profile">
@@ -1371,8 +1379,8 @@
               </div>
               <div style="text-align: left;">
                 <h4 style="margin: 0; font-size: 1.1rem; color: #051F2E; font-weight: 800; text-transform: uppercase;">Matthias Paratsch</h4>
-                <p style="margin: 2px 0 0; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #52A5B0; font-weight: 700;">Trusted Partner & Strategy Advisor</p>
-                <p style="margin: 6px 0 0; font-size: 0.85rem; color: #718096; line-height: 1.55;">Industry veteran focused on identifying system vulnerabilities, finding root causes, and creating clear execution paths to remove internal friction.</p>
+                <p style="margin: 2px 0 0; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #52A5B0; font-weight: 700;">Associate Partner</p>
+                <p style="margin: 6px 0 0; font-size: 0.85rem; color: #718096; line-height: 1.55;">Works with leadership teams to find what is actually slowing the business down, and to decide what to fix first.</p>
               </div>
             </div>
             
@@ -1624,33 +1632,33 @@
     ];
 
     const ACTIONABLE_NEXT_STEPS = {
-      leadership: "Audit your internal decision-making lines. Map out clear operational ownership rules so different business divisions can make choices inside their focus domain independently, bypassing internal bottlenecks.",
-      innovation: "Set aside dedicated optimization resources completely insulated from day-to-day client delivery timelines. This keeps your team from burning out while systematically handling development pressure.",
-      finance: "Re-evaluate your precise margin tracking down to individual delivery units. This ensures your customer monetization models and pricing structures capture ecosystem changes accurately.",
-      sales: "Standardize your pitch decks, proposal templates, and CRM data routing lines. This creates a repeatable sales pipeline that does not depend entirely on individual sales heroes.",
-      ecosystem: "Map all current external vendor interfaces and software ports. Shift loose partner setups into a programmatic alliance channel to expand your reach without scaling internal overhead.",
-      ops: "Consolidate recurring daily tasks into a centralized, live digital playbook. Cut out manual workarounds to protect your baseline delivery frameworks.",
-      devorg: "Sync your development tracking milestones directly to underlying business performance metrics. Protect your roadmap from ad-hoc changes by validating requirements against revenue or retention data.",
-      devops: "Move away from manual configuration scripts and deploy infrastructure setups centrally through code. This ensures your engineers spend time building real features instead of reinventing standard paths.",
-      itlandscape: "Audit disconnected software tools. Enforce your core enterprise system as the absolute authority for data logging records to eliminate tool sprawl, silos, and duplicate entry bugs entirely.",
-      data: "Enforce shared, uniform definitions for your core corporate KPIs. Consolidate fragmented dashboards into a single source of truth to guarantee data governance holds together tightly.",
-      ai: "Isolate high-value, low-complexity use cases that save immediate production hours today. Organize your data tables into clean schemas before attempting model queries to protect core parameters.",
-      sovereignty: "Audit internal permission structures based on strict structural roles and run immediate restoration tests for your backup clusters to shield your operations from runtime disasters."
+      leadership: "Write down who decides what. Give each team the authority to decide inside its own area, so work stops queuing up for sign-off.",
+      innovation: "Set aside time for improvement work that client deadlines cannot eat into. Half a day a week beats a workshop once a year.",
+      finance: "Work out what each project or product actually costs you and what it brings in. Without that number, pricing is guesswork.",
+      sales: "Standardise your pitch, your proposal template and how deals get logged. The goal is a pipeline that works without your best salesperson in the room.",
+      ecosystem: "List the partners you rely on and what each one actually delivers. Turn the informal arrangements into proper agreements, so you can take on more work without hiring first.",
+      ops: "Write down how your recurring work is done, in one place everyone can reach. Start with the tasks that break when the person who owns them is away.",
+      devorg: "Tie what your teams build to a business number you already track. If a requirement cannot be linked to revenue, retention or cost, ask why it is on the roadmap.",
+      devops: "Stop setting up servers and environments by hand. Put the steps into scripts, so your engineers spend their time on the product instead of on plumbing.",
+      itlandscape: "List every tool in use and what it owns. Pick one system as the place where each type of data lives, so the same number stops appearing in three versions.",
+      data: "Agree on one definition per key figure and write it down. Then point every dashboard at the same source, so meetings stop arguing about whose number is right.",
+      ai: "Pick one task that costs your team hours every week and start there. Clean up the data it needs first; a model cannot fix a messy spreadsheet.",
+      sovereignty: "Check who can reach what, and remove access nobody needs. Then restore a backup for real, on a normal working day, to find out whether it actually works."
     };
 
     const CONTEXT_HINTS = {
-      leadership: "Clear frameworks and decision lines anchor your organizational capabilities.",
-      innovation: "Continuous optimization safeguards your long-term competitive advantage.",
-      finance: "Solid unit economics and planning ensure capital-efficient scaling.",
-      sales: "A structured go-to-market engine drives sustainable growth.",
-      ecosystem: "Strategic partner pathways expand your reach without adding headcount overhead.",
-      ops: "Documented workflows and excellence prevent processes from breaking under volume.",
-      devorg: "A clear product roadmap bridges the gap between business strategy and execution.",
-      devops: "Automated pipelines and infrastructure accelerate delivery velocity and stability.",
-      itlandscape: "Integrated core systems form the unified data highway of your value chain.",
-      data: "Data-driven choices require clear metrics and a single source of truth.",
-      ai: "Prioritized use cases turn artificial intelligence into measurable daily productivity.",
-      sovereignty: "Robust data security and compliance guardrails protect your enterprise from operational risks."
+      leadership: "People move faster when they know what they are allowed to decide.",
+      innovation: "If improvement work has no protected time, it does not happen.",
+      finance: "You cannot price or plan what you have never measured.",
+      sales: "A pipeline that depends on individuals does not scale.",
+      ecosystem: "Good partners let you take on more work before you have to hire.",
+      ops: "Written-down work survives holidays, illness and growth.",
+      devorg: "Build time is your scarcest resource; spend it on what customers pay for.",
+      devops: "Manual setup work is a tax you pay on every single release.",
+      itlandscape: "When your systems talk to each other, nobody retypes data.",
+      data: "One definition per number ends most reporting arguments.",
+      ai: "AI pays off where it removes work you already do every week.",
+      sovereignty: "A backup you have never restored is not a backup."
     };
 
     let DIMS = []; 
@@ -1684,6 +1692,7 @@
     const BENCHMARK_SCHEMA_VERSION = 2;
     const WEBHOOK_ENDPOINT = "https://hook.eu2.make.com/vpylwdo85cf86nhulcbe8ju55ygxc5wo";
     const CONSENT_VERSION = "2025-07-31";
+    const TOOL_URL = "https://matze-tektit.github.io/Maturity/";
     const CONSENT_TEXT = "By submitting this form you are giving consent to be contacted by Tektit Consulting GmbH and to have your assessment data processed to generate and send your report.";
     const SESSION_START = Date.now();
     let SUBMISSION_ID = null;
@@ -1701,6 +1710,31 @@
 
     // Assembles one clean, analysis-ready benchmark record from current state.
     function buildBenchmarkPayload(eventName, lead) {
+      lead = lead || {};
+
+      // A link request carries no assessment yet. Keeping it lean means Make
+      // cannot mistake it for a finished report and mail out an empty one.
+      if (eventName === "link_request") {
+        if (!SUBMISSION_ID) SUBMISSION_ID = makeId();
+        return {
+          event: "link_request",
+          schemaVersion: BENCHMARK_SCHEMA_VERSION,
+          toolVersion: TOOL_VERSION,
+          submissionId: SUBMISSION_ID,
+          timestamp: new Date().toISOString(),
+          reportReady: false,
+          resumeUrl: TOOL_URL,
+          userEmail: lead.email || "",
+          lead: {
+            email: lead.email || "",
+            consent: !!lead.consent,
+            consentText: CONSENT_TEXT,
+            consentVersion: CONSENT_VERSION,
+            consentTimestamp: lead.consentTimestamp || null
+          }
+        };
+      }
+
       const dims = DIMS.map(function(d) {
         const els = d.elements.map(function(el, idx) {
           const cb = document.getElementById(`cb-${d.id}-${idx}`);
@@ -1735,7 +1769,6 @@
       });
 
       if (!SUBMISSION_ID) SUBMISSION_ID = makeId();
-      lead = lead || {};
 
       return {
         event: eventName,                         // "link_request" | "lead_unlock"
@@ -1744,6 +1777,8 @@
         submissionId: SUBMISSION_ID,
         timestamp: new Date().toISOString(),
         archetype: selectedArchetype,
+        reportReady: true,
+        resumeUrl: TOOL_URL,
         suspectedBot: !!lead.suspectedBot,
         // Flat fields: same names as the original payload, so existing
         // Make scenario mappings (userEmail / userName / companyName) keep working
@@ -2530,6 +2565,11 @@
 
       const sorted = scored.slice().sort(function(a, b) { return b.leverage - a.leverage; });
       const top3 = sorted.slice(0, 3);
+      // With fewer than three assessed dimensions the heading must not promise three.
+      document.getElementById("focusHeading").textContent =
+        top3.length >= 3 ? "Your Top 3 Focus Areas" :
+        top3.length === 2 ? "Your Top 2 Focus Areas" : "Your Focus Area";
+
       const pList = document.getElementById("prioList");
       pList.innerHTML = "";
       
@@ -2538,12 +2578,12 @@
         const hintText = CONTEXT_HINTS[r.id] || "";
         
         pList.innerHTML += `<div class="prio-row">
-          <div class="prio-rank">${i + 1}</div>
+          <div class="prio-rank">Priority ${i + 1}</div>
           <div class="prio-content">
             <div class="prio-name">${r.icon} ${r.name} &bull; Score: ${r.score.toFixed(1)}/5.0</div>
             <p style="font-size: 0.85rem; color: #3D4585; margin-bottom: 8px; font-weight: 600; line-height: 1.45;">${hintText}</p>
             <div style="margin: 12px 0 0; padding: 16px; background: #fafbfc; border-left: 4px solid #52A5B0; font-size: 0.9rem; color: #051F2E; line-height: 1.55;">
-              <strong>🎯 Recommended Next Steps:</strong> ${nextStepsText}
+              <strong>Recommended next steps:</strong> ${nextStepsText}
             </div>
           </div>
         </div>`;
@@ -2576,11 +2616,11 @@
         
         bookingSec.innerHTML = `
           <div class="minto-booking-card">
-            <h2>Let's Dissect Your Roadmap: Book a 20-Minute Strategy Call</h2>
+            <h2>Book a 20-Minute Call</h2>
             <p>
-              Your report is ready. Let's hop on a short call to look at your biggest bottlenecks, review your maturity, and map out a clear plan. No sales pitch, no consulting fluff, just objective business clarity.
+              Your report is ready. In 20 minutes we can go through your three focus areas and what we would tackle first. No pitch, no slides.
             </p>
-            <a href="https://calendar.app.google/D4xqjmvEALBMTgg47" target="_blank" rel="noopener noreferrer" class="minto-booking-btn">📅 Book Your Strategy Slot With Matthias Paratsch</a>
+            <a href="https://calendar.app.google/D4xqjmvEALBMTgg47" target="_blank" rel="noopener noreferrer" class="minto-booking-btn">📅 Book a call with Matthias Paratsch</a>
           </div>`;
         bookingSec.style.display = "block";
         
@@ -2593,7 +2633,7 @@
       const svg = document.getElementById("radarSvg");
       svg.innerHTML = ""; 
       
-      const cx = 290, cy = 250, rMax = 170;
+      const cx = 300, cy = 258, rMax = 152;
       const numDims = scores.length;
       
       for (let i = 1; i <= 5; i++) {
@@ -2629,28 +2669,30 @@
         line.setAttribute("stroke-width", "1");
         svg.appendChild(line);
         
-        const labelR = rMax + 24;
+        const labelR = rMax + 26;
         const labelX = cx + labelR * Math.cos(angle);
         const labelY = cy + labelR * Math.sin(angle);
         const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
         text.setAttribute("x", labelX);
         text.setAttribute("fill", s.assessed === false ? "#a0aec0" : "#051F2E");
-        text.setAttribute("font-size", "12");
-        text.setAttribute("font-weight", "600");
+        text.setAttribute("font-size", "15");
+        text.setAttribute("font-weight", "700");
         text.setAttribute("text-anchor", Math.abs(labelX - cx) < 15 ? "middle" : (labelX > cx ? "start" : "end"));
 
-        // Word-wrap the label onto at most two lines (keeps the full name)
+        // Word-wrap the label onto at most three lines (keeps the full name)
         const words = (s.icon + " " + s.name).split(" ");
         const lines = [];
         let cur = "";
         words.forEach(function(w) {
-          if ((cur + " " + w).trim().length <= 14) { cur = (cur + " " + w).trim(); }
+          if ((cur + " " + w).trim().length <= 12) { cur = (cur + " " + w).trim(); }
           else { if (cur) lines.push(cur); cur = w; }
         });
         if (cur) lines.push(cur);
-        if (lines.length > 2) { lines[1] = lines.slice(1).join(" "); lines.length = 2; }
+        // Up to three lines: forcing two produced an over-long second line
+        // ("Infrastructure & Automation") that ran outside the viewBox.
+        if (lines.length > 3) { lines[2] = lines.slice(2).join(" "); lines.length = 3; }
 
-        const lineH = 12.5;
+        const lineH = 16;
         const yStart = labelY - (lines.length - 1) * lineH / 2;
         text.setAttribute("y", yStart);
         text.setAttribute("dominant-baseline", "middle");
@@ -2715,7 +2757,7 @@
       const bookSource = document.querySelector(".minto-booking-btn");
       const bookBtn = document.getElementById("stickyBookBtn");
       if (bookBtn) {
-        bookBtn.textContent = "📅 Book your strategy call";
+        bookBtn.textContent = "📅 Book a 20-minute call";
         if (bookSource) bookBtn.setAttribute("title", bookSource.textContent.trim());
       }
 
