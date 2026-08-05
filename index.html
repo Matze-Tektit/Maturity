@@ -1118,7 +1118,7 @@
             <label for="leadEmail" class="sr-only">Your email address</label>
             <input type="email" id="leadEmail" placeholder="Your work email address" autocomplete="email" inputmode="email" required>
           </div>
-          <input type="text" id="tk_hp_field" name="tk_hp_field" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px; top:-9999px; width:1px; height:1px; opacity:0;">
+          <input type="text" id="tk_hp_field" name="tk_hp_field" tabindex="-1" autocomplete="off" aria-hidden="true" readonly onfocus="this.removeAttribute('readonly');" style="position:absolute; left:-9999px; top:-9999px; width:1px; height:1px; opacity:0;">
           <label class="lead-consent" for="leadConsent">
             <input type="checkbox" id="leadConsent" required>
             <span>By submitting this form you are giving consent to be contacted by Tektit Consulting GmbH and to have your assessment data processed to generate and send your report. You can withdraw your consent at any time. See our <a href="https://www.tektitconsulting.com/datenschutz" target="_blank" rel="noopener noreferrer">Data Privacy</a> notice.</span>
@@ -1518,6 +1518,7 @@
         submissionId: SUBMISSION_ID,
         timestamp: new Date().toISOString(),
         archetype: selectedArchetype,
+        suspectedBot: !!lead.suspectedBot,
         // Flat fields — same names as the original payload, so existing
         // Make scenario mappings (userEmail / userName / companyName) keep working
         userEmail: lead.email || "",
@@ -1903,8 +1904,9 @@
         const consentInput = document.getElementById("leadConsent");
         const honeypot = document.getElementById("tk_hp_field");
 
-        // Silent bot trap: real users never fill this hidden field
-        if (honeypot && honeypot.value.trim() !== "") { return; }
+        // Bot trap: never block a real submission (browser autofill can fill
+        // even hidden fields). Flag it instead and let the backend filter.
+        const suspectedBot = !!(honeypot && honeypot.value.trim() !== "");
 
         const emailVal = (emailInput.value || "").trim();
         const nameVal = (nameInput.value || "").trim();
@@ -1931,7 +1933,8 @@
           email: emailVal,
           company: companyVal,
           consent: true,
-          consentTimestamp: new Date().toISOString()
+          consentTimestamp: new Date().toISOString(),
+          suspectedBot: suspectedBot
         };
 
         // Build the full benchmark record and capture the lead RIGHT NOW —
