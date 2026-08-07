@@ -2565,14 +2565,38 @@
 
       const sorted = scored.slice().sort(function(a, b) { return b.leverage - a.leverage; });
       const top3 = sorted.slice(0, 3);
+
+      const focusCard = document.getElementById("focusCard");
+      const focusDescEl = focusCard.querySelector(".focus-desc");
+      const focusNoteEl = focusCard.querySelector("#prioList + p");
+      const pList = document.getElementById("prioList");
+      pList.innerHTML = "";
+
+      // Congratulations instead of focus areas: only when the whole picture is
+      // assessed and genuinely strong, so it never fires on a partial or so-so run.
+      const STRONG = 4.5;
+      const allStrong = scored.length === scores.length && scored.every(function(r){ return r.score >= STRONG; });
+
+      if (allStrong) {
+        document.getElementById("focusHeading").textContent = "You've built something rare";
+        if (focusDescEl) focusDescEl.style.display = "none";
+        if (focusNoteEl) focusNoteEl.style.display = "none";
+        pList.innerHTML =
+          '<div class="prio-row" style="border-left-color:#52A5B0;">' +
+          '<div class="prio-content">' +
+          '<div class="prio-name">🎉 Nothing urgent to fix</div>' +
+          '<p style="font-size:0.92rem; color:#051F2E; line-height:1.6; margin-bottom:0;">' +
+          'Across all twelve dimensions, everything is broadly in place; there is no single bottleneck holding you back. That is uncommon, and it usually reflects a lot of deliberate work.<br><br>' +
+          'We would genuinely like to hear how you got there. If you are open to it, let\'s talk: no pitch, just a conversation about your journey.' +
+          '</p></div></div>';
+      } else {
       // With fewer than three assessed dimensions the heading must not promise three.
+      if (focusDescEl) focusDescEl.style.display = "";
+      if (focusNoteEl) focusNoteEl.style.display = "";
       document.getElementById("focusHeading").textContent =
         top3.length >= 3 ? "Your Top 3 Focus Areas" :
         top3.length === 2 ? "Your Top 2 Focus Areas" : "Your Focus Area";
 
-      const pList = document.getElementById("prioList");
-      pList.innerHTML = "";
-      
       top3.forEach(function(r, i) {
         const nextStepsText = ACTIONABLE_NEXT_STEPS[r.id] || "";
         const hintText = CONTEXT_HINTS[r.id] || "";
@@ -2588,6 +2612,7 @@
           </div>
         </div>`;
       });
+      }
 
       const resultsSection = document.getElementById("results");
       const previewWrapper = document.getElementById("lockedPreviewWrapper");
