@@ -122,6 +122,28 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
     
+    .lang-switch {
+      display: flex;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .lang-switch button {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.65);
+      font-family: inherit;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      padding: 5px 11px;
+      cursor: pointer;
+    }
+    .lang-switch button[aria-pressed="true"] {
+      background: rgba(255, 255, 255, 0.18);
+      color: #fff;
+    }
+
     .progress-pill span {
       font-weight: 900;
       color: var(--tk-mint);
@@ -1191,12 +1213,16 @@
   <header class="top-bar">
     <div class="top-bar-left">
       <img src="TEKTIT_Cons-Logo_color-white.png" alt="Tektit Consulting Logo">
-      <h1>Tektit Maturity Check</h1>
+      <h1 data-i18n="headTitle">Tektit Maturity Check</h1>
     </div>
     <div class="top-bar-right">
-      <div class="header-status-text" id="progText">0 of 12 dimensions reviewed</div>
-      <div class="progress-pill" id="liveScorePill" style="display:none;">Live score: <span id="liveScoreVal">0.0</span></div>
-      <div class="progress-pill">Selected: <span id="headerCount">0</span></div>
+      <div class="header-status-text" id="progText"></div>
+      <div class="progress-pill" id="liveScorePill" style="display:none;"><span data-i18n="liveScoreLabel">Live score:</span> <span id="liveScoreVal">0.0</span></div>
+      <div class="progress-pill"><span data-i18n="selectedLabel">Selected:</span> <span id="headerCount">0</span></div>
+      <div class="lang-switch" id="langSwitch" role="group">
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+        <button type="button" data-lang="de" aria-pressed="false">DE</button>
+      </div>
     </div>
     <div class="header-progress-track">
       <div class="header-progress-fill" id="progFill"></div>
@@ -1205,78 +1231,68 @@
 
   <main class="page">
     <section class="intro">
-      <h2>Most companies don't know where they actually stand.</h2>
-      <p>They invest in tools, hire talent, and run initiatives, yet growth stalls and decisions slow down. Across more than 40 projects we have seen the same causes again and again: internal silos, endless alignment loops, and teams reinventing the same wheel: a combination of hidden bottlenecks and a toxic build-up of daily busy work.</p>
-      <p>At Tektit, we build market leaders. Not as a tagline, but as a track record. As industry veterans, we've lived inside high-performing organizations, learned what separates the best from the rest, and distilled that experience into a proven approach. We've applied it successfully with 40+ companies. Now we're putting it in your hands.</p>
-      <p>This tool serves as your strategic blueprint to move your organization from reactive chaos to intentional growth and true market leadership. In under ten minutes, you'll see exactly where you're strong, where you're losing leverage, and what to fix first.</p>
-      <p>No fluff. No consultant-speak. Just clarity.</p>
+      <h2 data-i18n="introH2">Most companies don't know where they actually stand.</h2>
+      <p data-i18n="introP1"></p>
+      <p data-i18n="introP2"></p>
+      <p data-i18n="introP3"></p>
+      <p data-i18n="introP4"></p>
       
       <section class="early-link" id="earlyLink">
         <div class="early-link-text">
-          <strong>Short on time?</strong> We'll email you the link; complete the check later, for example on your way home.
+<span data-i18n="earlyText"></span>
         </div>
         <div class="early-link-form" id="earlyLinkForm">
           <label for="earlyEmail" class="sr-only">Your email address</label>
-          <input type="email" id="earlyEmail" placeholder="your.name@company.com" autocomplete="email" inputmode="email">
-          <button type="button" class="btn btn-primary" id="earlyLinkBtn">Send me the link</button>
+          <input type="email" id="earlyEmail" placeholder="" data-i18n-ph="earlyPlaceholder" autocomplete="email" inputmode="email">
+          <button type="button" class="btn btn-primary" id="earlyLinkBtn" data-i18n="earlyBtn">Send me the link</button>
         </div>
         <label class="early-consent" for="earlyConsent" id="earlyConsentRow">
           <input type="checkbox" id="earlyConsent">
-          <span>I agree to be contacted by Tektit Consulting GmbH and to receive the link and my report by email. See our <a href="https://www.tektitconsulting.com/datenschutz" target="_blank" rel="noopener noreferrer">Data Privacy</a> notice.</span>
+          <span data-i18n="earlyConsent"></span>
         </label>
         <div class="early-msg" id="earlyMsg" role="status" aria-live="polite"></div>
       </section>
 
       <details class="usage-accordion">
-        <summary>How to use this tool</summary>
+        <summary data-i18n="accSummary">How to use this tool</summary>
         <div class="accordion-content">
-          <div class="accordion-item">
-            <strong>1. What the tool assesses:</strong> It reviews your organization across 4 strategic pillars and 12 distinct functional dimensions to benchmark internal infrastructure, operational capacity, growth mechanics, and technical governance.
-          </div>
-          <div class="accordion-item">
-            <strong>2. How to select checkboxes:</strong> Mark a checkbox if that item is <strong>broadly established and lived in day-to-day work</strong>; it does not have to be perfect in every corner. Leave it unchecked if it only happens occasionally, depends on individual people, or has not really started yet.
-          </div>
-          <div class="accordion-item">
-            <strong>3. Why each item matters:</strong> Every item has a ? icon next to it. It explains what the item looks like in practice and why it matters; worth a look even where you already know your answer.
-          </div>
-          <div class="accordion-item">
-            <strong>4. How the score is calculated:</strong> Each dimension gets a maturity score from 0.0 to 5.0 based on what you've established. Foundational items count for more than secondary ones, so your overall score reflects what actually matters most.
-          </div>
-          <div class="accordion-item">
-            <strong>5. Focus areas interpretation:</strong> Your top focus areas aren't just your lowest scores. We combine how big each gap is with how much that area drives your growth, so you fix the bottleneck with the most leverage first, not just the lowest number.
-          </div>
+          <div class="accordion-item" data-i18n="acc1"></div>
+          <div class="accordion-item" data-i18n="acc2"></div>
+          <div class="accordion-item" data-i18n="acc3"></div>
+          <div class="accordion-item" data-i18n="acc4"></div>
+          <div class="accordion-item" data-i18n="acc5"></div>
         </div>
       </details>
     </section>
 
     <section class="archetype-selector-card" id="archetypeSelector">
-      <h3>Select your organization's primary business profile:</h3>
-      <p style="font-size: 0.85rem; color: var(--tk-text-muted); margin-bottom: 4px;">The assessment definitions adapt dynamically to match your specific operational ecosystem realities.</p>
+      <h3 data-i18n="archH3">Select your organization's primary business profile:</h3>
+      <p style="font-size: 0.85rem; color: var(--tk-text-muted); margin-bottom: 4px;" data-i18n="archP"></p>
       <div class="archetype-grid">
-        <button type="button" class="arch-btn active" data-arch="digital">🌐 Pure Digital / SaaS / Tech Products</button>
-        <button type="button" class="arch-btn" data-arch="services">💼 Professional Services / Agencies</button>
-        <button type="button" class="arch-btn" data-arch="mittelstand">🏭 Traditional Mittelstand / Industrial</button>
-        <button type="button" class="arch-btn" data-arch="logistics">🚚 Retail / E-Com / Logistics Heavy</button>
+        <button type="button" class="arch-btn active" data-arch="digital" data-i18n="archDigital"></button>
+        <button type="button" class="arch-btn" data-arch="services" data-i18n="archServices"></button>
+        <button type="button" class="arch-btn" data-arch="mittelstand" data-i18n="archMittelstand"></button>
+        <button type="button" class="arch-btn" data-arch="logistics" data-i18n="archLogistics"></button>
       </div>
     </section>
     
     <nav class="wizard-nav" aria-label="Assessment progress">
-      <div class="wizard-nav-caption">Step <span id="stepNow">1</span> of 4 &middot; tap a step to jump</div>
+      <div class="wizard-nav-caption" data-i18n="wizCaption"></div>
       <ol class="wizard-steps" id="wizardStepsNav">
-        <li class="wiz-step" data-step-idx="0"><span class="wiz-dot">1</span><span class="wiz-label">Strategy &amp; Leadership</span></li>
-        <li class="wiz-step" data-step-idx="1"><span class="wiz-dot">2</span><span class="wiz-label">Go-To-Market</span></li>
-        <li class="wiz-step" data-step-idx="2"><span class="wiz-dot">3</span><span class="wiz-label">Delivery &amp; Engineering</span></li>
-        <li class="wiz-step" data-step-idx="3"><span class="wiz-dot">4</span><span class="wiz-label">Data, AI &amp; Compliance</span></li>
+        <li class="wiz-step" data-step-idx="0"><span class="wiz-dot">1</span><span class="wiz-label" data-wiz-label="0"></span></li>
+        <li class="wiz-step" data-step-idx="1"><span class="wiz-dot">2</span><span class="wiz-label" data-wiz-label="1"></span></li>
+        <li class="wiz-step" data-step-idx="2"><span class="wiz-dot">3</span><span class="wiz-label" data-wiz-label="2"></span></li>
+        <li class="wiz-step" data-step-idx="3"><span class="wiz-dot">4</span><span class="wiz-label" data-wiz-label="3"></span></li>
       </ol>
     </nav>
 
     <section id="dimsContainer" aria-label="Maturity Dimensions Wizard Checklist"></section>
 
     <div class="btn-group">
-      <button type="button" class="btn btn-ghost" id="prevStepBtn" style="display: none;">⬅️ Previous Pillar</button>
-      <button type="button" class="btn btn-primary" id="nextStepBtn">Next Pillar ➡️</button>
-      <button type="button" class="btn btn-primary" id="showLeadBtn" style="display: none;">📊 Generate analysis</button>
-      <button type="button" class="btn btn-ghost" id="resetBtn">Reset All</button>
+      <button type="button" class="btn btn-ghost" id="prevStepBtn" style="display: none;" data-i18n="prevBtn"></button>
+      <button type="button" class="btn btn-primary" id="nextStepBtn" data-i18n="nextBtn"></button>
+      <button type="button" class="btn btn-primary" id="showLeadBtn" style="display: none;" data-i18n="genBtn"></button>
+      <button type="button" class="btn btn-ghost" id="resetBtn" data-i18n="resetBtn"></button>
     </div>
 
     <section id="results" class="results-section">
@@ -1299,7 +1315,7 @@
           </div>
         </div>
         <div>
-          <h2 id="userGreeting">Your Results</h2>
+          <h2 id="userGreeting" data-i18n="resultsTitle"></h2>
           <p id="scoreSubtitle" aria-live="polite"></p>
         </div>
         <img src="TEKTIT_Cons-Logo_color-white.png" alt="Tektit Logo Accent" class="res-logo" loading="lazy">
@@ -1307,28 +1323,28 @@
 
       <section id="leadGate" class="lead-gate">
         <img src="Tektit Consulting Bildmarke square.png" alt="Tektit Consulting" class="lead-logo" loading="lazy">
-        <h2>Unlock Your Maturity Check Results</h2>
-        <p>Enter your details below to unlock your full report: your <strong>Maturity Radar</strong>, your top 3 focus areas, and clear recommended next steps. You'll also receive the report as a PDF by email.</p>
+        <h2 data-i18n="gateH2"></h2>
+        <p data-i18n="gateP"></p>
         
         <div class="lead-form">
           <div>
-            <label for="leadName" class="sr-only">Your name</label>
-            <input type="text" id="leadName" placeholder="Your name" autocomplete="name" required>
+            <label for="leadName" class="sr-only" data-i18n="srName"></label>
+            <input type="text" id="leadName" placeholder="" data-i18n-ph="phName" autocomplete="name" required>
           </div>
           <div>
-            <label for="leadCompany" class="sr-only">Company Name</label>
-            <input type="text" id="leadCompany" placeholder="Your company name" autocomplete="organization" required>
+            <label for="leadCompany" class="sr-only" data-i18n="srCompany"></label>
+            <input type="text" id="leadCompany" placeholder="" data-i18n-ph="phCompany" autocomplete="organization" required>
           </div>
           <div>
-            <label for="leadEmail" class="sr-only">Your email address</label>
-            <input type="email" id="leadEmail" placeholder="Your work email address" autocomplete="email" inputmode="email" required>
+            <label for="leadEmail" class="sr-only" data-i18n="srEmail"></label>
+            <input type="email" id="leadEmail" placeholder="" data-i18n-ph="phEmail" autocomplete="email" inputmode="email" required>
           </div>
           <input type="text" id="tk_hp_field" name="tk_hp_field" tabindex="-1" autocomplete="off" aria-hidden="true" readonly onfocus="this.removeAttribute('readonly');" style="position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;">
           <label class="lead-consent" for="leadConsent">
             <input type="checkbox" id="leadConsent" required>
-            <span>By submitting this form you are giving consent to be contacted by Tektit Consulting GmbH and to have your assessment data processed to generate and send your report. You can withdraw your consent at any time. See our <a href="https://www.tektitconsulting.com/datenschutz" target="_blank" rel="noopener noreferrer">Data Privacy</a> notice.</span>
+            <span data-i18n="gateConsent"></span>
           </label>
-          <button type="button" class="btn btn-primary" id="unlockResultsBtn">Show My Results 📊</button>
+          <button type="button" class="btn btn-primary" id="unlockResultsBtn" data-i18n="unlockBtn"></button>
         </div>
       </section>
 
@@ -1337,7 +1353,7 @@
           
           <div class="report-header-line">
             <div class="brand-title">TEKTIT</div>
-            <div class="report-subtitle">Maturity Check · 12 Dimensions</div>
+            <div class="report-subtitle" data-i18n="reportSubtitle"></div>
           </div>
 
           <p class="assessment-basis" id="assessmentBasis"></p>
@@ -1345,7 +1361,7 @@
           <div class="res-cards" id="resCards"></div>
           
           <div class="section-card" id="radarCard">
-            <h3>Maturity Radar</h3>
+            <h3 data-i18n="radarH3"></h3>
             <div style="max-width:660px; margin:0 auto; padding: 10px;">
               <svg id="radarSvg" viewBox="0 0 600 520" style="width:100%; height:auto; overflow: visible;"></svg>
             </div>
@@ -1353,24 +1369,16 @@
           </div>
           
           <div class="section-card" id="focusCard">
-            <h3 id="focusHeading">Your Top 3 Focus Areas</h3>
-            <p class="focus-desc">
-              <span class="tektit-keyword-accent">Focus creates progress.</span> Changing everything at once slows you down. We weigh how big each gap is against how much that area affects your growth, so you know which one to take on first.
-            </p>
+            <h3 id="focusHeading" data-i18n="focusH3"></h3>
+            <p class="focus-desc" data-i18n="focusDesc"></p>
             <div id="prioList"></div>
-            <p style="font-size: 0.75rem; color: #718096; margin-top: 14px; font-style: italic; line-height: 1.4;">
-              * Note: Focus areas are ranked by leverage: how big each gap is combined with how much that area drives your growth, not strictly by raw score.
-            </p>
+            <p style="font-size: 0.75rem; color: #718096; margin-top: 14px; font-style: italic; line-height: 1.4;" data-i18n="focusNote"></p>
           </div>
 
           <div class="section-card" id="sparringCard">
-            <h3>Understanding Your Bottlenecks</h3>
-            <p class="diagnostic-text">
-              Having worked with more than 40 clients since 2019, we see the same two problems in growing companies: they <span class="tektit-keyword-accent">lose sight of what customers actually pay them for</span>, and <span class="tektit-keyword-accent">everything takes longer than it used to</span>. Teams end up with too many tools, work that does not connect, and nobody clearly responsible. From then on, the days go into reacting.
-            </p>
-            <p class="diagnostic-text">
-              We work by one rule: <span class="tektit-keyword-accent">"Fall in love with the problem, not the solution".</span> Instead of reaching for the quick fix, another licence or another hire, we find out what is actually causing the friction. That is usually cheaper than the quick fix, and it lets your team spend its time on the product itself.
-            </p>
+            <h3 data-i18n="sparringH3"></h3>
+            <p class="diagnostic-text" data-i18n="diag1"></p>
+            <p class="diagnostic-text" data-i18n="diag2"></p>
             
             <div class="advisor-profile">
               <div class="avatar-frame">
@@ -1379,8 +1387,8 @@
               </div>
               <div style="text-align: left;">
                 <h4 style="margin: 0; font-size: 1.1rem; color: #051F2E; font-weight: 800; text-transform: uppercase;">Matthias Paratsch</h4>
-                <p style="margin: 2px 0 0; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #52A5B0; font-weight: 700;">Associate Partner</p>
-                <p style="margin: 6px 0 0; font-size: 0.85rem; color: #718096; line-height: 1.55;">Works with leadership teams to find what is actually slowing the business down, and to decide what to fix first.</p>
+                <p style="margin: 2px 0 0; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: #52A5B0; font-weight: 700;" data-i18n="advisorRole"></p>
+                <p style="margin: 6px 0 0; font-size: 0.85rem; color: #718096; line-height: 1.55;" data-i18n="advisorBio"></p>
               </div>
             </div>
             
@@ -1389,7 +1397,7 @@
               Matthias Paratsch | Associate Partner<br>
               Schönhauser Allee 45, 10435 Berlin<br>
               Email: matthias.paratsch@tektitconsulting.com | Tel: +49 171 5296 756<br>
-              <span style="font-size: 0.75rem; color: #a0aec0; margin-top: 6px; display: block; text-transform: uppercase; letter-spacing: 0.02em;">Copyright © 2026 Tektit Consulting. All rights reserved. Confidential Executive Report.</span>
+              <span style="font-size: 0.75rem; color: #a0aec0; margin-top: 6px; display: block; text-transform: uppercase; letter-spacing: 0.02em;" data-i18n="footerCopy"></span>
             </div>
           </div>
         </div>
@@ -1399,8 +1407,8 @@
       <div class="send-status" id="sendStatus" style="display:none;"></div>
 
       <div class="btn-group" id="resultsActionButtonGroup" style="margin-top:24px;">
-        <button type="button" class="btn btn-ghost" id="backBtn">⬆️ Edit selections</button>
-        <button type="button" class="btn btn-primary" id="kioskResetBtn" style="display:none;">🔄 Start over for the next visitor</button>
+        <button type="button" class="btn btn-ghost" id="backBtn" data-i18n="backBtn"></button>
+        <button type="button" class="btn btn-primary" id="kioskResetBtn" style="display:none;" data-i18n="kioskReset"></button>
       </div>
 
       <div id="bookingSection"></div>
@@ -1409,257 +1417,912 @@
 
   <div class="modal-backdrop" id="scopeModal" role="dialog" aria-modal="true" aria-labelledby="scopeTitle" style="display:none;">
     <div class="modal-box">
-      <h3 id="scopeTitle">Before we calculate your score</h3>
-      <p>You haven't marked anything in <strong><span id="scopeCount">0</span></strong> of the 12 dimensions. What does that mean?</p>
+      <h3 id="scopeTitle" data-i18n="scopeTitle"></h3>
+      <p data-i18n="scopeIntro"></p>
       <ul class="scope-list" id="scopeList"></ul>
       <div class="modal-actions">
-        <button type="button" class="btn btn-primary" id="scopeApplies">That's accurate: nothing established there</button>
-        <button type="button" class="btn btn-ghost" id="scopeSkipped">I skipped those; leave them out</button>
+        <button type="button" class="btn btn-primary" id="scopeApplies" data-i18n="scopeApplies"></button>
+        <button type="button" class="btn btn-ghost" id="scopeSkipped" data-i18n="scopeSkipped"></button>
       </div>
-      <button type="button" class="modal-back" id="scopeBack">← Back to the check</button>
-      <p class="modal-hint">Skipped dimensions are excluded from your score and your focus areas, so your result stays meaningful.</p>
+      <button type="button" class="modal-back" id="scopeBack" data-i18n="scopeBack"></button>
+      <p class="modal-hint" data-i18n="scopeHint"></p>
     </div>
   </div>
 
   <script>
     const DIMS_TEMPLATE = [
-      /* Cluster 1: Strategy & Leadership */
-      {id:"leadership", name:{digital:"Leadership", services:"Leadership & Talent", mittelstand:"Leadership & Governance", logistics:"Leadership & Control"}, icon:"🧭", cluster:"Strategy & Leadership", strategicWeight: 1.5, elements:[
+      /* Pillar 1: Strategy & Leadership */
+      {id:"leadership", name:{
+        en:{
+          digital:"Leadership",
+          services:"Leadership & Talent",
+          mittelstand:"Leadership & Governance",
+          logistics:"Leadership & Control"
+         },
+        de:{
+          digital:"Führung",
+          services:"Führung & Talent",
+          mittelstand:"Führung & Governance",
+          logistics:"Führung & Steuerung"
+         }
+       }, icon:"🧭", cluster:"Strategy & Leadership", strategicWeight: 1.5, elements:[
         {t:{
-          digital:"Everyone in our company knows our direction and who we're building for.",
-          services:"Everyone in our company knows our core service focus and what kind of clients we specialize in serving.",
-          mittelstand:"Everyone across our workforce knows our long-term market position and where the company is heading.",
-          logistics:"Everyone in our company knows our network growth plans and our key operational priorities."
-         }, w: 2.0, desc:"Making sure everyone works toward the same big-picture goals, not separate agendas."},
-        {t:"We actively invest in our culture through rituals, leadership behavior, and how we handle failure.", w: 1.0, desc:"Liking your culture on paper isn't enough; it needs to guide daily habits and how mistakes are handled."},
+          en:{
+            digital:"Everyone in our company knows our direction and who we're building for.",
+            services:"Everyone in our company knows our core service focus and what kind of clients we specialize in serving.",
+            mittelstand:"Everyone across our workforce knows our long-term market position and where the company is heading.",
+            logistics:"Everyone in our company knows our network growth plans and our key operational priorities."
+           },
+          de:{
+            digital:"Alle im Unternehmen wissen, wohin wir wollen und für wen wir bauen.",
+            services:"Alle im Unternehmen kennen unseren Leistungsschwerpunkt und wissen, auf welche Kunden wir spezialisiert sind.",
+            mittelstand:"Alle in der Belegschaft kennen unsere langfristige Marktposition und wissen, wohin sich das Unternehmen entwickelt.",
+            logistics:"Alle im Unternehmen kennen unsere Wachstumspläne für das Netz und die wichtigsten operativen Prioritäten."
+           }
+         }, w: 2, desc:{
+          en:"Making sure everyone works toward the same big-picture goals, not separate agendas.",
+          de:"Alle arbeiten auf dieselben übergeordneten Ziele hin, nicht auf eigene Agenden."
+         }},
         {t:{
-          digital:"We use a structured goal system (e.g. OKRs) so every team knows what they're working toward.",
-          services:"We use a structured tracking system to balance project goals with team utilization requirements.",
-          mittelstand:"We have clear targets that translate top-down business goals down to the production floor layers.",
-          logistics:"We use clear performance metrics to align daily terminal delivery targets with corporate goals."
-         }, w: 1.5, desc:"Breaking your high-level vision down into quarterly objectives or operational milestones that teams can execute."},
+          en:"We actively invest in our culture through rituals, leadership behavior, and how we handle failure.",
+          de:"Wir investieren in unsere Kultur durch Rituale, das Verhalten der Führung und den Umgang mit Fehlern."
+         }, w: 1, desc:{
+          en:"Liking your culture on paper isn't enough; it needs to guide daily habits and how mistakes are handled.",
+          de:"Kultur auf dem Papier reicht nicht. Sie muss den Alltag prägen und den Umgang mit Fehlern."
+         }},
         {t:{
-          digital:"Our people can make decisions in their area without needing constant sign-off from above.",
-          services:"Our delivery teams can manage client accounts and project choices independently.",
-          mittelstand:"We have clear, documented guidelines that spell out who can make which operational choices.",
-          logistics:"Our operational teams can resolve routing and transit issues on the fly without waiting for approval."
-         }, w: 1.0, desc:"Trusting your team to run their own domains so leadership doesn't become a micro-management bottleneck."},
-        {t:"We have regular processes for internal feedback and resolving disagreements constructively.", w: 1.0, desc:"Having safe, established spaces to speak up, give honest feedback, and fix friction early."}
+          en:{
+            digital:"We use a structured goal system (e.g. OKRs) so every team knows what they're working toward.",
+            services:"We use a structured tracking system to balance project goals with team utilization requirements.",
+            mittelstand:"We have clear targets that translate top-down business goals down to the production floor layers.",
+            logistics:"We use clear performance metrics to align daily terminal delivery targets with corporate goals."
+           },
+          de:{
+            digital:"Wir nutzen ein strukturiertes Zielsystem (z. B. OKRs), damit jedes Team weiß, worauf es hinarbeitet.",
+            services:"Wir nutzen ein strukturiertes System, das Projektziele und Auslastung des Teams zusammenbringt.",
+            mittelstand:"Wir haben klare Ziele, die von der Geschäftsleitung bis auf die Produktionsebene herunterbrechen.",
+            logistics:"Wir nutzen klare Kennzahlen, um die täglichen Ziele der Standorte mit den Unternehmenszielen abzugleichen."
+           }
+         }, w: 1.5, desc:{
+          en:"Breaking your high-level vision down into quarterly objectives or operational milestones that teams can execute.",
+          de:"Die große Richtung wird in Quartalsziele oder Meilensteine übersetzt, an denen Teams arbeiten können."
+         }},
+        {t:{
+          en:{
+            digital:"Our people can make decisions in their area without needing constant sign-off from above.",
+            services:"Our delivery teams can manage client accounts and project choices independently.",
+            mittelstand:"We have clear, documented guidelines that spell out who can make which operational choices.",
+            logistics:"Our operational teams can resolve routing and transit issues on the fly without waiting for approval."
+           },
+          de:{
+            digital:"Unsere Leute können in ihrem Bereich entscheiden, ohne ständig eine Freigabe von oben zu brauchen.",
+            services:"Unsere Projektteams können Kundenbeziehungen und Projektentscheidungen selbst steuern.",
+            mittelstand:"Wir haben klare, dokumentierte Regeln, wer welche operativen Entscheidungen treffen darf.",
+            logistics:"Unsere operativen Teams lösen Routing- und Transportprobleme direkt, ohne auf Freigaben zu warten."
+           }
+         }, w: 1, desc:{
+          en:"Trusting your team to run their own domains so leadership doesn't become a micro-management bottleneck.",
+          de:"Dem Team seinen Bereich zutrauen, damit die Führung nicht zum Nadelöhr wird."
+         }},
+        {t:{
+          en:"We have regular processes for internal feedback and resolving disagreements constructively.",
+          de:"Wir haben feste Formate für internes Feedback und lösen Konflikte konstruktiv."
+         }, w: 1, desc:{
+          en:"Having safe, established spaces to speak up, give honest feedback, and fix friction early.",
+          de:"Es gibt verlässliche Gelegenheiten, Dinge anzusprechen und Reibung früh zu klären."
+         }}
       ]},
-      {id:"innovation", name:"Innovation", icon:"💡", cluster:"Strategy & Leadership", strategicWeight: 1.2, elements:[
-        {t:"We have a clear strategy for how we stay distinctly different from our competitors.", w: 1.5, desc:"Knowing exactly why a customer picks you over a cheaper or bigger competitor."},
+      {id:"innovation", name:{
+        en:"Innovation",
+        de:"Innovation"
+       }, icon:"💡", cluster:"Strategy & Leadership", strategicWeight: 1.2, elements:[
         {t:{
-          digital:"We protect time and budget for testing new product ideas, separate from day-to-day delivery.",
-          services:"We protect unbillable time for building internal templates, assets, or methodologies.",
-          mittelstand:"We set aside explicit capital and engineering time for research and physical product experiments.",
-          logistics:"We actively budget time to test new workflow improvements and transit route optimizations."
-         }, w: 1.0, desc:"Giving people actual room to build things or experiment without dropping current delivery commitments."},
+          en:"We have a clear strategy for how we stay distinctly different from our competitors.",
+          de:"Wir haben eine klare Vorstellung davon, wie wir uns dauerhaft vom Wettbewerb unterscheiden."
+         }, w: 1.5, desc:{
+          en:"Knowing exactly why a customer picks you over a cheaper or bigger competitor.",
+          de:"Zu wissen, warum ein Kunde Dich wählt und nicht den billigeren oder größeren Anbieter."
+         }},
         {t:{
-          digital:"We systematically collect user feedback and use it to improve our software products.",
-          services:"We run regular post-project reviews with clients to systematically improve our service delivery.",
-          mittelstand:"We use structured market feedback loops to drive physical product adjustments.",
-          logistics:"We systematically review delivery performance data to optimize our supply chain pipelines."
-         }, w: 1.5, desc:"Taking what customers complain about or praise and using it to fix your roadmap."}
+          en:{
+            digital:"We protect time and budget for testing new product ideas, separate from day-to-day delivery.",
+            services:"We protect unbillable time for building internal templates, assets, or methodologies.",
+            mittelstand:"We set aside explicit capital and engineering time for research and physical product experiments.",
+            logistics:"We actively budget time to test new workflow improvements and transit route optimizations."
+           },
+          de:{
+            digital:"Wir halten Zeit und Budget frei, um neue Produktideen zu testen, getrennt vom Tagesgeschäft.",
+            services:"Wir halten nicht fakturierbare Zeit frei, um eigene Vorlagen, Assets und Methoden zu bauen.",
+            mittelstand:"Wir reservieren gezielt Budget und Entwicklungszeit für Forschung und Versuche am Produkt.",
+            logistics:"Wir planen bewusst Zeit ein, um neue Abläufe und optimierte Transportwege zu testen."
+           }
+         }, w: 1, desc:{
+          en:"Giving people actual room to build things or experiment without dropping current delivery commitments.",
+          de:"Echter Raum zum Bauen und Ausprobieren, ohne dass laufende Zusagen darunter leiden."
+         }},
+        {t:{
+          en:{
+            digital:"We systematically collect user feedback and use it to improve our software products.",
+            services:"We run regular post-project reviews with clients to systematically improve our service delivery.",
+            mittelstand:"We use structured market feedback loops to drive physical product adjustments.",
+            logistics:"We systematically review delivery performance data to optimize our supply chain pipelines."
+           },
+          de:{
+            digital:"Wir sammeln systematisch Nutzerfeedback und verbessern damit unsere Software.",
+            services:"Wir machen nach Projekten regelmäßig Reviews mit Kunden und verbessern damit unsere Leistung.",
+            mittelstand:"Wir nutzen strukturiertes Marktfeedback, um unsere Produkte anzupassen.",
+            logistics:"Wir werten Lieferdaten systematisch aus, um unsere Abläufe zu verbessern."
+           }
+         }, w: 1.5, desc:{
+          en:"Taking what customers complain about or praise and using it to fix your roadmap.",
+          de:"Was Kunden loben oder kritisieren, fließt in die Planung ein."
+         }}
       ]},
-      {id:"finance", name:"Finance & Business Model", icon:"💰", cluster:"Strategy & Leadership", strategicWeight: 0.9, elements:[
-        {t:"We maintain a live P&L and track cash flow to guide our decisions.", w: 1.0, desc:"Using real, updated cash metrics to run the business instead of banking on 'good feelings'."},
+      {id:"finance", name:{
+        en:"Finance & Business Model",
+        de:"Finanzen & Geschäftsmodell"
+       }, icon:"💰", cluster:"Strategy & Leadership", strategicWeight: 0.9, elements:[
         {t:{
-          digital:"We know what it costs to acquire a software customer and how much value they generate over time.",
-          services:"We have full visibility into project margins, target utilization rates, and true hourly costs.",
-          mittelstand:"We have full clarity on asset depreciation, material waste metrics, and raw margin breakdowns.",
-          logistics:"We know our exact fulfillment processing costs, fuel margins, and payload efficiencies."
-         }, w: 1.5, desc:"Knowing your exact costs to win a customer and your precise margins for delivering to them."},
+          en:"We maintain a live P&L and track cash flow to guide our decisions.",
+          de:"Wir haben eine laufend aktuelle Ergebnisrechnung und verfolgen den Cashflow als Grundlage für Entscheidungen."
+         }, w: 1, desc:{
+          en:"Using real, updated cash metrics to run the business instead of banking on 'good feelings'.",
+          de:"Mit echten, aktuellen Zahlen steuern statt nach Gefühl."
+         }},
         {t:{
-          digital:"Our pricing reflects the value we deliver, not just our software costs or competitor rates.",
-          services:"We use standardized pricing models (like retainers or value pricing) instead of just billing loose hours.",
-          mittelstand:"Our pricing systematically accounts for volume breaks, raw material shifts, and machinery cost.",
-          logistics:"Our tariff rates adjust dynamically to changes in shipping volume, warehouse load spikes, and regional costs."
-         }, w: 1.5, desc:"Charging based on the true value and operational complexity you handle, rather than just racing to the bottom on price."},
+          en:{
+            digital:"We know what it costs to acquire a software customer and how much value they generate over time.",
+            services:"We have full visibility into project margins, target utilization rates, and true hourly costs.",
+            mittelstand:"We have full clarity on asset depreciation, material waste metrics, and raw margin breakdowns.",
+            logistics:"We know our exact fulfillment processing costs, fuel margins, and payload efficiencies."
+           },
+          de:{
+            digital:"Wir wissen, was ein Kunde in der Gewinnung kostet und welchen Wert er über die Zeit bringt.",
+            services:"Wir haben volle Transparenz über Projektmargen, Zielauslastung und echte Stundenkosten.",
+            mittelstand:"Wir haben Klarheit über Abschreibungen, Materialverluste und die tatsächlichen Margen.",
+            logistics:"Wir kennen unsere Kosten pro Sendung, unsere Kraftstoffmargen und die Auslastung der Ladung."
+           }
+         }, w: 1.5, desc:{
+          en:"Knowing your exact costs to win a customer and your precise margins for delivering to them.",
+          de:"Zu wissen, was ein Kunde kostet und was an ihm verdient wird."
+         }},
         {t:{
-          digital:"We know how we plan to scale our user base profitably and how we'll fund that growth.",
-          services:"Our hiring plans map cleanly to our upcoming contract backlog to protect cash margins.",
-          mittelstand:"Our capital investments in equipment scale systematically based on factory capacity demands.",
-          logistics:"Our fleet expansions and warehouse leases are tied directly to long-term volume commitments."
-         }, w: 1.0, desc:"Ensuring cash flow covers hiring and infrastructure jumps before you step on the gas."}
+          en:{
+            digital:"Our pricing reflects the value we deliver, not just our software costs or competitor rates.",
+            services:"We use standardized pricing models (like retainers or value pricing) instead of just billing loose hours.",
+            mittelstand:"Our pricing systematically accounts for volume breaks, raw material shifts, and machinery cost.",
+            logistics:"Our tariff rates adjust dynamically to changes in shipping volume, warehouse load spikes, and regional costs."
+           },
+          de:{
+            digital:"Unsere Preise richten sich nach dem Wert, den wir liefern, nicht nach unseren Kosten oder den Preisen der Konkurrenz.",
+            services:"Wir nutzen standardisierte Preismodelle wie Retainer oder Wertpreise, statt lose Stunden abzurechnen.",
+            mittelstand:"Unsere Preise berücksichtigen systematisch Mengenstaffeln, Materialpreise und Maschinenkosten.",
+            logistics:"Unsere Tarife passen sich an Sendungsmengen, Lagerauslastung und regionale Kosten an."
+           }
+         }, w: 1.5, desc:{
+          en:"Charging based on the true value and operational complexity you handle, rather than just racing to the bottom on price.",
+          de:"Nach dem tatsächlichen Wert und Aufwand abrechnen, statt in den Preiskampf zu gehen."
+         }},
+        {t:{
+          en:{
+            digital:"We know how we plan to scale our user base profitably and how we'll fund that growth.",
+            services:"Our hiring plans map cleanly to our upcoming contract backlog to protect cash margins.",
+            mittelstand:"Our capital investments in equipment scale systematically based on factory capacity demands.",
+            logistics:"Our fleet expansions and warehouse leases are tied directly to long-term volume commitments."
+           },
+          de:{
+            digital:"Wir wissen, wie wir unsere Nutzerbasis profitabel ausbauen und wie wir das finanzieren.",
+            services:"Unsere Einstellungsplanung passt zum Auftragsbestand, damit die Marge nicht kippt.",
+            mittelstand:"Unsere Investitionen in Anlagen folgen systematisch dem Kapazitätsbedarf der Produktion.",
+            logistics:"Unsere Flotten- und Lagererweiterungen hängen direkt an langfristigen Mengenzusagen."
+           }
+         }, w: 1, desc:{
+          en:"Ensuring cash flow covers hiring and infrastructure jumps before you step on the gas.",
+          de:"Sicherstellen, dass Einstellungen und Investitionen finanziert sind, bevor Du Gas gibst."
+         }}
       ]},
-
-      /* Cluster 2: Go-To-Market */
-      {id:"sales", name:"Sales & Marketing", icon:"📣", cluster:"Go-To-Market", strategicWeight: 1.4, elements:[
-        {t:"Our value proposition is clear and consistent across website, sales calls, and proposals.", w: 2.0, desc:"Eliminating mixed messages so a pitch deck, website copy, and sales call all say the exact same thing."},
+      /* Pillar 2: Go-To-Market */
+      {id:"sales", name:{
+        en:"Sales & Marketing",
+        de:"Vertrieb & Marketing"
+       }, icon:"📣", cluster:"Go-To-Market", strategicWeight: 1.4, elements:[
         {t:{
-          digital:"We use a central CRM to track all software sales leads and interactions in one place.",
-          services:"We use a central pipeline matrix to track consulting proposals and contract stages.",
-          mittelstand:"We use a central pipeline to manage multi-stage distributor relationships and large corporate deals.",
-          logistics:"We use a centralized bidding system to log and track incoming customer tender requests."
-         }, w: 1.0, desc:"Keeping interaction histories and deals out of notebooks and personal spreadsheets."},
+          en:"Our value proposition is clear and consistent across website, sales calls, and proposals.",
+          de:"Unser Nutzenversprechen ist klar und überall gleich, auf der Website, im Gespräch und im Angebot."
+         }, w: 2, desc:{
+          en:"Eliminating mixed messages so a pitch deck, website copy, and sales call all say the exact same thing.",
+          de:"Keine widersprüchlichen Botschaften: Pitch, Website und Gespräch sagen dasselbe."
+         }},
         {t:{
-          digital:"Our sales team has a clear software pipeline process and the materials/training to execute it.",
-          services:"Our team uses standardized key account pitch decks and custom proposal frameworks.",
-          mittelstand:"We provide our field network with structured sales materials, training, and configured product catalogs.",
-          logistics:"Our account executives use unified contract templates and automated routing scenarios to close deals."
-         }, w: 1.5, desc:"Arming your sales teams with standardized pitches, templates, and pricing tools instead of winging it."},
+          en:{
+            digital:"We use a central CRM to track all software sales leads and interactions in one place.",
+            services:"We use a central pipeline matrix to track consulting proposals and contract stages.",
+            mittelstand:"We use a central pipeline to manage multi-stage distributor relationships and large corporate deals.",
+            logistics:"We use a centralized bidding system to log and track incoming customer tender requests."
+           },
+          de:{
+            digital:"Wir nutzen ein zentrales CRM, in dem alle Leads und Kontakte an einer Stelle liegen.",
+            services:"Wir nutzen eine zentrale Übersicht, in der Angebote und Vertragsstände nachvollziehbar sind.",
+            mittelstand:"Wir nutzen eine zentrale Pipeline für Händlerbeziehungen und größere Abschlüsse.",
+            logistics:"Wir nutzen ein zentrales System, in dem alle eingehenden Ausschreibungen erfasst werden."
+           }
+         }, w: 1, desc:{
+          en:"Keeping interaction histories and deals out of notebooks and personal spreadsheets.",
+          de:"Gesprächsverläufe und Abschlüsse liegen nicht in Notizbüchern und privaten Tabellen."
+         }},
         {t:{
-          digital:"Marketing generates a predictable flow of inbound leads with clear handover criteria to sales.",
-          services:"Our thought leadership and industry presence generate a predictable flow of client inquiries.",
-          mittelstand:"Our industrial trade presence and product certifications generate verified wholesale opportunities.",
-          logistics:"Our digital platforms systematically bring in high-volume commercial shipping accounts."
-         }, w: 1.5, desc:"A steady lead engine that filters out bad fits before they waste your sales team's time."},
-        {t:"We actively monitor our competitors and market trends to inform our go-to-market decisions.", w: 1.0, desc:"Tracking rival moves and industry shifts so you aren't blindsided by market changes."}
+          en:{
+            digital:"Our sales team has a clear software pipeline process and the materials/training to execute it.",
+            services:"Our team uses standardized key account pitch decks and custom proposal frameworks.",
+            mittelstand:"We provide our field network with structured sales materials, training, and configured product catalogs.",
+            logistics:"Our account executives use unified contract templates and automated routing scenarios to close deals."
+           },
+          de:{
+            digital:"Unser Vertrieb hat einen klaren Prozess und die Unterlagen und Schulung, um ihn zu nutzen.",
+            services:"Unser Team nutzt einheitliche Pitch-Unterlagen und feste Angebotsvorlagen.",
+            mittelstand:"Wir versorgen unser Vertriebsnetz mit strukturierten Unterlagen, Schulungen und Produktkatalogen.",
+            logistics:"Unsere Kundenbetreuer nutzen einheitliche Vertragsvorlagen und feste Abläufe zum Abschluss."
+           }
+         }, w: 1.5, desc:{
+          en:"Arming your sales teams with standardized pitches, templates, and pricing tools instead of winging it.",
+          de:"Der Vertrieb hat einheitliche Unterlagen und Werkzeuge, statt zu improvisieren."
+         }},
+        {t:{
+          en:{
+            digital:"Marketing generates a predictable flow of inbound leads with clear handover criteria to sales.",
+            services:"Our thought leadership and industry presence generate a predictable flow of client inquiries.",
+            mittelstand:"Our industrial trade presence and product certifications generate verified wholesale opportunities.",
+            logistics:"Our digital platforms systematically bring in high-volume commercial shipping accounts."
+           },
+          de:{
+            digital:"Marketing liefert verlässlich Anfragen, mit klaren Kriterien für die Übergabe an den Vertrieb.",
+            services:"Unsere Sichtbarkeit in der Branche bringt verlässlich Kundenanfragen.",
+            mittelstand:"Unsere Präsenz auf Messen und unsere Zertifizierungen bringen belastbare Anfragen aus dem Handel.",
+            logistics:"Unsere digitalen Kanäle bringen systematisch Kunden mit hohem Sendungsvolumen."
+           }
+         }, w: 1.5, desc:{
+          en:"A steady lead engine that filters out bad fits before they waste your sales team's time.",
+          de:"Ein verlässlicher Zufluss an Anfragen, der schlechte Passungen früh aussortiert."
+         }},
+        {t:{
+          en:"We actively monitor our competitors and market trends to inform our go-to-market decisions.",
+          de:"Wir beobachten Wettbewerb und Markttrends und richten unsere Vertriebsentscheidungen daran aus."
+         }, w: 1, desc:{
+          en:"Tracking rival moves and industry shifts so you aren't blindsided by market changes.",
+          de:"Mitbekommen, was Wettbewerb und Markt tun, damit Dich Veränderungen nicht überraschen."
+         }}
       ]},
-      {id:"ecosystem", name:"Ecosystem & Partners", icon:"🤝", cluster:"Go-To-Market", strategicWeight: 1.1, elements:[
+      {id:"ecosystem", name:{
+        en:"Ecosystem & Partners",
+        de:"Ökosystem & Partner"
+       }, icon:"🤝", cluster:"Go-To-Market", strategicWeight: 1.1, elements:[
         {t:{
-          digital:"We have strategic distribution or channel partners that help us scale our market reach.",
-          services:"We have a reliable pool of vetted sub-contractors or freelancers to handle project spikes.",
-          mittelstand:"We have long-term relationships with vetted component suppliers and production logistics vendors.",
-          logistics:"We have integrated network partners to handle non-standard transit legs or last-mile extensions cleanly."
-         }, w: 1.0, desc:"Securing trusted external capacity so your business can scale up or down smoothly without hitting an operational ceiling."},
+          en:{
+            digital:"We have strategic distribution or channel partners that help us scale our market reach.",
+            services:"We have a reliable pool of vetted sub-contractors or freelancers to handle project spikes.",
+            mittelstand:"We have long-term relationships with vetted component suppliers and production logistics vendors.",
+            logistics:"We have integrated network partners to handle non-standard transit legs or last-mile extensions cleanly."
+           },
+          de:{
+            digital:"Wir haben Vertriebs- oder Kanalpartner, die unsere Reichweite vergrößern.",
+            services:"Wir haben einen verlässlichen Pool geprüfter Freelancer oder Subunternehmer für Auftragsspitzen.",
+            mittelstand:"Wir haben langfristige Beziehungen zu geprüften Zulieferern und Logistikdienstleistern.",
+            logistics:"Wir haben eingebundene Netzpartner, die Sonderstrecken und die letzte Meile sauber abdecken."
+           }
+         }, w: 1, desc:{
+          en:"Securing trusted external capacity so your business can scale up or down smoothly without hitting an operational ceiling.",
+          de:"Verlässliche externe Kapazität, damit Du hoch- und runterfahren kannst, ohne an eine Grenze zu stoßen."
+         }},
         {t:{
-          digital:"Third parties can securely connect to our software product via clearly defined APIs.",
-          services:"We use unified project portals and shared digital spaces to collaborate directly with clients.",
-          mittelstand:"We use electronic data interchange (EDI) systems to link our suppliers directly to production lines.",
-          logistics:"We use standard API connectors to plug external e-commerce shops directly into our dispatch systems."
-         }, w: 1.0, desc:"Letting external partners or tools securely plug into your software without manual file sharing."},
+          en:{
+            digital:"Third parties can securely connect to our software product via clearly defined APIs.",
+            services:"We use unified project portals and shared digital spaces to collaborate directly with clients.",
+            mittelstand:"We use electronic data interchange (EDI) systems to link our suppliers directly to production lines.",
+            logistics:"We use standard API connectors to plug external e-commerce shops directly into our dispatch systems."
+           },
+          de:{
+            digital:"Dritte können sich über klar definierte Schnittstellen sicher an unser Produkt anbinden.",
+            services:"Wir arbeiten mit Kunden über gemeinsame Projekträume und geteilte digitale Ablagen.",
+            mittelstand:"Wir nutzen elektronischen Datenaustausch (EDI), um Zulieferer direkt an die Produktion anzubinden.",
+            logistics:"Wir nutzen Standardschnittstellen, über die externe Shops direkt an unseren Versand angebunden sind."
+           }
+         }, w: 1, desc:{
+          en:"Letting external partners or tools securely plug into your software without manual file sharing.",
+          de:"Partner und Werkzeuge können sich sicher anbinden, ohne Dateien hin und her zu schicken."
+         }},
         {t:{
-          digital:"We actively onboard, enable, and review our channel partners, not just sign contracts.",
-          services:"We have a standardized process to source, vet, and check compliance for external contractors.",
-          mittelstand:"We systematically enforce quality review metrics and procurement standards for all suppliers.",
-          logistics:"We continuously monitor sub-carrier safety records and performance standards."
-         }, w: 1.0, desc:"Setting expectations and tracking partner performance instead of letting contracts gather dust."},
+          en:{
+            digital:"We actively onboard, enable, and review our channel partners, not just sign contracts.",
+            services:"We have a standardized process to source, vet, and check compliance for external contractors.",
+            mittelstand:"We systematically enforce quality review metrics and procurement standards for all suppliers.",
+            logistics:"We continuously monitor sub-carrier safety records and performance standards."
+           },
+          de:{
+            digital:"Wir betreuen und bewerten unsere Partner aktiv, statt nur Verträge zu schließen.",
+            services:"Wir haben einen festen Ablauf, um externe Kräfte zu finden, zu prüfen und freizugeben.",
+            mittelstand:"Wir setzen Qualitätskennzahlen und Einkaufsstandards bei allen Zulieferern konsequent durch.",
+            logistics:"Wir prüfen laufend Sicherheitsbilanz und Leistung unserer Subunternehmer."
+           }
+         }, w: 1, desc:{
+          en:"Setting expectations and tracking partner performance instead of letting contracts gather dust.",
+          de:"Erwartungen klären und Leistung nachhalten, statt Verträge liegen zu lassen."
+         }},
         {t:{
-          digital:"We have an active community of users or developers who engage beyond simple transactions.",
-          services:"We maintain an active alumni or expert network that refers talent and new business deals.",
-          mittelstand:"We have a reliable network of authorized maintenance and service partners across our regions.",
-          logistics:"We utilize a broad, dependable broker network to balance line-haul capacity and load drops."
-         }, w: 1.0, desc:"Nurturing a reliable secondary network that steps in to protect your capacity, refer business, or handle local service needs."}
+          en:{
+            digital:"We have an active community of users or developers who engage beyond simple transactions.",
+            services:"We maintain an active alumni or expert network that refers talent and new business deals.",
+            mittelstand:"We have a reliable network of authorized maintenance and service partners across our regions.",
+            logistics:"We utilize a broad, dependable broker network to balance line-haul capacity and load drops."
+           },
+          de:{
+            digital:"Wir haben eine aktive Community aus Nutzern oder Entwicklern, die über das Geschäftliche hinausgeht.",
+            services:"Wir pflegen ein aktives Netzwerk aus Ehemaligen und Experten, das Talente und Aufträge vermittelt.",
+            mittelstand:"Wir haben ein verlässliches Netz autorisierter Service- und Wartungspartner in unseren Regionen.",
+            logistics:"Wir nutzen ein breites, verlässliches Netz an Vermittlern, um Kapazitäten auszugleichen."
+           }
+         }, w: 1, desc:{
+          en:"Nurturing a reliable secondary network that steps in to protect your capacity, refer business, or handle local service needs.",
+          de:"Ein zweites Netz, das Kapazität sichert, Aufträge vermittelt oder Service vor Ort übernimmt."
+         }}
       ]},
-
-      /* Cluster 3: Delivery & Engineering */
-      {id:"ops", name:"Operations", icon:"⚙️", cluster:"Delivery & Engineering", strategicWeight: 1.2, elements:[
-        {t:"Our key recurring processes are documented digitally and regularly reviewed for improvement.", w: 1.5, desc:"Building a company playbook so anyone can run core tasks perfectly if someone goes on vacation."},
-        {t:"We make decisions based on data and clear responsibilities, not via endless escalation.", w: 1.0, desc:"Letting teams act on dashboards and rules instead of pausing work for executive sign-offs."},
+      /* Pillar 3: Delivery & Engineering */
+      {id:"ops", name:{
+        en:"Operations",
+        de:"Betrieb"
+       }, icon:"⚙️", cluster:"Delivery & Engineering", strategicWeight: 1.2, elements:[
         {t:{
-          digital:"We track team workload and proactively manage capacity to prevent engineering burnout.",
-          services:"We actively project consulting schedules to match upcoming workloads and protect team bench metrics.",
-          mittelstand:"We optimize shift schedules and machine loads to safely maximize factory output capacity.",
-          logistics:"We coordinate driver hours-of-service rules with our terminal layouts to build smart schedules."
-         }, w: 1.0, desc:"Keeping an eye on resource utilization so you don't burn out top performers during a rush."},
+          en:"Our key recurring processes are documented digitally and regularly reviewed for improvement.",
+          de:"Unsere wichtigsten wiederkehrenden Abläufe sind digital dokumentiert und werden regelmäßig überprüft."
+         }, w: 1.5, desc:{
+          en:"Building a company playbook so anyone can run core tasks perfectly if someone goes on vacation.",
+          de:"Ein Handbuch, mit dem jemand anderes die Kernaufgaben übernehmen kann, wenn jemand im Urlaub ist."
+         }},
         {t:{
-          digital:"We measure customer support metrics and product usage patterns to act on customer satisfaction.",
-          services:"We track project health scores and client Net Promoter Scores (NPS) consistently.",
-          mittelstand:"We track manufacturing yield ratios and run systematic quality assurance tests on production lines.",
-          logistics:"We measure our On-Time In-Full (OTIF) fulfillment rates and freight claim frequencies tightly."
-         }, w: 1.5, desc:"Tracking real-time quality and delivery metrics so you fix operational errors before they destroy your reputation."}
+          en:"We make decisions based on data and clear responsibilities, not via endless escalation.",
+          de:"Wir entscheiden auf Basis von Daten und klaren Zuständigkeiten, nicht über endlose Eskalationen."
+         }, w: 1, desc:{
+          en:"Letting teams act on dashboards and rules instead of pausing work for executive sign-offs.",
+          de:"Teams handeln nach Zahlen und Regeln, statt auf Freigaben zu warten."
+         }},
+        {t:{
+          en:{
+            digital:"We track team workload and proactively manage capacity to prevent engineering burnout.",
+            services:"We actively project consulting schedules to match upcoming workloads and protect team bench metrics.",
+            mittelstand:"We optimize shift schedules and machine loads to safely maximize factory output capacity.",
+            logistics:"We coordinate driver hours-of-service rules with our terminal layouts to build smart schedules."
+           },
+          de:{
+            digital:"Wir verfolgen die Auslastung im Team und steuern Kapazität vorausschauend, damit niemand ausbrennt.",
+            services:"Wir planen Einsätze vorausschauend, passend zur kommenden Auslastung und zur Bank.",
+            mittelstand:"Wir planen Schichten und Maschinenbelegung so, dass die Produktion sicher ausgelastet ist.",
+            logistics:"Wir bringen Lenkzeiten und Abläufe an den Standorten in eine sinnvolle Planung."
+           }
+         }, w: 1, desc:{
+          en:"Keeping an eye on resource utilization so you don't burn out top performers during a rush.",
+          de:"Auslastung im Blick behalten, damit Deine besten Leute nicht in Spitzen verbrennen."
+         }},
+        {t:{
+          en:{
+            digital:"We measure customer support metrics and product usage patterns to act on customer satisfaction.",
+            services:"We track project health scores and client Net Promoter Scores (NPS) consistently.",
+            mittelstand:"We track manufacturing yield ratios and run systematic quality assurance tests on production lines.",
+            logistics:"We measure our On-Time In-Full (OTIF) fulfillment rates and freight claim frequencies tightly."
+           },
+          de:{
+            digital:"Wir messen Support-Kennzahlen und Nutzungsverhalten und handeln danach.",
+            services:"Wir verfolgen den Projektstatus und die Kundenzufriedenheit (NPS) konsequent.",
+            mittelstand:"Wir verfolgen Ausschussquoten und prüfen die Qualität in der Produktion systematisch.",
+            logistics:"Wir messen Termin- und Mengentreue (OTIF) und die Häufigkeit von Schadensfällen genau."
+           }
+         }, w: 1.5, desc:{
+          en:"Tracking real-time quality and delivery metrics so you fix operational errors before they destroy your reputation.",
+          de:"Qualität und Termintreue laufend messen, um Fehler zu korrigieren, bevor sie dem Ruf schaden."
+         }}
       ]},
-
-      {id:"devorg", name:{digital:"Product & Engineering", services:"Service Delivery Org", mittelstand:"Engineering & R&D Org", logistics:"Fleet & Network Architecture"}, icon:"💻", cluster:"Delivery & Engineering", strategicWeight: 1.4, elements:[
-        {t:"Our development team focuses engineering hours mostly on our unique selling point (USP) and core intellectual property.", w: 2.0, desc:"Spending most of your engineering time on what makes you different, not on generic plumbing anyone could buy off the shelf."},
+      {id:"devorg", name:{
+        en:{
+          digital:"Product & Engineering",
+          services:"Service Delivery Org",
+          mittelstand:"Engineering & R&D Org",
+          logistics:"Fleet & Network Architecture"
+         },
+        de:{
+          digital:"Produkt & Entwicklung",
+          services:"Leistungserbringung",
+          mittelstand:"Entwicklung & F&E",
+          logistics:"Flotte & Netzarchitektur"
+         }
+       }, icon:"💻", cluster:"Delivery & Engineering", strategicWeight: 1.4, elements:[
         {t:{
-          digital:"Our development teams work in structured, iterative cycles (e.g. Scrum or Kanban).",
-          services:"We use clear phase-tracking and milestone rules to keep complex client projects on time.",
-          mittelstand:"We use structured stage-gate development lifecycles to manage product changes safely.",
-          logistics:"We use dynamic assignment rules to shift transport assets instantly as volumes fluctuate."
-         }, w: 1.0, desc:"Working in structured, predictable deployment cadences instead of running tasks ad-hoc or putting out fires."},
+          en:"Our development team focuses engineering hours mostly on our unique selling point (USP) and core intellectual property.",
+          de:"Unser Entwicklungsteam steckt die meiste Zeit in das, was uns einzigartig macht, und in unser eigenes Know-how."
+         }, w: 2, desc:{
+          en:"Spending most of your engineering time on what makes you different, not on generic plumbing anyone could buy off the shelf.",
+          de:"Die meiste Entwicklungszeit fließt in das, was Dich unterscheidet, nicht in Standardarbeit, die man kaufen kann."
+         }},
         {t:{
-          digital:"Our engineering team follows documented standards for code quality and technical architecture.",
-          services:"Our delivery teams follow standard quality rubrics and use uniform templates for all deliverables.",
-          mittelstand:"Our team follows strict engineering design guidelines and clear component specification baselines.",
-          logistics:"We enforce uniform terminal processing guidelines and clear packaging standard rules across the network."
-         }, w: 1.5, desc:"Enforcing strict, documented quality baselines so your final deliverables or outputs stay perfectly consistent."},
-        {t:"We avoid wasting development speed on building standard software components that could easily be integrated from fit-for-purpose tools.", w: 1.0, desc:"Plugging in ready-made tools for common needs instead of hand-building them, so your team's time goes to your core product."}
+          en:{
+            digital:"Our development teams work in structured, iterative cycles (e.g. Scrum or Kanban).",
+            services:"We use clear phase-tracking and milestone rules to keep complex client projects on time.",
+            mittelstand:"We use structured stage-gate development lifecycles to manage product changes safely.",
+            logistics:"We use dynamic assignment rules to shift transport assets instantly as volumes fluctuate."
+           },
+          de:{
+            digital:"Unsere Entwicklungsteams arbeiten in festen, wiederkehrenden Zyklen (z. B. Scrum oder Kanban).",
+            services:"Wir arbeiten mit klaren Phasen und Meilensteinen, damit komplexe Kundenprojekte im Zeitplan bleiben.",
+            mittelstand:"Wir nutzen strukturierte Entwicklungsphasen mit festen Freigaben, um Produktänderungen sicher zu steuern.",
+            logistics:"Wir verschieben Transportmittel nach festen Regeln, sobald sich die Mengen ändern."
+           }
+         }, w: 1, desc:{
+          en:"Working in structured, predictable deployment cadences instead of running tasks ad-hoc or putting out fires.",
+          de:"In festen, planbaren Takten arbeiten statt im Feuerlöschmodus."
+         }},
+        {t:{
+          en:{
+            digital:"Our engineering team follows documented standards for code quality and technical architecture.",
+            services:"Our delivery teams follow standard quality rubrics and use uniform templates for all deliverables.",
+            mittelstand:"Our team follows strict engineering design guidelines and clear component specification baselines.",
+            logistics:"We enforce uniform terminal processing guidelines and clear packaging standard rules across the network."
+           },
+          de:{
+            digital:"Unser Entwicklungsteam arbeitet nach dokumentierten Standards für Codequalität und Architektur.",
+            services:"Unsere Teams arbeiten nach festen Qualitätsmaßstäben und einheitlichen Vorlagen.",
+            mittelstand:"Unser Team arbeitet nach festen Konstruktionsrichtlinien und klaren Spezifikationen.",
+            logistics:"Wir setzen einheitliche Abläufe an den Standorten und klare Verpackungsstandards im Netz durch."
+           }
+         }, w: 1.5, desc:{
+          en:"Enforcing strict, documented quality baselines so your final deliverables or outputs stay perfectly consistent.",
+          de:"Feste, dokumentierte Qualitätsmaßstäbe, damit die Ergebnisse verlässlich gleich gut sind."
+         }},
+        {t:{
+          en:"We avoid wasting development speed on building standard software components that could easily be integrated from fit-for-purpose tools.",
+          de:"Wir verschwenden keine Entwicklungszeit auf Standardbausteine, die wir genauso gut einkaufen könnten."
+         }, w: 1, desc:{
+          en:"Plugging in ready-made tools for common needs instead of hand-building them, so your team's time goes to your core product.",
+          de:"Fertige Werkzeuge für Standardbedarf nutzen, damit die Zeit Deines Teams ins eigene Produkt geht."
+         }}
       ]},
-      {id:"devops", name:{digital:"Tech Infrastructure & Automation", services:"Workspace Automation", mittelstand:"Industrial IT / OT Infrastructure", logistics:"Fulfillment & Fleet Tech"}, icon:"🚀", cluster:"Delivery & Engineering", strategicWeight: 1.3, elements:[
+      {id:"devops", name:{
+        en:{
+          digital:"Tech Infrastructure & Automation",
+          services:"Workspace Automation",
+          mittelstand:"Industrial IT / OT Infrastructure",
+          logistics:"Fulfillment & Fleet Tech"
+         },
+        de:{
+          digital:"Technische Infrastruktur & Automatisierung",
+          services:"Automatisierung der Arbeitsumgebung",
+          mittelstand:"Industrielle IT / OT-Infrastruktur",
+          logistics:"Fulfillment- & Flottentechnik"
+         }
+       }, icon:"🚀", cluster:"Delivery & Engineering", strategicWeight: 1.3, elements:[
         {t:{
-          digital:"Routine setup tasks (servers, environments) run via automated scripts, not manual steps.",
-          services:"Setting up client workspaces, directories, and internal profiles is automated via scripts.",
-          mittelstand:"Our plant communication systems utilize secure, automated scripts to push routine firmware updates.",
-          logistics:"Fulfillment hardware profiles and automated sorting rules run via pre-configured scripts."
-         }, w: 1.0, desc:"Automating highly repetitive environment setups or device configurations to eliminate human delay."},
-        {t:"We actively manage tech debt and legacy systems, treating them as solvable problems rather than monsters under the bed.", w: 1.5, desc:"Setting aside regular time to clean up old code and ageing systems, instead of letting them quietly slow everything down."},
-        {t:"We resolve known infrastructure vulnerabilities systematically using curated standards and AI-driven workflows.", w: 2.0, desc:"Fixing known security gaps on a set schedule using standard checklists and automation, not only when something breaks."},
+          en:{
+            digital:"Routine setup tasks (servers, environments) run via automated scripts, not manual steps.",
+            services:"Setting up client workspaces, directories, and internal profiles is automated via scripts.",
+            mittelstand:"Our plant communication systems utilize secure, automated scripts to push routine firmware updates.",
+            logistics:"Fulfillment hardware profiles and automated sorting rules run via pre-configured scripts."
+           },
+          de:{
+            digital:"Wiederkehrende Einrichtungsarbeiten wie Server und Umgebungen laufen über Skripte, nicht per Hand.",
+            services:"Das Anlegen von Kundenordnern, Zugängen und Profilen läuft automatisiert über Skripte.",
+            mittelstand:"Unsere Anlagen erhalten Routine-Updates über gesicherte, automatisierte Skripte.",
+            logistics:"Geräteprofile und Sortierregeln im Fulfillment laufen über vorkonfigurierte Skripte."
+           }
+         }, w: 1, desc:{
+          en:"Automating highly repetitive environment setups or device configurations to eliminate human delay.",
+          de:"Wiederkehrendes Einrichten automatisieren, damit niemand darauf wartet."
+         }},
         {t:{
-          digital:"Our system configurations are version-controlled so changes are tracked and reversible.",
-          services:"Our master operational playbooks, templates, and frameworks are managed centrally through version tracking.",
-          mittelstand:"Our factory automation scripts are version-controlled to secure precision manufacturing setups.",
-          logistics:"Our fleet tracking parameters are controlled via a central, versioned device management platform."
-         }, w: 1.0, desc:"Enforcing centralized version tracking over your configuration data so any change can be audited or reversed in seconds."},
-        {t:"We have monitoring in place that alerts us to infrastructure issues before they cause outages.", w: 1.0, desc:"System monitors that ping the tech team on Slack or PagerDuty before users notice the site is down."}
+          en:"We actively manage tech debt and legacy systems, treating them as solvable problems rather than monsters under the bed.",
+          de:"Wir gehen technische Altlasten aktiv an und behandeln sie als lösbare Aufgabe, nicht als Monster im Keller."
+         }, w: 1.5, desc:{
+          en:"Setting aside regular time to clean up old code and ageing systems, instead of letting them quietly slow everything down.",
+          de:"Regelmäßig Zeit für das Aufräumen alter Systeme, statt sie alles langsam ausbremsen zu lassen."
+         }},
+        {t:{
+          en:"We resolve known infrastructure vulnerabilities systematically using curated standards and AI-driven workflows.",
+          de:"Wir schließen bekannte Sicherheitslücken systematisch, mit festen Standards und automatisierten Abläufen."
+         }, w: 2, desc:{
+          en:"Fixing known security gaps on a set schedule using standard checklists and automation, not only when something breaks.",
+          de:"Bekannte Lücken nach Plan schließen, mit Checklisten und Automatisierung, nicht erst wenn es brennt."
+         }},
+        {t:{
+          en:{
+            digital:"Our system configurations are version-controlled so changes are tracked and reversible.",
+            services:"Our master operational playbooks, templates, and frameworks are managed centrally through version tracking.",
+            mittelstand:"Our factory automation scripts are version-controlled to secure precision manufacturing setups.",
+            logistics:"Our fleet tracking parameters are controlled via a central, versioned device management platform."
+           },
+          de:{
+            digital:"Unsere Systemkonfigurationen sind versioniert, Änderungen sind nachvollziehbar und rückholbar.",
+            services:"Unsere zentralen Playbooks, Vorlagen und Frameworks liegen zentral und versioniert vor.",
+            mittelstand:"Unsere Anlagenprogramme sind versioniert, damit die Fertigung präzise bleibt.",
+            logistics:"Unsere Flottenparameter liegen zentral und versioniert in einer Geräteverwaltung."
+           }
+         }, w: 1, desc:{
+          en:"Enforcing centralized version tracking over your configuration data so any change can be audited or reversed in seconds.",
+          de:"Zentrale Versionierung der Konfiguration, damit jede Änderung prüfbar und rückholbar ist."
+         }},
+        {t:{
+          en:"We have monitoring in place that alerts us to infrastructure issues before they cause outages.",
+          de:"Wir haben eine Überwachung, die uns bei Problemen warnt, bevor etwas ausfällt."
+         }, w: 1, desc:{
+          en:"System monitors that ping the tech team on Slack or PagerDuty before users notice the site is down.",
+          de:"Die Technik wird gewarnt, bevor Nutzer merken, dass etwas nicht läuft."
+         }}
       ]},
-      /* Cluster 4: Data, AI & Compliance */
-      {id:"itlandscape", name:"Core Systems & Integration", icon:"🗄️", cluster:"Data, AI & Compliance", strategicWeight: 1.4, elements:[
-        {t:"Our core systems are connected so data flows between them automatically, without manual re-entry.", w: 2.0, desc:"Connecting your main tools so data moves on its own, instead of living in disconnected islands."},
-        {t:"Our integrations follow a defined pattern (e.g. central middleware or documented interfaces) rather than ad-hoc point-to-point connections.", w: 1.5, desc:"This is the difference between a landscape that scales and one that tips over as soon as a single system changes."},
-        {t:"We use fit-for-purpose tools for standard tasks (like Sales, Accounting, and Controlling) so we don't waste energy reinventing the wheel.", w: 1.5, desc:"Using standard integrations for non-unique areas so you can protect your focus."},
-        {t:"Workflows that span multiple systems run automatically without manual handoffs.", w: 1.0, desc:"Triggering background actions automatically, like sending an invoice the moment a CRM deal closes."},
-        {t:"We maintain a current overview of our core systems: what each one is for and who owns it.", w: 1.0, desc:"A living inventory, so nobody has to guess which system is authoritative or who to ask about it."}
-      ]},
-      {id:"data", name:"Data & Analytics", icon:"📊", cluster:"Data, AI & Compliance", strategicWeight: 1.2, elements:[
-        {t:"We have a clear data strategy defining what we collect, how we use it, and how we protect it.", w: 1.5, desc:"A set playbook on who owns data, where it is stored safely, and how it gets deleted securely."},
-        {t:"We use dashboards to make business decisions based on data, not gut feel or spreadsheets.", w: 1.5, desc:"Pulling your performance data into clean charts so leadership doesn't argue over broken Excel macros."},
-        {t:"Every team uses the same KPI definitions: Finance, Sales, and Ops all report the same numbers.", w: 2.0, desc:"Ensuring Marketing, Sales, and Finance define 'revenue' or 'active customer' exactly the same way."},
-        {t:"We have automated checks to catch and clean bad data before it corrupts our reports.", w: 1.0, desc:"Setting up automatic traps to kill duplicate records or typos before they mess up your monthly dashboards."},
-        {t:"Our key reports and dashboards reflect live data, not yesterday's export.", w: 1.0, desc:"If sales close at 9 AM, leadership can see those exact revenue spikes on the main dashboard by 10 AM, not next Monday."},
-        {t:"All our business systems pull from a single source of truth: no contradictory numbers.", w: 1.5, desc:"Linking all software to one central data pool so you never get conflicting operational totals."}
-      ]},
-      {id:"ai", name:"Artificial Intelligence", icon:"🤖", cluster:"Data, AI & Compliance", strategicWeight: 1.2, elements:[
-        {t:"We have a clear AI strategy that identifies where AI creates the most value for us, and in what order we tackle it.", w: 1.5, desc:"Picking low-hanging AI use cases that save immediate hours rather than chasing expensive sci-fi pipe dreams."},
+      /* Pillar 4: Data, AI & Compliance */
+      {id:"itlandscape", name:{
+        en:"Core Systems & Integration",
+        de:"Kernsysteme & Integration"
+       }, icon:"🗄️", cluster:"Data, AI & Compliance", strategicWeight: 1.4, elements:[
         {t:{
-          digital:"Our product data is structured and clean enough to actually power advanced AI models.",
-          services:"Our case studies, delivery assets, and templates are indexed so internal AI models can query them.",
-          mittelstand:"Our historical production logs and manufacturing metrics are clean enough to train predictive patterns.",
-          logistics:"Our historical route records and warehouse volume archives are clean and structured for machine learning."
-         }, w: 2.0, desc:"Formatting internal files and databases so an LLM or script can read them without throwing errors."},
-        {t:"We have clear rules for how AI tools are used, including data privacy, approvals, and risk.", w: 1.0, desc:"Creating explicit policies so employees don't paste sensitive client data or source code into public AI tools."},
+          en:"Our core systems are connected so data flows between them automatically, without manual re-entry.",
+          de:"Unsere Kernsysteme sind so verbunden, dass Daten automatisch zwischen ihnen fließen, ohne doppelte Erfassung."
+         }, w: 2, desc:{
+          en:"Connecting your main tools so data moves on its own, instead of living in disconnected islands.",
+          de:"Die wichtigsten Werkzeuge sind verbunden, damit Daten von allein wandern statt in Inseln zu liegen."
+         }},
         {t:{
-          digital:"Our team is trained to use AI tools effectively and safely in their day-to-day work.",
-          services:"Our consultants use generative AI tools safely to draft reports, run market analysis, and prepare briefs.",
-          mittelstand:"Our engineering teams use AI models to run simulation models or optimize floor setups.",
-          logistics:"Our dispatch and logistics coordinators use predictive AI models to optimize routes and payload margins."
-         }, w: 1.5, desc:"Giving your staff concrete workflow training so AI moves past a buzzword and becomes a real day-to-day productivity booster."},
-        {t:"AI actively handles parts of our workflow: automating decisions, predictions, or repetitive analysis.", w: 1.0, desc:"Think automated triage: AI reads incoming customer emails, drafts the correct technical response, and queues it for your team to review."}
+          en:"Our integrations follow a defined pattern (e.g. central middleware or documented interfaces) rather than ad-hoc point-to-point connections.",
+          de:"Unsere Schnittstellen folgen einem festen Muster, etwa einer zentralen Middleware oder dokumentierten Schnittstellen, statt gewachsener Einzelverbindungen."
+         }, w: 1.5, desc:{
+          en:"This is the difference between a landscape that scales and one that tips over as soon as a single system changes.",
+          de:"Das ist der Unterschied zwischen einer Landschaft, die mitwächst, und einer, die beim ersten Systemwechsel kippt."
+         }},
+        {t:{
+          en:"We use fit-for-purpose tools for standard tasks (like Sales, Accounting, and Controlling) so we don't waste energy reinventing the wheel.",
+          de:"Wir nutzen Standardsoftware für Standardaufgaben wie Vertrieb, Buchhaltung und Controlling, statt das Rad neu zu erfinden."
+         }, w: 1.5, desc:{
+          en:"Using standard integrations for non-unique areas so you can protect your focus.",
+          de:"Standardlösungen für Standardbedarf, damit Du Deinen Fokus schützt."
+         }},
+        {t:{
+          en:"Workflows that span multiple systems run automatically without manual handoffs.",
+          de:"Abläufe über mehrere Systeme hinweg laufen automatisch, ohne manuelle Übergaben."
+         }, w: 1, desc:{
+          en:"Triggering background actions automatically, like sending an invoice the moment a CRM deal closes.",
+          de:"Aktionen laufen im Hintergrund an, etwa die Rechnung, sobald ein Auftrag gewonnen ist."
+         }},
+        {t:{
+          en:"We maintain a current overview of our core systems: what each one is for and who owns it.",
+          de:"Wir haben eine aktuelle Übersicht unserer Kernsysteme, wofür jedes da ist und wer dafür zuständig ist."
+         }, w: 1, desc:{
+          en:"A living inventory, so nobody has to guess which system is authoritative or who to ask about it.",
+          de:"Ein gepflegtes Verzeichnis, damit niemand raten muss, welches System führt und wer zuständig ist."
+         }}
       ]},
-      {id:"sovereignty", name:"Security & Compliance", icon:"🔒", cluster:"Data, AI & Compliance", strategicWeight: 1.3, elements:[
-        {t:"Our data storage and processing comply with applicable privacy regulations (e.g. GDPR).", w: 1.5, desc:"Protecting user data properly so you don't face massive regulatory fines or compliance audits."},
-        {t:"We have automated backups and a tested plan to recover from data loss or a system failure.", w: 2.0, desc:"Running regular backups and, crucially, testing that you can actually restore files from them."},
-        {t:"We can restore full business operations within 24 hours of a major outage.", w: 1.5, desc:"A step-by-step crisis drill to keep the business alive and trading if a primary server crashes."},
-        {t:"Access to sensitive data is restricted by role, and these permissions are regularly reviewed.", w: 1.0, desc:"Locking down permissions so an intern can't access employee salaries or client master keys."},
+      {id:"data", name:{
+        en:"Data & Analytics",
+        de:"Daten & Analytics"
+       }, icon:"📊", cluster:"Data, AI & Compliance", strategicWeight: 1.2, elements:[
         {t:{
-          digital:"We hold recognized security certifications (e.g. ISO 27001, SOC 2) or are actively working toward them.",
-          services:"We maintain official data isolation parameters and pass customer-mandated data security audits.",
-          mittelstand:"We maintain auditable intellectual property controls and standard industrial quality compliance baselines.",
-          logistics:"We hold validated international customs profiles and strict warehouse asset security certifications."
-         }, w: 1.0, desc:"Passing formal security checks to unlock enterprise contracts and clear vendor assessments."}
+          en:"We have a clear data strategy defining what we collect, how we use it, and how we protect it.",
+          de:"Wir haben eine klare Datenstrategie, die festlegt, was wir erheben, wie wir es nutzen und wie wir es schützen."
+         }, w: 1.5, desc:{
+          en:"A set playbook on who owns data, where it is stored safely, and how it gets deleted securely.",
+          de:"Ein klares Vorgehen, wer Daten verantwortet, wo sie sicher liegen und wie sie gelöscht werden."
+         }},
+        {t:{
+          en:"We use dashboards to make business decisions based on data, not gut feel or spreadsheets.",
+          de:"Wir treffen Entscheidungen anhand von Dashboards, nicht aus dem Bauch oder aus Tabellen."
+         }, w: 1.5, desc:{
+          en:"Pulling your performance data into clean charts so leadership doesn't argue over broken Excel macros.",
+          de:"Die Leistungsdaten liegen in klaren Auswertungen, statt dass über kaputte Tabellen gestritten wird."
+         }},
+        {t:{
+          en:"Every team uses the same KPI definitions: Finance, Sales, and Ops all report the same numbers.",
+          de:"Alle Teams nutzen dieselben Kennzahlendefinitionen, Finanzen, Vertrieb und Betrieb berichten dieselben Zahlen."
+         }, w: 2, desc:{
+          en:"Ensuring Marketing, Sales, and Finance define 'revenue' or 'active customer' exactly the same way.",
+          de:"Marketing, Vertrieb und Finanzen verstehen unter \"Umsatz\" oder \"aktiver Kunde\" genau dasselbe."
+         }},
+        {t:{
+          en:"We have automated checks to catch and clean bad data before it corrupts our reports.",
+          de:"Wir haben automatische Prüfungen, die fehlerhafte Daten abfangen, bevor sie in Berichte geraten."
+         }, w: 1, desc:{
+          en:"Setting up automatic traps to kill duplicate records or typos before they mess up your monthly dashboards.",
+          de:"Automatische Prüfungen fangen Doppelungen und Tippfehler ab, bevor sie die Berichte verfälschen."
+         }},
+        {t:{
+          en:"Our key reports and dashboards reflect live data, not yesterday's export.",
+          de:"Unsere wichtigsten Berichte zeigen aktuelle Daten, nicht den Export von gestern."
+         }, w: 1, desc:{
+          en:"If sales close at 9 AM, leadership can see those exact revenue spikes on the main dashboard by 10 AM, not next Monday.",
+          de:"Wenn morgens ein Auftrag reinkommt, ist er am selben Tag im Bericht sichtbar, nicht nächste Woche."
+         }},
+        {t:{
+          en:"All our business systems pull from a single source of truth: no contradictory numbers.",
+          de:"Alle Systeme greifen auf eine einzige verlässliche Quelle zu, es gibt keine widersprüchlichen Zahlen."
+         }, w: 1.5, desc:{
+          en:"Linking all software to one central data pool so you never get conflicting operational totals.",
+          de:"Alle Systeme hängen an einem zentralen Datenbestand, damit keine widersprüchlichen Summen entstehen."
+         }}
+      ]},
+      {id:"ai", name:{
+        en:"Artificial Intelligence",
+        de:"Künstliche Intelligenz"
+       }, icon:"🤖", cluster:"Data, AI & Compliance", strategicWeight: 1.2, elements:[
+        {t:{
+          en:"We have a clear AI strategy that identifies where AI creates the most value for us, and in what order we tackle it.",
+          de:"Wir haben eine klare KI-Strategie: wo KI bei uns den größten Nutzen bringt und in welcher Reihenfolge wir vorgehen."
+         }, w: 1.5, desc:{
+          en:"Picking low-hanging AI use cases that save immediate hours rather than chasing expensive sci-fi pipe dreams.",
+          de:"Naheliegende Anwendungen, die sofort Stunden sparen, statt teurer Zukunftsmusik."
+         }},
+        {t:{
+          en:{
+            digital:"Our product data is structured and clean enough to actually power advanced AI models.",
+            services:"Our case studies, delivery assets, and templates are indexed so internal AI models can query them.",
+            mittelstand:"Our historical production logs and manufacturing metrics are clean enough to train predictive patterns.",
+            logistics:"Our historical route records and warehouse volume archives are clean and structured for machine learning."
+           },
+          de:{
+            digital:"Unsere Produktdaten sind strukturiert und sauber genug, um damit KI-Modelle sinnvoll zu betreiben.",
+            services:"Unsere Fallstudien, Vorlagen und Ergebnisse sind so erfasst, dass interne KI-Werkzeuge darauf zugreifen können.",
+            mittelstand:"Unsere Produktionsdaten aus der Vergangenheit sind sauber genug, um Muster daraus zu lernen.",
+            logistics:"Unsere Streckendaten und Lagerhistorie sind sauber und strukturiert genug für maschinelles Lernen."
+           }
+         }, w: 2, desc:{
+          en:"Formatting internal files and databases so an LLM or script can read them without throwing errors.",
+          de:"Dateien und Datenbanken so aufbereiten, dass ein Modell sie ohne Fehler lesen kann."
+         }},
+        {t:{
+          en:"We have clear rules for how AI tools are used, including data privacy, approvals, and risk.",
+          de:"Wir haben klare Regeln für den Einsatz von KI, inklusive Datenschutz, Freigaben und Risiken."
+         }, w: 1, desc:{
+          en:"Creating explicit policies so employees don't paste sensitive client data or source code into public AI tools.",
+          de:"Klare Regeln, damit niemand sensible Kundendaten oder Quellcode in öffentliche Werkzeuge kopiert."
+         }},
+        {t:{
+          en:{
+            digital:"Our team is trained to use AI tools effectively and safely in their day-to-day work.",
+            services:"Our consultants use generative AI tools safely to draft reports, run market analysis, and prepare briefs.",
+            mittelstand:"Our engineering teams use AI models to run simulation models or optimize floor setups.",
+            logistics:"Our dispatch and logistics coordinators use predictive AI models to optimize routes and payload margins."
+           },
+          de:{
+            digital:"Unser Team ist geschult, KI im Alltag wirksam und sicher zu nutzen.",
+            services:"Unsere Berater nutzen KI sicher, um Berichte zu entwerfen, Märkte zu analysieren und Unterlagen vorzubereiten.",
+            mittelstand:"Unsere Entwicklung nutzt KI für Simulationen und die Optimierung von Abläufen.",
+            logistics:"Unsere Disposition nutzt KI, um Strecken und Auslastung vorauszuplanen."
+           }
+         }, w: 1.5, desc:{
+          en:"Giving your staff concrete workflow training so AI moves past a buzzword and becomes a real day-to-day productivity booster.",
+          de:"Konkretes Training am Arbeitsalltag, damit aus dem Schlagwort echte Entlastung wird."
+         }},
+        {t:{
+          en:"AI actively handles parts of our workflow: automating decisions, predictions, or repetitive analysis.",
+          de:"KI übernimmt Teile unserer Abläufe, etwa Entscheidungen, Prognosen oder wiederkehrende Auswertungen."
+         }, w: 1, desc:{
+          en:"Think automated triage: AI reads incoming customer emails, drafts the correct technical response, and queues it for your team to review.",
+          de:"Zum Beispiel automatische Vorsortierung: KI liest Kundenmails, entwirft die Antwort und legt sie zur Prüfung vor."
+         }}
+      ]},
+      {id:"sovereignty", name:{
+        en:"Security & Compliance",
+        de:"Sicherheit & Compliance"
+       }, icon:"🔒", cluster:"Data, AI & Compliance", strategicWeight: 1.3, elements:[
+        {t:{
+          en:"Our data storage and processing comply with applicable privacy regulations (e.g. GDPR).",
+          de:"Unsere Datenhaltung und Verarbeitung erfüllt die geltenden Datenschutzvorgaben, etwa die DSGVO."
+         }, w: 1.5, desc:{
+          en:"Protecting user data properly so you don't face massive regulatory fines or compliance audits.",
+          de:"Nutzerdaten richtig schützen, damit keine Bußgelder oder Prüfungen drohen."
+         }},
+        {t:{
+          en:"We have automated backups and a tested plan to recover from data loss or a system failure.",
+          de:"Wir haben automatische Backups und einen getesteten Plan, um nach einem Ausfall wieder arbeitsfähig zu sein."
+         }, w: 2, desc:{
+          en:"Running regular backups and, crucially, testing that you can actually restore files from them.",
+          de:"Regelmäßig sichern und, entscheidend, das Zurückholen auch wirklich testen."
+         }},
+        {t:{
+          en:"We can restore full business operations within 24 hours of a major outage.",
+          de:"Wir können den Betrieb innerhalb von 24 Stunden nach einem größeren Ausfall wieder aufnehmen."
+         }, w: 1.5, desc:{
+          en:"A step-by-step crisis drill to keep the business alive and trading if a primary server crashes.",
+          de:"Ein durchgespielter Notfallplan, damit das Geschäft weiterläuft, wenn ein zentraler Server ausfällt."
+         }},
+        {t:{
+          en:"Access to sensitive data is restricted by role, and these permissions are regularly reviewed.",
+          de:"Der Zugriff auf sensible Daten ist nach Rollen beschränkt, und diese Rechte werden regelmäßig überprüft."
+         }, w: 1, desc:{
+          en:"Locking down permissions so an intern can't access employee salaries or client master keys.",
+          de:"Rechte so setzen, dass niemand versehentlich an Gehälter oder Kundenschlüssel kommt."
+         }},
+        {t:{
+          en:{
+            digital:"We hold recognized security certifications (e.g. ISO 27001, SOC 2) or are actively working toward them.",
+            services:"We maintain official data isolation parameters and pass customer-mandated data security audits.",
+            mittelstand:"We maintain auditable intellectual property controls and standard industrial quality compliance baselines.",
+            logistics:"We hold validated international customs profiles and strict warehouse asset security certifications."
+           },
+          de:{
+            digital:"Wir haben anerkannte Sicherheitszertifikate wie ISO 27001 oder SOC 2, oder arbeiten aktiv daran.",
+            services:"Wir halten Vorgaben zur Datentrennung ein und bestehen die Sicherheitsprüfungen unserer Kunden.",
+            mittelstand:"Wir haben nachvollziehbare Kontrollen für unser geistiges Eigentum und erfüllen die üblichen Qualitätsvorgaben.",
+            logistics:"Wir haben geprüfte Zollprofile und erfüllen strenge Sicherheitsvorgaben für unsere Lager."
+           }
+         }, w: 1, desc:{
+          en:"Passing formal security checks to unlock enterprise contracts and clear vendor assessments.",
+          de:"Formale Prüfungen bestehen, um an größere Verträge zu kommen."
+         }}
       ]}
     ];
 
     const ACTIONABLE_NEXT_STEPS = {
-      leadership: "Write down who decides what. Give each team the authority to decide inside its own area, so work stops queuing up for sign-off.",
-      innovation: "Set aside time for improvement work that client deadlines cannot eat into. Half a day a week beats a workshop once a year.",
-      finance: "Work out what each project or product actually costs you and what it brings in. Without that number, pricing is guesswork.",
-      sales: "Standardise your pitch, your proposal template and how deals get logged. The goal is a pipeline that works without your best salesperson in the room.",
-      ecosystem: "List the partners you rely on and what each one actually delivers. Turn the informal arrangements into proper agreements, so you can take on more work without hiring first.",
-      ops: "Write down how your recurring work is done, in one place everyone can reach. Start with the tasks that break when the person who owns them is away.",
-      devorg: "Tie what your teams build to a business number you already track. If a requirement cannot be linked to revenue, retention or cost, ask why it is on the roadmap.",
-      devops: "Stop setting up servers and environments by hand. Put the steps into scripts, so your engineers spend their time on the product instead of on plumbing.",
-      itlandscape: "List every tool in use and what it owns. Pick one system as the place where each type of data lives, so the same number stops appearing in three versions.",
-      data: "Agree on one definition per key figure and write it down. Then point every dashboard at the same source, so meetings stop arguing about whose number is right.",
-      ai: "Pick one task that costs your team hours every week and start there. Clean up the data it needs first; a model cannot fix a messy spreadsheet.",
-      sovereignty: "Check who can reach what, and remove access nobody needs. Then restore a backup for real, on a normal working day, to find out whether it actually works."
+      leadership: { en: "Write down who decides what. Give each team the authority to decide inside its own area, so work stops queuing up for sign-off.", de: "Schreib auf, wer was entscheidet. Gib jedem Team die Befugnis, im eigenen Bereich zu entscheiden, damit Arbeit nicht auf Freigaben wartet." },
+      innovation: { en: "Set aside time for improvement work that client deadlines cannot eat into. Half a day a week beats a workshop once a year.", de: "Halte Zeit für Verbesserung frei, an die Kundentermine nicht herankommen. Ein halber Tag pro Woche bringt mehr als ein Workshop im Jahr." },
+      finance: { en: "Work out what each project or product actually costs you and what it brings in. Without that number, pricing is guesswork.", de: "Rechne aus, was jedes Projekt oder Produkt wirklich kostet und was es einbringt. Ohne diese Zahl ist Preisgestaltung Raten." },
+      sales: { en: "Standardise your pitch, your proposal template and how deals get logged. The goal is a pipeline that works without your best salesperson in the room.", de: "Vereinheitliche Pitch, Angebotsvorlage und die Art, wie Abschlüsse erfasst werden. Ziel ist eine Pipeline, die auch ohne Deine beste Vertriebskraft funktioniert." },
+      ecosystem: { en: "List the partners you rely on and what each one actually delivers. Turn the informal arrangements into proper agreements, so you can take on more work without hiring first.", de: "Liste auf, auf welche Partner Du Dich verlässt und was jeder wirklich liefert. Mach aus den losen Absprachen echte Vereinbarungen, damit Du mehr annehmen kannst, ohne vorher einzustellen." },
+      ops: { en: "Write down how your recurring work is done, in one place everyone can reach. Start with the tasks that break when the person who owns them is away.", de: "Schreib auf, wie die wiederkehrende Arbeit läuft, an einer Stelle, die alle erreichen. Fang mit den Aufgaben an, die zusammenbrechen, wenn die zuständige Person fehlt." },
+      devorg: { en: "Tie what your teams build to a business number you already track. If a requirement cannot be linked to revenue, retention or cost, ask why it is on the roadmap.", de: "Verknüpfe das, was gebaut wird, mit einer Zahl, die Du schon verfolgst. Lässt sich eine Anforderung nicht an Umsatz, Bindung oder Kosten binden, gehört sie hinterfragt." },
+      devops: { en: "Stop setting up servers and environments by hand. Put the steps into scripts, so your engineers spend their time on the product instead of on plumbing.", de: "Hör auf, Server und Umgebungen per Hand einzurichten. Leg die Schritte in Skripte, damit Deine Entwicklung Zeit fürs Produkt hat und nicht für Grundinstallation." },
+      itlandscape: { en: "List every tool in use and what it owns. Pick one system as the place where each type of data lives, so the same number stops appearing in three versions.", de: "Liste jedes Werkzeug auf und wofür es zuständig ist. Bestimme pro Datenart ein führendes System, damit dieselbe Zahl nicht in drei Fassungen existiert." },
+      data: { en: "Agree on one definition per key figure and write it down. Then point every dashboard at the same source, so meetings stop arguing about whose number is right.", de: "Legt pro Kennzahl eine Definition fest und schreibt sie auf. Richte dann jedes Dashboard auf dieselbe Quelle, damit in Meetings nicht über Zahlen gestritten wird." },
+      ai: { en: "Pick one task that costs your team hours every week and start there. Clean up the data it needs first; a model cannot fix a messy spreadsheet.", de: "Nimm eine Aufgabe, die Dein Team jede Woche Stunden kostet, und fang dort an. Räum vorher die Daten auf, denn ein Modell repariert keine unordentliche Tabelle." },
+      sovereignty: { en: "Check who can reach what, and remove access nobody needs. Then restore a backup for real, on a normal working day, to find out whether it actually works.", de: "Prüfe, wer worauf zugreifen kann, und nimm weg, was niemand braucht. Spiel dann ein Backup wirklich zurück, an einem normalen Arbeitstag, um zu sehen, ob es funktioniert." }
     };
 
     const CONTEXT_HINTS = {
-      leadership: "People move faster when they know what they are allowed to decide.",
-      innovation: "If improvement work has no protected time, it does not happen.",
-      finance: "You cannot price or plan what you have never measured.",
-      sales: "A pipeline that depends on individuals does not scale.",
-      ecosystem: "Good partners let you take on more work before you have to hire.",
-      ops: "Written-down work survives holidays, illness and growth.",
-      devorg: "Build time is your scarcest resource; spend it on what customers pay for.",
-      devops: "Manual setup work is a tax you pay on every single release.",
-      itlandscape: "When your systems talk to each other, nobody retypes data.",
-      data: "One definition per number ends most reporting arguments.",
-      ai: "AI pays off where it removes work you already do every week.",
-      sovereignty: "A backup you have never restored is not a backup."
+      leadership: { en: "People move faster when they know what they are allowed to decide.", de: "Es geht schneller, wenn alle wissen, was sie entscheiden dürfen." },
+      innovation: { en: "If improvement work has no protected time, it does not happen.", de: "Verbesserung ohne geschützte Zeit findet nicht statt." },
+      finance: { en: "You cannot price or plan what you have never measured.", de: "Was Du nie gemessen hast, kannst Du weder bepreisen noch planen." },
+      sales: { en: "A pipeline that depends on individuals does not scale.", de: "Eine Pipeline, die an Einzelpersonen hängt, wächst nicht mit." },
+      ecosystem: { en: "Good partners let you take on more work before you have to hire.", de: "Gute Partner lassen Dich mehr annehmen, bevor Du einstellen musst." },
+      ops: { en: "Written-down work survives holidays, illness and growth.", de: "Aufgeschriebene Abläufe überleben Urlaub, Krankheit und Wachstum." },
+      devorg: { en: "Build time is your scarcest resource; spend it on what customers pay for.", de: "Entwicklungszeit ist Dein knappstes Gut. Steck sie in das, wofür Kunden zahlen." },
+      devops: { en: "Manual setup work is a tax you pay on every single release.", de: "Handarbeit beim Einrichten ist eine Steuer, die Du bei jedem Release zahlst." },
+      itlandscape: { en: "When your systems talk to each other, nobody retypes data.", de: "Wenn Systeme miteinander reden, tippt niemand Daten ab." },
+      data: { en: "One definition per number ends most reporting arguments.", de: "Eine Definition pro Zahl beendet die meisten Berichtsdiskussionen." },
+      ai: { en: "AI pays off where it removes work you already do every week.", de: "KI zahlt sich dort aus, wo sie Arbeit abnimmt, die Du jede Woche machst." },
+      sovereignty: { en: "A backup you have never restored is not a backup.", de: "Ein Backup, das Du nie zurückgespielt hast, ist kein Backup." }
     };
+
+    /* ── UI strings. Product name and band names stay English in both languages. ── */
+    const UI = {
+      headTitle: { en: "Tektit Maturity Check", de: "Tektit Maturity Check" },
+      progText: { en: "{n} of {t} dimensions reviewed", de: "{n} von {t} Dimensionen bearbeitet" },
+      liveScoreLabel: { en: "Live score:", de: "Live-Score:" },
+      selectedLabel: { en: "Selected:", de: "Ausgewählt:" },
+      langHint: { en: "Language", de: "Sprache" },
+      introH2: { en: "Most companies don't know where they actually stand.", de: "Die meisten Unternehmen wissen nicht, wo sie wirklich stehen." },
+      introP1: { en: "They invest in tools, hire talent, and run initiatives, yet growth stalls and decisions slow down. Across more than 40 projects we have seen the same causes again and again: internal silos, endless alignment loops, and teams reinventing the same wheel. Behind that sit hidden bottlenecks and a daily build-up of busy work.", de: "Sie investieren in Werkzeuge, holen gute Leute und starten Initiativen. Trotzdem stockt das Wachstum und Entscheidungen dauern länger. In über 40 Projekten haben wir immer wieder dieselben Ursachen gesehen: Silos, endlose Abstimmungsrunden und Teams, die dasselbe Rad neu erfinden. Dahinter stecken verdeckte Engpässe und immer mehr Beschäftigung mit sich selbst." },
+      introP2: { en: "At Tektit, we build market leaders. Not as a tagline, but as a track record: we have worked inside high-performing organisations, and we have applied what we learned with more than 40 companies. Now we are putting it in your hands.", de: "Bei Tektit bauen wir Marktführer. Nicht als Slogan, sondern als Bilanz: Wir haben in leistungsstarken Organisationen selbst gearbeitet und das Gelernte mit über 40 Unternehmen angewendet. Jetzt geben wir es Dir in die Hand." },
+      introP3: { en: "In under ten minutes you will see where you are strong, where you are losing ground, and what to fix first.", de: "In unter zehn Minuten siehst Du, wo Du stark bist, wo Du Boden verlierst und was Du zuerst angehen solltest." },
+      introP4: { en: "No fluff. No consultant-speak. Just clarity.", de: "Kein Blabla. Kein Beratersprech. Nur Klarheit." },
+      earlyText: { en: "<strong>Short on time?</strong> We'll email you the link; complete the check later, for example on your way home.", de: "<strong>Keine Zeit?</strong> Wir schicken Dir den Link; Du kannst den Check später machen, zum Beispiel auf der Rückfahrt." },
+      earlyPlaceholder: { en: "your.name@company.com", de: "dein.name@firma.de" },
+      earlyBtn: { en: "Send me the link", de: "Link schicken" },
+      earlyConsent: { en: "I agree to be contacted by Tektit Consulting GmbH and to receive the link and my report by email. See our <a href=\"https://www.tektitconsulting.com/datenschutz\" target=\"_blank\" rel=\"noopener noreferrer\">Data Privacy</a> notice.", de: "Ich bin damit einverstanden, dass die Tektit Consulting GmbH mich kontaktiert und mir den Link sowie meinen Report per E-Mail schickt. Siehe unsere <a href=\"https://www.tektitconsulting.com/datenschutz\" target=\"_blank\" rel=\"noopener noreferrer\">Datenschutzhinweise</a>." },
+      earlyErrEmail: { en: "Please enter a valid email address.", de: "Bitte gib eine gültige E-Mail-Adresse ein." },
+      earlyErrConsent: { en: "Please tick the consent box so we may email you the link.", de: "Bitte setz das Häkchen, damit wir Dir den Link schicken dürfen." },
+      earlyOk: { en: "✅ Link sent to {email}; you can also just start below.", de: "✅ Link an {email} geschickt; Du kannst auch direkt unten anfangen." },
+      accSummary: { en: "How to use this tool", de: "So nutzt Du das Tool" },
+      acc1: { en: "<strong>1. What the tool assesses:</strong> It reviews your organisation across 4 pillars and 12 dimensions: strategy and leadership, go-to-market, delivery and engineering, and data, AI and compliance.", de: "<strong>1. Was das Tool prüft:</strong> Es betrachtet Dein Unternehmen über 4 Säulen und 12 Dimensionen: Strategie und Führung, Go-to-Market, Umsetzung und Engineering sowie Daten, KI und Compliance." },
+      acc2: { en: "<strong>2. How to select checkboxes:</strong> Mark a checkbox if that item is <strong>broadly established and lived in day-to-day work</strong>; it does not have to be perfect in every corner. Leave it unchecked if it only happens occasionally, depends on individual people, or has not really started yet.", de: "<strong>2. Wie Du ankreuzt:</strong> Setz ein Häkchen, wenn der Punkt <strong>im Wesentlichen etabliert und im Alltag gelebt</strong> ist; er muss nicht überall perfekt sein. Lass ihn offen, wenn es nur gelegentlich passiert, an einzelnen Personen hängt oder noch nicht wirklich begonnen hat." },
+      acc3: { en: "<strong>3. Why each item matters:</strong> Every item has a ? icon next to it. It explains what the item looks like in practice and why it matters; worth a look even where you already know your answer.", de: "<strong>3. Warum jeder Punkt zählt:</strong> Neben jedem Punkt steht ein ?. Dahinter steht, wie der Punkt in der Praxis aussieht und warum er wichtig ist; lohnt sich auch dann, wenn Du Deine Antwort schon kennst." },
+      acc4: { en: "<strong>4. How the score is calculated:</strong> Each dimension gets a maturity score from 0.0 to 5.0 based on what you've established. Foundational items count for more than secondary ones. Dimensions you skip are left out of the score entirely, so a partial run still gives you an honest picture.", de: "<strong>4. Wie der Score entsteht:</strong> Jede Dimension bekommt einen Reifegrad von 0,0 bis 5,0, je nachdem, was etabliert ist. Grundlegende Punkte zählen mehr als nachgelagerte. Dimensionen, die Du überspringst, fließen gar nicht in den Score ein, damit auch ein Teildurchlauf ein ehrliches Bild ergibt." },
+      acc5: { en: "<strong>5. Focus areas interpretation:</strong> Your top focus areas aren't just your lowest scores. We combine how big each gap is with how much that area drives your growth, so you fix the bottleneck with the most leverage first, not just the lowest number.", de: "<strong>5. Wie Du die Fokusfelder liest:</strong> Die Fokusfelder sind nicht einfach Deine schlechtesten Werte. Wir verbinden die Größe der Lücke mit der Bedeutung des Bereichs für Dein Wachstum, damit Du zuerst den Engpass angehst, der am meisten bewegt." },
+      archH3: { en: "Select your organization's primary business profile:", de: "Wähl das Profil, das am besten zu Deinem Unternehmen passt:" },
+      archP: { en: "The assessment definitions adapt dynamically to match your specific operational ecosystem realities.", de: "Die Formulierungen im Check passen sich Deinem Geschäftsmodell an." },
+      archDigital: { en: "🌐 Pure Digital / SaaS / Tech Products", de: "🌐 Digital / SaaS / Tech-Produkte" },
+      archServices: { en: "💼 Professional Services / Agencies", de: "💼 Dienstleistung / Agentur" },
+      archMittelstand: { en: "🏭 Traditional Mittelstand / Industrial", de: "🏭 Klassischer Mittelstand / Industrie" },
+      archLogistics: { en: "🚚 Retail / E-Com / Logistics Heavy", de: "🚚 Handel / E-Commerce / Logistik" },
+      archSwitchWarn: { en: "Changing your business profile track will wipe all current checkbox selections. Proceed?", de: "Wenn Du das Profil wechselst, werden alle Häkchen gelöscht. Fortfahren?" },
+      wizCaption: { en: "Step <span id=\"stepNow\">1</span> of 4 &middot; tap a step to jump", de: "Schritt <span id=\"stepNow\">1</span> von 4 &middot; tippe einen Schritt an, um zu springen" },
+      prevBtn: { en: "⬅️ Previous Pillar", de: "⬅️ Vorherige Säule" },
+      nextBtn: { en: "Next Pillar ➡️", de: "Nächste Säule ➡️" },
+      genBtn: { en: "📊 Generate analysis", de: "📊 Auswertung erstellen" },
+      resetBtn: { en: "Reset All", de: "Alles zurücksetzen" },
+      resetWarn: { en: "Clear all selections and start over?", de: "Alle Häkchen löschen und neu anfangen?" },
+      scopeTitle: { en: "Before we calculate your score", de: "Bevor wir Deinen Score berechnen" },
+      scopeIntro: { en: "You haven't marked anything in <strong><span id=\"scopeCount\">0</span></strong> of the 12 dimensions. What does that mean?", de: "In <strong><span id=\"scopeCount\">0</span></strong> von 12 Dimensionen hast Du nichts angekreuzt. Was heißt das?" },
+      scopeApplies: { en: "That's accurate: nothing established there", de: "Das trifft zu: dort ist nichts etabliert" },
+      scopeSkipped: { en: "I skipped those; leave them out", de: "Die habe ich übersprungen; lass sie weg" },
+      scopeBack: { en: "← Back to the check", de: "← Zurück zum Check" },
+      scopeHint: { en: "Skipped dimensions are excluded from your score and your focus areas, so your result stays meaningful.", de: "Übersprungene Dimensionen fließen nicht in Score und Fokusfelder ein, damit Dein Ergebnis aussagekräftig bleibt." },
+      scopeNone: { en: "We need at least one dimension to work with. Please answer a few items, or mark a dimension as \"nothing established\" so we can score it.", de: "Wir brauchen mindestens eine Dimension. Beantworte ein paar Punkte, oder markiere eine Dimension als \"nichts etabliert\", damit wir sie bewerten können." },
+      gateH2: { en: "Unlock Your Maturity Check Results", de: "Deine Ergebnisse freischalten" },
+      gateP: { en: "Enter your details below to unlock your full report: your <strong>Maturity Radar</strong>, your top 3 focus areas, and clear recommended next steps. You'll also receive the report as a PDF by email.", de: "Trag Deine Daten ein und Du bekommst den vollen Report: Dein <strong>Maturity Radar</strong>, Deine drei wichtigsten Fokusfelder und konkrete nächste Schritte. Den Report schicken wir Dir zusätzlich als PDF per E-Mail." },
+      phName: { en: "Your name", de: "Dein Name" },
+      phCompany: { en: "Your company name", de: "Name Deines Unternehmens" },
+      phEmail: { en: "Your work email address", de: "Deine geschäftliche E-Mail-Adresse" },
+      srName: { en: "Your name", de: "Dein Name" },
+      srCompany: { en: "Company Name", de: "Unternehmen" },
+      srEmail: { en: "Your email address", de: "Deine E-Mail-Adresse" },
+      gateConsent: { en: "By submitting this form you are giving consent to be contacted by Tektit Consulting GmbH and to have your assessment data processed to generate and send your report. You can withdraw your consent at any time. See our <a href=\"https://www.tektitconsulting.com/datenschutz\" target=\"_blank\" rel=\"noopener noreferrer\">Data Privacy</a> notice.", de: "Mit dem Absenden bist Du damit einverstanden, dass die Tektit Consulting GmbH Dich kontaktiert und Deine Antworten verarbeitet, um Deinen Report zu erstellen und zu versenden. Du kannst Dein Einverständnis jederzeit zurückziehen. Siehe unsere <a href=\"https://www.tektitconsulting.com/datenschutz\" target=\"_blank\" rel=\"noopener noreferrer\">Datenschutzhinweise</a>." },
+      unlockBtn: { en: "Show My Results 📊", de: "Ergebnisse anzeigen 📊" },
+      errEmail: { en: "Please enter a valid work email address so we can send you your report.", de: "Bitte gib eine gültige geschäftliche E-Mail-Adresse ein, damit wir Dir den Report schicken können." },
+      errCompany: { en: "Please enter your company name.", de: "Bitte gib den Namen Deines Unternehmens ein." },
+      errConsent: { en: "Please tick the consent box so we can process your data and send your report.", de: "Bitte setz das Häkchen, damit wir Deine Daten verarbeiten und den Report schicken dürfen." },
+      resultsTitle: { en: "Your Results", de: "Deine Ergebnisse" },
+      greeting: { en: "Hello {name}, Here Are Your Results:", de: "Hallo {name}, hier sind Deine Ergebnisse:" },
+      bandFoundation: { en: "Foundation Stage: A lot currently runs on manual workarounds and personal commitment. That holds at a steady load, but it becomes the bottleneck as soon as volume grows.", de: "Foundation Stage: Vieles läuft heute über manuelle Umwege und persönlichen Einsatz. Bei gleichbleibender Last funktioniert das, bei steigendem Volumen wird es zum Engpass." },
+      bandWorking: { en: "Working Baseline: Your core processes hold up. As volume grows, friction typically shows up at the handovers between teams and systems.", de: "Working Baseline: Deine Kernprozesse tragen. Wenn das Volumen steigt, entsteht die Reibung erfahrungsgemäß an den Übergängen zwischen Teams und Systemen." },
+      bandScale: { en: "Scale-Ready: Your processes and systems mesh well. The leverage now lies less in cleaning up and more in targeted expansion.", de: "Scale-Ready: Deine Prozesse und Systeme greifen gut ineinander. Jetzt geht es weniger um Aufräumen als um gezielten Ausbau." },
+      reportSubtitle: { en: "Maturity Check · 12 Dimensions", de: "Maturity Check · 12 Dimensionen" },
+      basis: { en: "Basis: {n} of {t} dimensions assessed", de: "Basis: {n} von {t} Dimensionen bewertet" },
+      basisSkipped: { en: " · {s} not assessed and excluded from the score", de: " · {s} nicht bewertet und nicht im Score enthalten" },
+      radarH3: { en: "Maturity Radar", de: "Maturity Radar" },
+      radarNote: { en: "Dimensions shown in grey were not assessed and are not part of your score.", de: "Grau dargestellte Dimensionen wurden nicht bewertet und zählen nicht in den Score." },
+      notAssessed: { en: "Not assessed", de: "Nicht bewertet" },
+      elementsEstablished: { en: "{c} of {t} elements established", de: "{c} von {t} Punkten etabliert" },
+      focusH3: { en: "Your Top 3 Focus Areas", de: "Deine 3 wichtigsten Fokusfelder" },
+      focusH2: { en: "Your Top 2 Focus Areas", de: "Deine 2 wichtigsten Fokusfelder" },
+      focusH1: { en: "Your Focus Area", de: "Dein Fokusfeld" },
+      focusDesc: { en: "<span class=\"tektit-keyword-accent\">Focus creates progress.</span> Changing everything at once slows you down. We weigh how big each gap is against how much that area affects your growth, so you know which one to take on first.", de: "<span class=\"tektit-keyword-accent\">Fokus schafft Fortschritt.</span> Alles gleichzeitig zu ändern bremst Dich. Wir wiegen die Größe der Lücke gegen die Bedeutung des Bereichs für Dein Wachstum ab, damit Du weißt, was zuerst dran ist." },
+      focusNote: { en: "* Note: Focus areas are ranked by leverage: how big each gap is combined with how much that area drives your growth, not strictly by raw score.", de: "* Hinweis: Die Reihenfolge richtet sich nach der Wirkung, also Größe der Lücke mal Bedeutung für Dein Wachstum, nicht nach dem reinen Punktwert." },
+      prioRank: { en: "Priority {n}", de: "Priorität {n}" },
+      nextStepsLabel: { en: "Recommended next steps:", de: "Empfohlene nächste Schritte:" },
+      congratsH: { en: "You've built something rare", de: "Du hast etwas Seltenes aufgebaut" },
+      congratsTitle: { en: "🎉 Nothing urgent to fix", de: "🎉 Nichts, was dringend zu reparieren wäre" },
+      congratsBody: { en: "Across all twelve dimensions, everything is broadly in place; there is no single bottleneck holding you back. That is uncommon, and it usually reflects a lot of deliberate work.<br><br>We would genuinely like to hear how you got there. If you are open to it, let's talk: no pitch, just a conversation about your journey.", de: "Über alle zwölf Dimensionen ist im Wesentlichen alles etabliert; es gibt keinen einzelnen Engpass, der Dich aufhält. Das ist selten und steckt meist viel bewusste Arbeit dahinter.<br><br>Wir würden gern hören, wie Du dahin gekommen bist. Wenn Du magst, sprich mit uns: kein Pitch, nur ein Gespräch über Deinen Weg." },
+      sparringH3: { en: "Understanding Your Bottlenecks", de: "Deine Engpässe verstehen" },
+      diag1: { en: "Having worked with more than 40 clients since 2019, we see the same two problems in growing companies: they <span class=\"tektit-keyword-accent\">lose sight of what customers actually pay them for</span>, and <span class=\"tektit-keyword-accent\">everything takes longer than it used to</span>. Teams end up with too many tools, work that does not connect, and nobody clearly responsible. From then on, the days go into reacting.", de: "Aus der Arbeit mit über 40 Kunden seit 2019 sehen wir in wachsenden Unternehmen immer dieselben zwei Probleme: Sie <span class=\"tektit-keyword-accent\">verlieren aus dem Blick, wofür Kunden eigentlich zahlen</span>, und <span class=\"tektit-keyword-accent\">alles dauert länger als früher</span>. Am Ende gibt es zu viele Werkzeuge, Arbeit, die nicht zusammenpasst, und niemanden, der klar zuständig ist. Ab dann gehen die Tage ins Reagieren." },
+      diag2: { en: "We work by one rule: <span class=\"tektit-keyword-accent\">\"Fall in love with the problem, not the solution\".</span> Instead of reaching for the quick fix, another licence or another hire, we find out what is actually causing the friction. That is usually cheaper than the quick fix, and it lets your team spend its time on the product itself.", de: "Wir arbeiten nach einer Regel: <span class=\"tektit-keyword-accent\">\"Verliebe Dich in das Problem, nicht in die Lösung\".</span> Statt zur schnellen Lösung zu greifen, noch einer Lizenz oder noch einer Einstellung, finden wir heraus, was die Reibung wirklich verursacht. Das ist meist günstiger als die schnelle Lösung, und Dein Team kann seine Zeit ins Produkt stecken." },
+      advisorRole: { en: "Associate Partner", de: "Associate Partner" },
+      advisorBio: { en: "Works with leadership teams to find what is actually slowing the business down, and to decide what to fix first.", de: "Arbeitet mit Führungsteams daran, herauszufinden, was das Geschäft wirklich bremst, und was zuerst dran ist." },
+      footerCopy: { en: "Copyright © 2026 Tektit Consulting. All rights reserved. Confidential Executive Report.", de: "Copyright © 2026 Tektit Consulting. Alle Rechte vorbehalten. Vertraulicher Report." },
+      backBtn: { en: "⬆️ Edit selections", de: "⬆️ Antworten ändern" },
+      kioskReset: { en: "🔄 Start over for the next visitor", de: "🔄 Für den nächsten Besucher zurücksetzen" },
+      reportConfirm: { en: "📧 Your report is on its way to {email}.", de: "📧 Dein Report ist unterwegs an {email}." },
+      sendWarn: { en: "⚠️ We couldn't reach our server yet; the connection seems unstable. Your answers are saved and we'll retry automatically. Please tell us at the booth if this message stays.", de: "⚠️ Wir erreichen unseren Server noch nicht; die Verbindung scheint instabil. Deine Antworten sind gespeichert und wir versuchen es automatisch erneut. Sag uns am Stand Bescheid, wenn diese Meldung bleibt." },
+      sendRetry: { en: "Try sending again", de: "Erneut senden" },
+      sending: { en: "Sending…", de: "Wird gesendet…" },
+      sendStillFailing: { en: "Still no connection. Your data is saved and will be sent automatically once you're back online, or please leave us a business card.", de: "Noch keine Verbindung. Deine Daten sind gespeichert und gehen automatisch raus, sobald Du wieder online bist. Sonst lass uns gern eine Visitenkarte da." },
+      bookH2: { en: "Book a 20-Minute Call", de: "20 Minuten sprechen" },
+      bookP: { en: "Your report is ready. In 20 minutes we can go through your three focus areas and what we would tackle first. No pitch, no slides.", de: "Dein Report ist fertig. In 20 Minuten gehen wir Deine drei Fokusfelder durch und was wir zuerst angehen würden. Kein Pitch, keine Folien." },
+      bookBtn: { en: "📅 Book a call with Matthias Paratsch", de: "📅 Termin mit Matthias Paratsch" },
+      stickyBtn: { en: "📅 Book a 20-minute call", de: "📅 20 Minuten sprechen" }
+    };
+
+    /* Cluster values stay English everywhere (keys for colours, payload, Make).
+       Only the display label is translated. */
+    const CLUSTER_LABELS = {
+      "Strategy & Leadership": { en: "Strategy & Leadership", de: "Strategie & Führung" },
+      "Go-To-Market": { en: "Go-To-Market", de: "Go-to-Market" },
+      "Delivery & Engineering": { en: "Delivery & Engineering", de: "Umsetzung & Engineering" },
+      "Data, AI & Compliance": { en: "Data, AI & Compliance", de: "Daten, KI & Compliance" }
+    };
+
+    /* ── Language ──
+       Order of precedence: ?lang= , stored choice, browser language, English. */
+    const SUPPORTED = ["en", "de"];
+    const LANG_KEY = "tektit_lang_v1";
+    function detectLang() {
+      const q = (location.search.match(/[?&]lang=(\w\w)/) || [])[1];
+      if (q && SUPPORTED.indexOf(q) !== -1) return q;
+      try {
+        const saved = localStorage.getItem(LANG_KEY);
+        if (saved && SUPPORTED.indexOf(saved) !== -1) return saved;
+      } catch (e) {}
+      const nav = (navigator.language || navigator.userLanguage || "en").slice(0, 2).toLowerCase();
+      return SUPPORTED.indexOf(nav) !== -1 ? nav : "en";
+    }
+    let LANG = detectLang();
+
+    // Resolves a bilingual leaf, then an archetype variant if present.
+    function tr(v) {
+      if (v == null) return "";
+      if (typeof v === "string") return v;
+      const byLang = v[LANG] !== undefined ? v[LANG] : v.en;
+      return typeof byLang === "string" ? byLang : (byLang || {})[selectedArchetype] || "";
+    }
+    function t(key, vars) {
+      const entry = UI[key];
+      let out = entry ? (entry[LANG] !== undefined ? entry[LANG] : entry.en) : key;
+      if (vars) Object.keys(vars).forEach(function(k) { out = out.split("{" + k + "}").join(vars[k]); });
+      return out;
+    }
+    function clusterLabel(c) {
+      const e = CLUSTER_LABELS[c];
+      return e ? (e[LANG] !== undefined ? e[LANG] : e.en) : c;
+    }
 
     let DIMS = []; 
     let selectedArchetype = "digital";
@@ -1693,7 +2356,12 @@
     const WEBHOOK_ENDPOINT = "https://hook.eu2.make.com/vpylwdo85cf86nhulcbe8ju55ygxc5wo";
     const CONSENT_VERSION = "2025-07-31";
     const TOOL_URL = "https://matze-tektit.github.io/Maturity/";
-    const CONSENT_TEXT = "By submitting this form you are giving consent to be contacted by Tektit Consulting GmbH and to have your assessment data processed to generate and send your report.";
+    // The consent text actually shown to the visitor, in the language they saw.
+    function consentText() {
+      const el = document.querySelector(".lead-consent span");
+      const raw = el ? el.textContent : t("gateConsent");
+      return raw.replace(/\s+/g, " ").trim();
+    }
     const SESSION_START = Date.now();
     let SUBMISSION_ID = null;
 
@@ -1724,11 +2392,12 @@
           timestamp: new Date().toISOString(),
           reportReady: false,
           resumeUrl: TOOL_URL,
+          language: LANG,
           userEmail: lead.email || "",
           lead: {
             email: lead.email || "",
             consent: !!lead.consent,
-            consentText: CONSENT_TEXT,
+            consentText: consentText(),
             consentVersion: CONSENT_VERSION,
             consentTimestamp: lead.consentTimestamp || null
           }
@@ -1777,6 +2446,7 @@
         submissionId: SUBMISSION_ID,
         timestamp: new Date().toISOString(),
         archetype: selectedArchetype,
+        language: LANG,
         reportReady: true,
         resumeUrl: TOOL_URL,
         suspectedBot: !!lead.suspectedBot,
@@ -1790,7 +2460,7 @@
           email: lead.email || "",
           company: lead.company || "",
           consent: !!lead.consent,
-          consentText: CONSENT_TEXT,
+          consentText: consentText(),
           consentVersion: CONSENT_VERSION,
           consentTimestamp: lead.consentTimestamp || null
         },
@@ -1883,12 +2553,12 @@
       if (withRetry) {
         const b = document.createElement("button");
         b.type = "button";
-        b.textContent = "Try sending again";
+        b.textContent = t("sendRetry");
         b.addEventListener("click", function() {
-          el.textContent = "Sending…";
+          el.textContent = t("sending");
           flushQueue().then(function() {
             if (readQueue().length) {
-              showSendStatus("Still no connection. Your data is saved and will be sent automatically once you're back online, or please leave us a business card.", true);
+              showSendStatus(t("sendStillFailing"), true);
             }
           });
         });
@@ -1909,7 +2579,7 @@
         .catch(function(err) {
           console.error("Send failed, queued for retry:", err);
           enqueue(payload);
-          showSendStatus("⚠️ We couldn't reach our server yet; the connection seems unstable. Your answers are saved and we'll retry automatically. Please tell us at the booth if this message stays.", true);
+          showSendStatus(t("sendWarn"), true);
           return false;
         });
     }
@@ -1924,6 +2594,72 @@
         } catch (e) {}
       });
     });
+    /* Writes every marked string for the active language. Called on boot and on
+       every language switch. */
+    function applyLang() {
+      document.documentElement.lang = LANG;
+      document.querySelectorAll("[data-i18n]").forEach(function(el) {
+        el.innerHTML = t(el.getAttribute("data-i18n"));
+      });
+      document.querySelectorAll("[data-i18n-ph]").forEach(function(el) {
+        el.setAttribute("placeholder", t(el.getAttribute("data-i18n-ph")));
+      });
+      document.querySelectorAll("[data-wiz-label]").forEach(function(el) {
+        el.textContent = clusterLabel(CLUSTERS[parseInt(el.getAttribute("data-wiz-label"), 10)]);
+      });
+      document.querySelectorAll("#langSwitch button").forEach(function(b) {
+        b.setAttribute("aria-pressed", String(b.dataset.lang === LANG));
+      });
+      const book = document.querySelector(".minto-booking-btn");
+      if (book) book.textContent = t("bookBtn");
+      const sticky = document.getElementById("stickyBookBtn");
+      if (sticky) { sticky.textContent = t("stickyBtn"); sticky.setAttribute("title", t("bookBtn")); }
+    }
+
+    /* Switching language must never cost the visitor their answers. Because ids,
+       order and weights are identical in both languages, the indices still line up. */
+    function setLang(next) {
+      if (next === LANG || SUPPORTED.indexOf(next) === -1) return;
+      const keep = {};
+      DIMS.forEach(function(d) {
+        const idxs = [];
+        document.querySelectorAll("#dc-" + d.id + " .dim-cb").forEach(function(cb, i) {
+          if (cb.checked) idxs.push(i);
+        });
+        if (idxs.length) keep[d.id] = idxs;
+      });
+      const step = currentStep;
+
+      LANG = next;
+      if (!KIOSK) { try { localStorage.setItem(LANG_KEY, LANG); } catch (e) {} }
+
+      compileArchetypeData();
+      buildUI();
+      applyLang();
+
+      Object.keys(keep).forEach(function(id) {
+        keep[id].forEach(function(i) {
+          const cb = document.getElementById("cb-" + id + "-" + i);
+          if (cb) { cb.checked = true; const lab = cb.closest(".el-label"); if (lab) lab.classList.add("is-checked"); }
+        });
+        updateDimCard(id);
+      });
+
+      currentStep = 0;
+      for (let k = 0; k < step; k++) { /* jump without animation */ }
+      document.getElementById("stepPane-0").classList.remove("active");
+      currentStep = step;
+      const pane = document.getElementById("stepPane-" + currentStep);
+      pane.classList.add("active");
+      pane.style.opacity = "1";
+      pane.style.transform = "translateY(0)";
+
+      syncWizardButtonsState();
+      updateGlobalProgress();
+      document.getElementById("results").style.display = "none";
+      teardownStickyBar();
+    }
+
     let currentStep = 0;
     let isTransitioning = false;
 
@@ -1946,15 +2682,15 @@
       DIMS = DIMS_TEMPLATE.map(template => {
         return {
           id: template.id,
-          name: typeof template.name === "object" ? template.name[selectedArchetype] : template.name,
+          name: tr(template.name),
           icon: template.icon,
           cluster: template.cluster,
           strategicWeight: template.strategicWeight,
           elements: template.elements.map(el => {
             return {
-              t: typeof el.t === "object" ? el.t[selectedArchetype] : el.t,
+              t: tr(el.t),
               w: el.w,
-              desc: typeof el.desc === "object" ? el.desc[selectedArchetype] : el.desc
+              desc: tr(el.desc)
             };
           })
         };
@@ -1976,7 +2712,7 @@
         
         const heading = document.createElement("h2");
         heading.className = "pane-title";
-        heading.textContent = clusterName;
+        heading.textContent = clusterLabel(clusterName);
         pane.appendChild(heading);
 
         const stepDims = DIMS.filter(d => d.cluster === clusterName);
@@ -2025,7 +2761,7 @@
 
         const dynamicCheckedCount = document.querySelectorAll(".dim-cb:checked").length;
         if (dynamicCheckedCount > 0) {
-          if (!confirm("Changing your business profile track will wipe all current checkbox selections. Proceed?")) {
+          if (!confirm(t("archSwitchWarn"))) {
             return;
           }
         }
@@ -2139,7 +2875,7 @@
       });
 
       document.getElementById("progFill").style.width = (assessedCount / DIMS.length * 100) + "%";
-      document.getElementById("progText").textContent = assessedCount + " of " + DIMS.length + " dimensions reviewed";
+      document.getElementById("progText").textContent = t("progText", { n: assessedCount, t: DIMS.length });
       document.getElementById("headerCount").textContent = totalChecked;
 
       updateLiveScore();
@@ -2213,7 +2949,7 @@
     }
 
     function resetAll() {
-      if (!confirm("Clear all selections and start over?")) return;
+      if (!confirm(t("resetWarn"))) return;
       try { localStorage.removeItem(PROGRESS_KEY); } catch (e) {}
       dimAssessment = {};
       document.querySelectorAll(".dim-cb").forEach(cb => {
@@ -2305,6 +3041,11 @@
         });
       }
 
+      document.getElementById("langSwitch").addEventListener("click", function(e) {
+        const b = e.target.closest("button[data-lang]");
+        if (b) setLang(b.dataset.lang);
+      });
+
       initEarlyLink();
       flushQueue();
 
@@ -2324,17 +3065,17 @@
         const companyVal = (companyInput.value || "").trim();
 
         if (!emailInput.checkValidity() || !emailVal) {
-          alert("Please enter a valid work email address so we can send you your report.");
+          alert(t("errEmail"));
           emailInput.focus();
           return;
         }
         if (!companyVal) {
-          alert("Please enter your company name.");
+          alert(t("errCompany"));
           companyInput.focus();
           return;
         }
         if (!consentInput.checked) {
-          alert("Please tick the consent box so we can process your data and send your report.");
+          alert(t("errConsent"));
           consentInput.focus();
           return;
         }
@@ -2354,12 +3095,14 @@
         deliver(buildBenchmarkPayload("lead_unlock", lead));
 
         const confirm = document.getElementById("reportConfirm");
-        confirm.textContent = "📧 Your report is on its way to " + emailVal + ".";
+        confirm.textContent = t("reportConfirm", { email: emailVal });
         confirm.style.display = "block";
 
-        document.getElementById("userGreeting").textContent = nameVal ? `Hello ${nameVal.split(' ')[0]}, Here Are Your Results:` : "Your Results:";
+        document.getElementById("userGreeting").textContent = nameVal ? t("greeting", { name: nameVal.split(" ")[0] }) : t("resultsTitle");
         evaluate(false); 
       });
+
+      applyLang();
 
       // Restore any in-progress answers from a previous (unfinished) session
       restoreProgress();
@@ -2381,13 +3124,13 @@
 
         if (!email || !input.checkValidity()) {
           msg.className = "early-msg err";
-          msg.textContent = "Please enter a valid email address.";
+          msg.textContent = t("earlyErrEmail");
           input.focus();
           return;
         }
         if (!consent.checked) {
           msg.className = "early-msg err";
-          msg.textContent = "Please tick the consent box so we may email you the link.";
+          msg.textContent = t("earlyErrConsent");
           consent.focus();
           return;
         }
@@ -2402,7 +3145,7 @@
         document.getElementById("earlyLinkForm").style.display = "none";
         document.getElementById("earlyConsentRow").style.display = "none";
         msg.className = "early-msg ok";
-        msg.textContent = "✅ Link sent to " + email + "; you can also just start below.";
+        msg.textContent = t("earlyOk", { email: email });
       });
     }
 
@@ -2430,7 +3173,7 @@
         const modal = document.getElementById("scopeModal");
         dimAssessment = {};
         modal.style.display = "none";
-        alert("We need at least one dimension to work with. Please answer a few items, or mark a dimension as \"nothing established\" so we can score it.");
+        alert(t("scopeNone"));
         return;
       }
       evaluate(true);
@@ -2528,17 +3271,14 @@
       const avg = weightedOverall(scored);
 
       document.getElementById("assessmentBasis").textContent =
-        "Basis: " + scored.length + " of " + scores.length + " dimensions assessed" +
-        (skipped ? " · " + skipped + " not assessed and excluded from the score" : "");
-      document.getElementById("radarNote").textContent =
-        skipped ? "Dimensions shown in grey were not assessed and are not part of your score." : "";
+        t("basis", { n: scored.length, t: scores.length }) +
+        (skipped ? t("basisSkipped", { s: skipped }) : "");
+      document.getElementById("radarNote").textContent = skipped ? t("radarNote") : "";
       animateScoreCounter(avg);
       drawScoreRing(avg);
       
       document.getElementById("scoreSubtitle").textContent =
-        avg < 1.8 ? "Foundation Stage: A lot currently runs on manual workarounds and personal commitment. That holds at a steady load, but becomes the bottleneck as soon as volume grows." :
-        avg < 3.2 ? "Working Baseline: Your core processes hold up. As volume grows, friction typically shows up at the handovers between teams and systems." :
-        "Scale-Ready: Your processes and systems mesh well. The leverage now lies less in cleaning up and more in targeted expansion.";
+        avg < 1.8 ? t("bandFoundation") : avg < 3.2 ? t("bandWorking") : t("bandScale");
 
       const cards = document.getElementById("resCards");
       let cardsHtml = "";
@@ -2547,7 +3287,7 @@
           cardsHtml += `<div class="res-card res-card-skipped" style="border-top-color:#cbd5e0 !important;">
             <div class="rc-head"><span class="rc-name">${r.icon} ${r.name}</span><span class="rc-badge" style="color:#a0aec0 !important;">–</span></div>
             <div class="rc-bar-wrap"><div class="rc-bar" style="width:0%; background:#cbd5e0 !important;"></div></div>
-            <div class="rc-detail">Not assessed</div>
+            <div class="rc-detail">${t("notAssessed")}</div>
             </div>`;
           return;
         }
@@ -2556,7 +3296,7 @@
         cardsHtml += `<div class="res-card" style="opacity:${r.score === 0 ? "0.45" : "1"}; border-top-color:${pc} !important;">
           <div class="rc-head"><span class="rc-name">${r.icon} ${r.name}</span><span class="rc-badge" style="color:${pillarText(r.cluster)} !important;">${r.score.toFixed(1)}</span></div>
           <div class="rc-bar-wrap"><div class="rc-bar" style="width:${pct}%; background:${pc} !important;"></div></div>
-          <div class="rc-detail">${r.checked} of ${r.total} elements established</div>
+          <div class="rc-detail">${t("elementsEstablished", { c: r.checked, t: r.total })}</div>
           </div>`;
       });
       cards.innerHTML = cardsHtml;
@@ -2578,36 +3318,32 @@
       const allStrong = scored.length === scores.length && scored.every(function(r){ return r.score >= STRONG; });
 
       if (allStrong) {
-        document.getElementById("focusHeading").textContent = "You've built something rare";
+        document.getElementById("focusHeading").textContent = t("congratsH");
         if (focusDescEl) focusDescEl.style.display = "none";
         if (focusNoteEl) focusNoteEl.style.display = "none";
         pList.innerHTML =
           '<div class="prio-row" style="border-left-color:#52A5B0;">' +
           '<div class="prio-content">' +
-          '<div class="prio-name">🎉 Nothing urgent to fix</div>' +
-          '<p style="font-size:0.92rem; color:#051F2E; line-height:1.6; margin-bottom:0;">' +
-          'Across all twelve dimensions, everything is broadly in place; there is no single bottleneck holding you back. That is uncommon, and it usually reflects a lot of deliberate work.<br><br>' +
-          'We would genuinely like to hear how you got there. If you are open to it, let\'s talk: no pitch, just a conversation about your journey.' +
-          '</p></div></div>';
+          '<div class="prio-name">' + t("congratsTitle") + '</div>' +
+          '<p style="font-size:0.92rem; color:#051F2E; line-height:1.6; margin-bottom:0;">' + t("congratsBody") + '</p></div></div>';
       } else {
       // With fewer than three assessed dimensions the heading must not promise three.
       if (focusDescEl) focusDescEl.style.display = "";
       if (focusNoteEl) focusNoteEl.style.display = "";
       document.getElementById("focusHeading").textContent =
-        top3.length >= 3 ? "Your Top 3 Focus Areas" :
-        top3.length === 2 ? "Your Top 2 Focus Areas" : "Your Focus Area";
+        top3.length >= 3 ? t("focusH3") : top3.length === 2 ? t("focusH2") : t("focusH1");
 
       top3.forEach(function(r, i) {
-        const nextStepsText = ACTIONABLE_NEXT_STEPS[r.id] || "";
-        const hintText = CONTEXT_HINTS[r.id] || "";
+        const nextStepsText = tr(ACTIONABLE_NEXT_STEPS[r.id]) || "";
+        const hintText = tr(CONTEXT_HINTS[r.id]) || "";
         
         pList.innerHTML += `<div class="prio-row">
-          <div class="prio-rank">Priority ${i + 1}</div>
+          <div class="prio-rank">${t("prioRank", { n: i + 1 })}</div>
           <div class="prio-content">
             <div class="prio-name">${r.icon} ${r.name} &bull; Score: ${r.score.toFixed(1)}/5.0</div>
             <p style="font-size: 0.85rem; color: #3D4585; margin-bottom: 8px; font-weight: 600; line-height: 1.45;">${hintText}</p>
             <div style="margin: 12px 0 0; padding: 16px; background: #fafbfc; border-left: 4px solid #52A5B0; font-size: 0.9rem; color: #051F2E; line-height: 1.55;">
-              <strong>Recommended next steps:</strong> ${nextStepsText}
+              <strong>${t("nextStepsLabel")}</strong> ${nextStepsText}
             </div>
           </div>
         </div>`;
@@ -2641,11 +3377,9 @@
         
         bookingSec.innerHTML = `
           <div class="minto-booking-card">
-            <h2>Book a 20-Minute Call</h2>
-            <p>
-              Your report is ready. In 20 minutes we can go through your three focus areas and what we would tackle first. No pitch, no slides.
-            </p>
-            <a href="https://calendar.app.google/D4xqjmvEALBMTgg47" target="_blank" rel="noopener noreferrer" class="minto-booking-btn">📅 Book a call with Matthias Paratsch</a>
+            <h2>${t("bookH2")}</h2>
+            <p>${t("bookP")}</p>
+            <a href="https://calendar.app.google/D4xqjmvEALBMTgg47" target="_blank" rel="noopener noreferrer" class="minto-booking-btn">${t("bookBtn")}</a>
           </div>`;
         bookingSec.style.display = "block";
         
@@ -2782,8 +3516,8 @@
       const bookSource = document.querySelector(".minto-booking-btn");
       const bookBtn = document.getElementById("stickyBookBtn");
       if (bookBtn) {
-        bookBtn.textContent = "📅 Book a 20-minute call";
-        if (bookSource) bookBtn.setAttribute("title", bookSource.textContent.trim());
+        bookBtn.textContent = t("stickyBtn");
+        bookBtn.setAttribute("title", t("bookBtn"));
       }
 
       // Show the sticky bar only while the real action row is off-screen
