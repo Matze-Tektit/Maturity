@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1052,14 +1053,10 @@
     }
 
     /* ── Early link capture ── */
+    /* Erbt Rahmen, Radius und Verhalten von .usage-accordion; hier bleibt nur,
+       was diese Box von der Erklärbox unterscheidet. */
     .early-link {
-      background: #fff;
-      border: 1px solid var(--tk-border);
       border-left: 3px solid var(--tk-teal);
-      border-radius: 4px;
-      padding: 18px 20px;
-      margin-top: 24px;
-      max-width: 840px;
     }
     .early-link-text { font-size: 0.9rem; color: #2d3748; margin-bottom: 12px; }
     .early-link-form { display: flex; gap: 10px; flex-wrap: wrap; }
@@ -1243,7 +1240,12 @@
       <p data-i18n="introP3"></p>
       <p data-i18n="introP4"></p>
       
-      <section class="early-link" id="earlyLink">
+      <!-- Eingeklappt wie "So nutzt Du das Tool": dieselbe <details>-Mechanik
+           und derselbe Rahmen. Der Teal-Streifen links bleibt, damit die Box mit
+           dem Formular sich von der reinen Erklärbox unterscheidet. -->
+      <details class="usage-accordion early-link" id="earlyLink">
+        <summary data-i18n="earlySummary"></summary>
+        <div class="accordion-content">
         <div class="early-link-text">
 <span data-i18n="earlyText"></span>
         </div>
@@ -1257,7 +1259,8 @@
           <span data-i18n="earlyConsent"></span>
         </label>
         <div class="early-msg" id="earlyMsg" role="status" aria-live="polite"></div>
-      </section>
+        </div>
+      </details>
 
       <details class="usage-accordion">
         <summary data-i18n="accSummary">How to use this tool</summary>
@@ -1504,7 +1507,7 @@
             logistics:"Our operational teams can resolve routing and transit issues on the fly without waiting for approval."
            },
           de:{
-            digital:"Unsere Leute können in ihrem Bereich entscheiden, ohne ständig eine Freigabe von oben zu brauchen.",
+            digital:"Unsere Mitarbeitenden können in ihrem Bereich entscheiden, ohne ständig eine Freigabe von oben zu brauchen.",
             services:"Unsere Projektteams können Kundenbeziehungen und Projektentscheidungen selbst steuern.",
             mittelstand:"Wir haben klare, dokumentierte Regeln, wer welche operativen Entscheidungen treffen darf.",
             logistics:"Unsere operativen Teams lösen Routing- und Transportprobleme direkt, ohne auf Freigaben zu warten."
@@ -1808,7 +1811,7 @@
            }
          }, w: 1, desc:{
           en:"Keeping an eye on resource utilization so you don't burn out top performers during a rush.",
-          de:"Auslastung im Blick behalten, damit Deine besten Leute nicht in Spitzen verbrennen."
+          de:"Auslastung im Blick behalten, damit Deine besten Mitarbeitenden nicht in Spitzen verbrennen."
          }},
         {t:{
           en:{
@@ -2199,11 +2202,12 @@
       selectedLabel: { en: "Selected:", de: "Ausgewählt:" },
       langHint: { en: "Language", de: "Sprache" },
       introH2: { en: "Most companies don't know where they actually stand.", de: "Die meisten Unternehmen wissen nicht, wo sie wirklich stehen." },
-      introP1: { en: "They invest in tools, hire talent, and run initiatives, yet growth stalls and decisions slow down. Across more than 40 projects we have seen the same causes again and again: internal silos, endless alignment loops, and teams reinventing the same wheel. Behind that sit hidden bottlenecks and a daily build-up of busy work.", de: "Sie investieren in Tools, holen gute Leute und starten Initiativen. Trotzdem stockt das Wachstum und Entscheidungen dauern länger. In über 40 Projekten haben wir immer wieder dieselben Ursachen gesehen: Silos, endlose Abstimmungsrunden und Teams, die dasselbe Rad neu erfinden. Dahinter stecken verdeckte Engpässe und immer mehr Beschäftigung mit sich selbst." },
+      introP1: { en: "They invest in tools, hire talent, and run initiatives, yet growth stalls and decisions slow down. Across more than 40 projects we have seen the same causes again and again: internal silos, endless alignment loops, and teams reinventing the same wheel. Behind that sit hidden bottlenecks and a daily build-up of busy work.", de: "Sie investieren in Tools, holen gute Fachkräfte und starten Initiativen. Trotzdem stockt das Wachstum und Entscheidungen dauern länger. In über 40 Projekten haben wir immer wieder dieselben Ursachen gesehen: Silos, endlose Abstimmungsrunden und Teams, die dasselbe Rad neu erfinden. Dahinter stecken verdeckte Engpässe und immer mehr Beschäftigung mit sich selbst." },
       introP2: { en: "At Tektit, we build market leaders. Not as a tagline, but as a track record: we have worked inside high-performing organisations, and we have applied what we learned with more than 40 companies. Now we are putting it in your hands.", de: "Bei Tektit bauen wir Marktführer. Nicht als Slogan, sondern als Bilanz: Wir haben in leistungsstarken Organisationen selbst gearbeitet und das Gelernte mit über 40 Unternehmen angewendet. Jetzt geben wir es Dir in die Hand." },
       introP3: { en: "In under ten minutes you will see where you are strong, where you are losing ground, and what to fix first.", de: "In unter zehn Minuten siehst Du, wo Du stark bist, wo Du Boden verlierst und was Du zuerst angehen solltest." },
       introP4: { en: "No fluff. No consultant-speak. Just clarity.", de: "Kein Blabla. Kein Beratersprech. Nur Klarheit." },
-      earlyText: { en: "<strong>Short on time?</strong> We'll email you the link; complete the check later, for example on your way home.", de: "<strong>Keine Zeit?</strong> Wir schicken Dir den Link; Du kannst den Check später machen, zum Beispiel auf der Rückfahrt." },
+      earlySummary: { en: "Short on time?", de: "Keine Zeit?" },
+      earlyText: { en: "We'll email you the link; complete the check later, for example on your way home.", de: "Wir schicken Dir den Link; Du kannst den Check später machen, zum Beispiel auf der Rückfahrt." },
       earlyPlaceholder: { en: "your.name@company.com", de: "dein.name@firma.de" },
       earlyBtn: { en: "Send me the link", de: "Link schicken" },
       earlyConsent: { en: "I agree to be contacted by Tektit Consulting GmbH and to receive the link and my report by email. See our <a href=\"https://www.tektitconsulting.com/datenschutz\" target=\"_blank\" rel=\"noopener noreferrer\">Data Privacy</a> notice.", de: "Ich bin damit einverstanden, dass die Tektit Consulting GmbH mich kontaktiert und mir den Link sowie meinen Report per E-Mail schickt. Siehe unsere <a href=\"https://www.tektitconsulting.com/datenschutz\" target=\"_blank\" rel=\"noopener noreferrer\">Datenschutzhinweise</a>." },
@@ -2249,6 +2253,7 @@
       errEmail: { en: "Please enter a valid work email address so we can send you your report.", de: "Bitte gib eine gültige geschäftliche E-Mail-Adresse ein, damit wir Dir den Report schicken können." },
       errCompany: { en: "Please enter your company name.", de: "Bitte gib den Namen Deines Unternehmens ein." },
       errConsent: { en: "Please tick the consent box so we can process your data and send your report.", de: "Bitte setz das Häkchen, damit wir Deine Daten verarbeiten und den Report schicken dürfen." },
+      changedAfterSend: { en: "You have changed answers since Your report was sent. What You see here is current; the PDF in Your inbox shows the earlier state. Reload the page to start over and get a fresh report.", de: "Du hast Antworten geändert, nachdem Dein Report verschickt wurde. Was Du hier siehst, ist aktuell. Das PDF in Deinem Postfach zeigt den Stand von vorher. Lade die Seite neu, wenn Du von vorn beginnen und einen neuen Report bekommen willst." },
       resultsTitle: { en: "Your Results", de: "Deine Ergebnisse" },
       greeting: { en: "Hello {name}, Here Are Your Results:", de: "Hallo {name}, hier sind Deine Ergebnisse:" },
       bandFoundation: { en: "Foundation Stage: A lot currently runs on manual workarounds and personal commitment. That holds at a steady load, but it becomes the bottleneck as soon as volume grows.", de: "Foundation Stage: Vieles läuft heute über manuelle Umwege und persönlichen Einsatz. Bei gleichbleibender Last funktioniert das, bei steigendem Volumen wird es zum Engpass." },
@@ -2369,7 +2374,10 @@
     const BENCHMARK_SCHEMA_VERSION = 2;
     const WEBHOOK_ENDPOINT = "https://hook.eu2.make.com/vpylwdo85cf86nhulcbe8ju55ygxc5wo";
     const CONSENT_VERSION = "2025-07-31";
-    const TOOL_URL = "https://matze-tektit.github.io/Maturity/";
+    // Der Fortschritt liegt in localStorage, und localStorage hängt an der Domain.
+    // Ein Resume-Link auf einen anderen Host landet auf einer Seite, die die
+    // gespeicherten Antworten nicht sieht. Also die Domain, die Besucher nutzen.
+    const TOOL_URL = "https://maturity.tektitconsulting.com/";
     // The consent text actually shown to the visitor, in the language they saw.
     function consentText() {
       const el = document.querySelector(".lead-consent span");
@@ -3023,6 +3031,7 @@
           } else {
             label.classList.remove('is-checked');
           }
+          if (leadCaptured) answersChangedSinceSend = true;
           updateDimCard(cb.dataset.dim);
           updateGlobalProgress();
         }
@@ -3134,6 +3143,8 @@
         confirm.style.display = "block";
 
         document.getElementById("userGreeting").textContent = nameVal ? t("greeting", { name: nameVal.split(" ")[0] }) : t("resultsTitle");
+        leadCaptured = true;
+        answersChangedSinceSend = false;
         evaluate(false); 
       });
 
@@ -3211,7 +3222,8 @@
         alert(t("scopeNone"));
         return;
       }
-      evaluate(true);
+      /* Gesperrt nur für jemanden, der die Maske noch nicht durchlaufen hat. */
+      evaluate(!leadCaptured);
     }
 
     function calcScore(dimId) {
@@ -3277,6 +3289,15 @@
         }
       }, stepTime);
     }
+
+    /* Wird gesetzt, sobald die Maske einmal durchlaufen wurde. Wer seine
+       Kontaktdaten schon abgegeben hat, darf kein zweites Mal gefragt werden
+       und nicht vor verwischten Ergebnissen sitzen. Vorher landete man nach
+       einer Änderung erneut in der Maske, und ein zweiter Klick auf
+       Freischalten hat tatsächlich ein zweites Mal gesendet: zweite Zeile in
+       beiden Tabellen, zweiter Lead in Copper, zweite Mail. */
+    let leadCaptured = false;
+    let answersChangedSinceSend = false;
 
     function evaluate(isLocked) {
       const scores = DIMS.map(function(d) {
@@ -3414,8 +3435,16 @@
           <div class="minto-booking-card">
             <h2>${t("bookH2")}</h2>
             <p>${t("bookP")}</p>
-            <a href="https://calendar.app.google/D4xqjmvEALBMTgg47" target="_blank" rel="noopener noreferrer" class="minto-booking-btn">${t("bookBtn")}</a>
+            <a href="https://calendar.app.google/JtTkeRwwHmdsgsBD6" target="_blank" rel="noopener noreferrer" class="minto-booking-btn">${t("bookBtn")}</a>
           </div>`;
+        /* Das PDF ging im Moment des Freischaltens raus. Wenn danach Antworten
+           geändert wurden, stimmen Bildschirm und verschickter Report nicht mehr
+           überein, und das zu sagen ist besser, als es jemanden selbst
+           herausfinden zu lassen. */
+        if (leadCaptured && answersChangedSinceSend) {
+          bookingSec.insertAdjacentHTML("afterbegin",
+            '<p class="small" style="margin-bottom:14px">' + t("changedAfterSend") + '</p>');
+        }
         bookingSec.style.display = "block";
         
         resultsSection.scrollIntoView({behavior: "smooth", block: "start"});
