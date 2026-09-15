@@ -1158,6 +1158,17 @@
     .pl-score { font-weight: 800; }
     .pl-none { color: #a0aec0; font-weight: 600; }
 
+    .diag-line {
+      font-size: 0.9rem;
+      line-height: 1.55;
+      color: var(--tk-dark);
+      background: #f4f7fb;
+      border-left: 3px solid var(--tk-teal);
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      border-radius: 0 4px 4px 0;
+    }
+
     .radar-note {
       font-size: 0.75rem; color: #718096; font-style: italic;
       text-align: center; margin-top: 10px; line-height: 1.45;
@@ -1382,6 +1393,10 @@
             <div class="brand-title">TEKTIT</div>
             <div class="report-subtitle" data-i18n="reportSubtitle"></div>
           </div>
+
+          <!-- Der Befund zur schwächsten Säule, wie im AI Self Check. Er steht
+               über dem Radar, weil er die Zahl darunter in einen Satz übersetzt. -->
+          <div id="diagLines"></div>
 
           <p class="assessment-basis" id="assessmentBasis"></p>
 
@@ -2285,6 +2300,8 @@
       dimsH3: { en: "All Twelve Dimensions", de: "Alle zwölf Dimensionen" },
       radarNote: { en: "Dimensions shown in grey were not assessed and are not part of your score.", de: "Grau dargestellte Dimensionen wurden nicht bewertet und zählen nicht in den Score." },
       pillarNoScore: { en: "not assessed", de: "nicht bewertet" },
+      weakestPillarSame: { en: "Your weakest pillar is {pillar}, at {score} of 5.0. Your first focus area sits there too, so that is where to start.", de: "Deine schwächste Säule ist {pillar} mit {score} von 5,0. Dein erstes Fokusfeld liegt ebenfalls dort, also fängst Du hier an." },
+      weakestPillarDiff: { en: "Your weakest pillar is {pillar}, at {score} of 5.0. The largest single lever is {dim}, which is why your focus areas start there: one dimension can matter more than the average of a whole pillar.", de: "Deine schwächste Säule ist {pillar} mit {score} von 5,0. Den größten Einzelhebel hat {dim}, deshalb beginnen Deine Fokusfelder dort: Eine einzelne Dimension kann mehr wiegen als der Durchschnitt einer ganzen Säule." },
       notAssessed: { en: "Not assessed", de: "Nicht bewertet" },
       elementsEstablished: { en: "{c} of {t} elements established", de: "{c} von {t} Punkten etabliert" },
       focusH3: { en: "Your Top 3 Focus Areas", de: "Deine 3 wichtigsten Fokusfelder" },
@@ -2354,6 +2371,13 @@
       if (vars) Object.keys(vars).forEach(function(k) { out = out.split("{" + k + "}").join(vars[k]); });
       return out;
     }
+    /* Deutsch schreibt 1,7 und nicht 1.7. Der Satz daneben sagt schon
+       "von 5,0", ein rohes toFixed liest sich darin falsch. */
+    function num(v, digits) {
+      const x = Number(v).toFixed(digits === undefined ? 1 : digits);
+      return LANG === "de" ? x.replace(".", ",") : x;
+    }
+
     function clusterLabel(c) {
       const e = CLUSTER_LABELS[c];
       return e ? (e[LANG] !== undefined ? e[LANG] : e.en) : c;
@@ -3280,7 +3304,7 @@
                (v === null
                   ? '<span class="pl-none">' + t("pillarNoScore") + '</span>'
                   : '<span class="pl-score" style="color:' + pillarText(c) + '">' +
-                    v.toFixed(1) + '/5.0</span>') +
+                    num(v) + (LANG === "de" ? "/5,0" : "/5.0") + '</span>') +
                '</span>';
       }).join("");
     }
@@ -3402,6 +3426,32 @@
 
       const sorted = scored.slice().sort(function(a, b) { return b.leverage - a.leverage; });
       const top3 = sorted.slice(0, 3);
+
+      /* Befund zur schwächsten Säule. Er bezieht sich ausdrücklich auf das
+         stärkste Fokusfeld, sonst liest sich die Seite widersprüchlich: eine
+         Säule kann im Mittel am schwächsten sein, während die wirksamste
+         Einzeldimension in einer anderen liegt. */
+      (function renderDiag() {
+        const el = document.getElementById("diagLines");
+        if (!el) return;
+        el.innerHTML = "";
+        if (scored.length < 2) return;
+        let weakest = null, low = Infinity;
+        CLUSTERS.forEach(function(c) {
+          const inC = scored.filter(function(d){ return d.cluster === c; });
+          if (!inC.length) return;
+          const v = weightedOverall(inC);
+          if (v < low) { low = v; weakest = c; }
+        });
+        if (!weakest) return;
+        const topLever = sorted[0];
+        const sameArea = topLever && topLever.cluster === weakest;
+        el.innerHTML = '<p class="diag-line">' +
+          (sameArea
+            ? t("weakestPillarSame", { pillar: clusterLabel(weakest), score: num(low) })
+            : t("weakestPillarDiff", { pillar: clusterLabel(weakest), score: num(low),
+                                       dim: topLever ? topLever.name : "" })) + '</p>';
+      })();
 
       const focusCard = document.getElementById("focusCard");
       const focusDescEl = focusCard.querySelector(".focus-desc");
@@ -3606,22 +3656,34 @@
           else { groups.push({ cluster: c, start: j, end: j }); }
         });
         const step = 2 * Math.PI / numDims;
-        const rArc = rMax + 10;
+        /* Der Bogen läuft auf dem äußersten Gitterring, nicht außerhalb davon.
+           Außerhalb schnitt er bei langen, dreizeiligen Beschriftungen mitten
+           durch den Text; zwischen Ring und Beschriftung ist schlicht kein
+           freier Raum. Auf dem Ring gibt es keinen Konflikt, und der Verlauf
+           folgt exakt dem Gitter, weil er durch dieselben Eckpunkte geht wie
+           das äußerste Vieleck. */
+        function ringPoint(k) {
+          const a = (k * step) - Math.PI / 2;
+          return [cx + rMax * Math.cos(a), cy + rMax * Math.sin(a)];
+        }
+        function edgePoint(k, towards, frac) {
+          const p0 = ringPoint(k), p1 = ringPoint(towards);
+          return [p0[0] + (p1[0] - p0[0]) * frac, p0[1] + (p1[1] - p0[1]) * frac];
+        }
         groups.forEach(function(g) {
-          const gap = step * 0.10;
-          const a0 = (g.start * step) - Math.PI / 2 - step / 2 + gap;
-          const a1 = (g.end   * step) - Math.PI / 2 + step / 2 - gap;
-          const x0 = cx + rArc * Math.cos(a0), y0 = cy + rArc * Math.sin(a0);
-          const x1 = cx + rArc * Math.cos(a1), y1 = cy + rArc * Math.sin(a1);
-          const big = (a1 - a0) > Math.PI ? 1 : 0;
+          /* Bis zur Mitte der Kante zum Nachbarn, minus ein Stück als Spalt,
+             damit zwei Säulen sich nicht berühren. */
+          const pts = [edgePoint(g.start, g.start - 1, 0.40)];
+          for (let k = g.start; k <= g.end; k++) pts.push(ringPoint(k));
+          pts.push(edgePoint(g.end, g.end + 1, 0.40));
           const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-          path.setAttribute("d", "M " + x0 + " " + y0 + " A " + rArc + " " + rArc +
-                                 " 0 " + big + " 1 " + x1 + " " + y1);
+          path.setAttribute("d", "M " + pts.map(function(p) { return p[0] + " " + p[1]; }).join(" L "));
           path.setAttribute("fill", "none");
           path.setAttribute("stroke", pillarColor(g.cluster));
-          path.setAttribute("stroke-width", "3");
+          path.setAttribute("stroke-width", "3.5");
           path.setAttribute("stroke-linecap", "round");
-          path.setAttribute("opacity", "0.9");
+          path.setAttribute("stroke-linejoin", "round");
+          path.setAttribute("opacity", "0.95");
           svg.appendChild(path);
         });
       })();
