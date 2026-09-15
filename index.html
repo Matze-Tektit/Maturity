@@ -1140,6 +1140,24 @@
       text-transform: uppercase; letter-spacing: 0.08em;
       margin-bottom: 20px;
     }
+    /* Vier Säulen, ihre Farbe im Diagramm und ihr Wert. Ohne das zeigte die
+       Ergebnisseite zwölf Dimensionen, aber nirgends, welche zu welcher Säule
+       gehört und wie die Säule abgeschnitten hat. */
+    .pillar-legend {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px 20px;
+      margin-top: 10px;
+      font-size: 0.82rem;
+      line-height: 1.35;
+    }
+    .pl-item { display: flex; align-items: baseline; gap: 7px; }
+    .pl-swatch { width: 18px; height: 3px; border-radius: 2px; display: inline-block; transform: translateY(-3px); }
+    .pl-name { color: var(--tk-dark); font-weight: 600; }
+    .pl-score { font-weight: 800; }
+    .pl-none { color: #a0aec0; font-weight: 600; }
+
     .radar-note {
       font-size: 0.75rem; color: #718096; font-style: italic;
       text-align: center; margin-top: 10px; line-height: 1.45;
@@ -1372,6 +1390,7 @@
             <div style="max-width:660px; margin:0 auto; padding: 10px;">
               <svg id="radarSvg" viewBox="0 0 600 520" style="width:100%; height:auto; overflow: visible;"></svg>
             </div>
+            <div class="pillar-legend" id="pillarLegend"></div>
             <p class="radar-note" id="radarNote"></p>
           </div>
           
@@ -2265,6 +2284,7 @@
       radarH3: { en: "Maturity Radar", de: "Maturity Radar" },
       dimsH3: { en: "All Twelve Dimensions", de: "Alle zwölf Dimensionen" },
       radarNote: { en: "Dimensions shown in grey were not assessed and are not part of your score.", de: "Grau dargestellte Dimensionen wurden nicht bewertet und zählen nicht in den Score." },
+      pillarNoScore: { en: "not assessed", de: "nicht bewertet" },
       notAssessed: { en: "Not assessed", de: "Nicht bewertet" },
       elementsEstablished: { en: "{c} of {t} elements established", de: "{c} von {t} Punkten etabliert" },
       focusH3: { en: "Your Top 3 Focus Areas", de: "Deine 3 wichtigsten Fokusfelder" },
@@ -3245,6 +3265,26 @@
 
     // Weighted overall score: matches the stated methodology (foundational dimensions
     // carry a higher strategic weighting than secondary ones).
+    /* Die Legende unter dem Diagramm: Farbe, Name, Wert. Der Wert läuft durch
+       dieselbe gewichtete Rechnung wie der Gesamtwert und wie das, was an Make
+       geht, damit Bildschirm, Report und Benchmark dieselbe Zahl zeigen. */
+    function renderPillarLegend(scores) {
+      const el = document.getElementById("pillarLegend");
+      if (!el) return;
+      el.innerHTML = CLUSTERS.map(function(c) {
+        const inC = scores.filter(function(d){ return d.assessed && d.cluster === c; });
+        const v = inC.length ? weightedOverall(inC) : null;
+        return '<span class="pl-item">' +
+               '<span class="pl-swatch" style="background:' + pillarColor(c) + '"></span>' +
+               '<span class="pl-name">' + clusterLabel(c) + '</span>' +
+               (v === null
+                  ? '<span class="pl-none">' + t("pillarNoScore") + '</span>'
+                  : '<span class="pl-score" style="color:' + pillarText(c) + '">' +
+                    v.toFixed(1) + '/5.0</span>') +
+               '</span>';
+      }).join("");
+    }
+
     function weightedOverall(scores) {
       let wSum = 0, wTot = 0;
       scores.forEach(function(r) {
@@ -3358,6 +3398,7 @@
       cards.innerHTML = cardsHtml;
 
       drawRadarChart(scores);
+      renderPillarLegend(scores);
 
       const sorted = scored.slice().sort(function(a, b) { return b.leverage - a.leverage; });
       const top3 = sorted.slice(0, 3);
@@ -3452,6 +3493,21 @@
       }
     }
 
+    /* Das Radar folgte der Reihenfolge der Vorlagenliste, der Check fragt aber
+       nach Säulen gruppiert. Nach Säulen sortiert zeigen Bildschirm, Fragebogen
+       und PDF-Report dieselbe Abfolge. Sortiert wird nur die Anzeige, die
+       Nutzdaten bleiben unangetastet. */
+    function radarOrder(scores) {
+      const rank = {};
+      CLUSTERS.forEach(function(c, i) { rank[c] = i; });
+      return scores.map(function(s, i) { return { s: s, i: i }; })
+        .sort(function(a, b) {
+          const ra = rank[a.s.cluster], rb = rank[b.s.cluster];
+          const na = ra === undefined ? 99 : ra, nb = rb === undefined ? 99 : rb;
+          return na !== nb ? na - nb : a.i - b.i;
+        });
+    }
+
     function drawRadarChart(scores) {
       const svg = document.getElementById("radarSvg");
       svg.innerHTML = ""; 
@@ -3476,7 +3532,9 @@
       
       const dataPoints = [];
       const dotColors = [];
-      scores.forEach((s, j) => {
+      const ordered = radarOrder(scores);
+      ordered.forEach((entry, j) => {
+        const s = entry.s;
         const angle = (j * 2 * Math.PI / numDims) - Math.PI / 2;
         const pc = s.assessed === false ? "#cbd5e0" : pillarColor(s.cluster);
         
@@ -3533,6 +3591,41 @@
         dotColors.push(pc);
       });
       
+
+      /* ── Säulenbögen ──────────────────────────────────────────────────
+         Zeigt, welche Dimensionen zu welcher Säule gehören. Möglich, seit die
+         Achsen nach Säulen sortiert sind: die Dimensionen einer Säule liegen
+         nebeneinander, also reicht ein durchgehender Bogen. Er sitzt zwischen
+         Ring und Beschriftung und braucht keinen zusätzlichen Platz. */
+      (function drawPillarArcs() {
+        const groups = [];
+        ordered.forEach(function(entry, j) {
+          const c = entry.s.cluster;
+          const last = groups[groups.length - 1];
+          if (last && last.cluster === c) { last.end = j; }
+          else { groups.push({ cluster: c, start: j, end: j }); }
+        });
+        const step = 2 * Math.PI / numDims;
+        const rArc = rMax + 10;
+        groups.forEach(function(g) {
+          const gap = step * 0.10;
+          const a0 = (g.start * step) - Math.PI / 2 - step / 2 + gap;
+          const a1 = (g.end   * step) - Math.PI / 2 + step / 2 - gap;
+          const x0 = cx + rArc * Math.cos(a0), y0 = cy + rArc * Math.sin(a0);
+          const x1 = cx + rArc * Math.cos(a1), y1 = cy + rArc * Math.sin(a1);
+          const big = (a1 - a0) > Math.PI ? 1 : 0;
+          const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+          path.setAttribute("d", "M " + x0 + " " + y0 + " A " + rArc + " " + rArc +
+                                 " 0 " + big + " 1 " + x1 + " " + y1);
+          path.setAttribute("fill", "none");
+          path.setAttribute("stroke", pillarColor(g.cluster));
+          path.setAttribute("stroke-width", "3");
+          path.setAttribute("stroke-linecap", "round");
+          path.setAttribute("opacity", "0.9");
+          svg.appendChild(path);
+        });
+      })();
+
       const poly = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
       poly.setAttribute("points", dataPoints.join(" "));
       poly.setAttribute("fill", "rgba(82, 165, 176, 0.25)"); 
